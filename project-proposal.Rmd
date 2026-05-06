@@ -40,7 +40,18 @@ The underlying motivation for this study is the well known effects of pharmaceut
 | Exposed to 0.5µg/L of Fluoxetine |       6 hours       |        4         |
 | Exposed to 0.5µg/L of Fluoxetine |      36 hours       |        4         |
 
-### 
+### Tools
+
+
+
+### Statistical Analyses
+
+Parametric data:
+- T-test, for binay comparisons.
+- ANOVA followed by Tukey post-hoc tests, for multiple comparisons.
+
+Non-parametric data (protein microarrays):
+- PERMANOVA, using Adonis function from [vegan R package](https://cran.r-project.org/web/packages/vegan/index.html) in R Studio (R 4.1.2).
 
 ```         
 Include the title and link to the GEO page of the experiment
