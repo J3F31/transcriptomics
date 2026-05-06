@@ -1,0 +1,57 @@
+---
+title: "Transcriptomics Project Proposal"
+subtitle: ""
+author: "Roa Hanoun & Jero Eyras"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: false
+    toc_float: false
+    number_sections: false
+    theme: cosmo
+    highlight: tango
+fontsize: 12pt
+geometry: margin=1in
+---
+
+## Chosen Project
+
+```{=html}
+<pre>
+<b>Environmental fluoxetine promotes skin cell proliferation and wound healing</b>
+<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE268987">GEO Page</a>
+</pre>
+```
+
+### Description
+
+This study explores how **environment pharmaceutics** like fluoxetine, also known as Prozac, affect **wound healing**. In this case, they describe environment pharmaceutics as the concerning pollution of water systems with pharmaceutical and care products. They talk about fluoxetine as an example of a **selective serotonin reuptake inhibitor**, and claim enhanced wound healing is the effect of **cell proliferation** and **serotonin signaling**.
+
+*"Transcriptomic analysis revealed 350 differentially expressed genes after exposure"*<br> - **Downregulated genes**, related to mitochondrial function and metabolism.<br> - **Upregulated genes**, associated with cell proliferation and tissue morphogenesis.
+
+The underlying motivation for this study is the well known effects of pharmaceutical water pollution on aquatic animals, and the unkown effects on humans. They conclude that there is enough evidence to justify further studies, for instance potential health risks or benefits on humans and even clinical applications of fluoxetine for wound healing.
+
+### Data Sets
+
+|           Sample Group           | Time Since Exposure | Replicate Amount |
+|:--------------------------------:|:-------------------:|:----------------:|
+|          Control Group           |       6 hours       |        4         |
+|          Control Group           |      36 hours       |        4         |
+| Exposed to 0.5µg/L of Fluoxetine |       6 hours       |        4         |
+| Exposed to 0.5µg/L of Fluoxetine |      36 hours       |        4         |
+
+### 
+
+```         
+Include the title and link to the GEO page of the experiment
+
+Briefly describe the research itself (short overview) and include what the goal of the RNA-Sequencing was (sometimes just a part of the complete research)
+
+[Important] clearly describe the experimental setup, preferably in a table denoting sample groups and the number of replicates per group.
+
+Describe/ list the software tools (programs, web-services, R libraries, etc) that the researchers used for their analysis.
+
+List any relevant statistical test or thresholds that have been used. This is mostly related to identifying DEG-detection (p-value, log2-FC) but can also concern low-count gene filtering.
+```
+
+## Action Plan
