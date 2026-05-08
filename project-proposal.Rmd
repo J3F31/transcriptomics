@@ -42,27 +42,25 @@ The underlying motivation for this study is the well known effects of pharmaceut
 
 ### Tools
 
-
+RNA Sequencing:<br>
+- **DESeq2** R package, "gene expression was log2 transformed, and the calculated p-values were adjusted using the Benjamini–Hochberg correction for false discovery rate (padj). Genes significantly (padj ≤0.05) up- or down-regulated with a gene symbol/ID annotation were used in subsequent analysis"
 
 ### Statistical Analyses
 
-Parametric data:
-- T-test, for binay comparisons.
-- ANOVA followed by Tukey post-hoc tests, for multiple comparisons.
+Parametric data:<br>
+- **T-test**, for binay comparisons.<br>
+- **ANOVA** followed by **Tukey post-hoc tests**, for multiple comparisons.
 
-Non-parametric data (protein microarrays):
-- PERMANOVA, using Adonis function from [vegan R package](https://cran.r-project.org/web/packages/vegan/index.html) in R Studio (R 4.1.2).
+Non-parametric data (protein microarrays):<br>
+- **PERMANOVA**, using Adonis function from [vegan R package](https://cran.r-project.org/web/packages/vegan/index.html) in R Studio (R 4.1.2).
 
-```         
-Include the title and link to the GEO page of the experiment
-
-Briefly describe the research itself (short overview) and include what the goal of the RNA-Sequencing was (sometimes just a part of the complete research)
-
-[Important] clearly describe the experimental setup, preferably in a table denoting sample groups and the number of replicates per group.
-
-Describe/ list the software tools (programs, web-services, R libraries, etc) that the researchers used for their analysis.
-
-List any relevant statistical test or thresholds that have been used. This is mostly related to identifying DEG-detection (p-value, log2-FC) but can also concern low-count gene filtering.
-```
+Phosphoproteomics:<br>
+- **FragPipe-Analyst** R package, "statistical comparison of relative phosphopeptide abundance between groups", "differences in phosphorylation levels cut at padj <0.00001 and log2 fold >5".
 
 ## Action Plan
+
+We will attempt to follow the procedures taken in this study. For this we can look at the results section in the scientific article, and follow the sections relevant to transcriptomics analysis.
+
+### Exposure to ER-FLX activates transcriptomic networks associated with cell proliferation
+
+Section 3.2 in the scientific article. In this section they classify and plot the differentially expressed genes with a heatmap chart and the up and downregulated genes using a volcano plot. They also point out the general functions of those genes. Earlier in the experiment, they find out how exposure to fluoxitine can affect wound healing. By pointing out what genes are up and downregulated we can attribute certain genes to this enhanced wound healing or even find possible risks and side effects.
