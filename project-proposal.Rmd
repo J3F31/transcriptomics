@@ -61,6 +61,16 @@ Phosphoproteomics:<br>
 
 We will attempt to follow the procedures taken in this study. For this we can look at the results section in the scientific article, and follow the sections relevant to transcriptomics analysis.
 
-### Exposure to ER-FLX activates transcriptomic networks associated with cell proliferation
+### Transcriptomics Analysis
 
-Section 3.2 in the scientific article. In this section they classify and plot the differentially expressed genes with a heatmap chart and the up and downregulated genes using a volcano plot. They also point out the general functions of those genes. Earlier in the experiment, they find out how exposure to fluoxitine can affect wound healing. By pointing out what genes are up and downregulated we can attribute certain genes to this enhanced wound healing or even find possible risks and side effects.
+Section 3.2 in the scientific article. In this section they classify and plot the differentially expressed genes with a heatmap chart and the up and downregulated genes using a volcano plot. The previously mentioned tool DESeq2 is used here.
+
+### Enrichment Analysis
+
+By pointing out what genes are up and downregulated we can attribute certain genes to this enhanced wound healing or even find possible risks and side effects. Since 350 genes are differentially expressed, some sort of software is used for this task.
+
+### Additional Questions
+
+Given the conclusions arrived to in the article, we can formulate some followup questions:<br>
+- Are there more gene functions up or downregulated than the ones stated in the article? This could be visible right after enrichment analysis or through additional data analysis steps.<br>
+- Has the same conclusion been reached to before? Or is there some conflicting research out there? There's possibly other scientific articles out there that could provide a new perspective on the matter.
