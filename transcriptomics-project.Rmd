@@ -1,0 +1,30 @@
+---
+title: "Transcriptomics Project"
+subtitle: ""
+author: "Roa Hanoun & Jero Eyras"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: false
+    toc_float: false
+    number_sections: false
+    theme: cosmo
+    highlight: tango
+fontsize: 12pt
+geometry: margin=1in
+---
+
+# Exploratory Data Analysis
+
+```{r}
+data6 <- read.table("./data/GSE268987_LF_6vsC_6_deg.txt", sep = "\t", quote = "", header = T)
+head(data6)
+
+dim(data6)
+str(data6)
+```
+
+```{r}
+data36 <- read.table("./data/GSE268987_LF_48vsC_48_deg.txt", sep = "\t", quote = "", header = T)
+head(data36)
+```
