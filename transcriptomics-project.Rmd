@@ -36,3 +36,79 @@ Control_6 <- 2:5
 Exposed_6 <- 6:9 
 ```
 
+```{r include=FALSE}
+if (!require("pheatmap"))
+  BiocManager::install("pheatmap")
+```
+
+```{r message=FALSE}
+library(pheatmap)
+```
+
+```{r}
+VisualizeNormalizedDistanceHeatMap <- function(data, label) {
+  sampleDist <- dist(t(data))
+  sampleDistMatrix <- as.matrix(sampleDist)
+
+  annotation <- data.frame(Samples = factor(rep(1:2, each = 4), labels = c("FLX", "CTROL")))
+  rownames(annotation) <- names(data)
+
+  pheatmap(sampleDistMatrix,
+           show_colnames = F,
+           annotation_col = annotation,
+           clustering_distance_rows = sampleDist,
+           clustering_distance_cols = sampleDist,
+           main = paste("Euclidean Sample Distances", label))
+}
+VisualizeNormalizedDistanceHeatMap(data6[32:39], "6h")
+VisualizeNormalizedDistanceHeatMap(data36[32:39], "36h")
+```
+
+```{r include=FALSE}
+if (!require("PoiClaClu"))
+  BiocManager::install("PoiClaClu")
+```
+
+```{r message=FALSE}
+library(PoiClaClu)
+```
+
+```{r include=FALSE}
+if (!require("DESeq2"))
+  BiocManager::install("DESeq2")
+```
+
+```{r message=FALSE}
+library(DESeq2)
+```
+
+```{r include=FALSE}
+if (!require("ggplot2"))
+  BiocManager::install("ggplot2")
+```
+
+```{r message=FALSE}
+library(ggplot2)
+```
+
+```{r}
+VisualizePoissonDistance <- function(data, label) {
+  ddsMat <- DESeqDataSetFromMatrix(countData = data,
+                                  colData = data.frame(samples = names(data)),
+                                  design = ~ 1)
+  posid <- PoissonDistance(t(assay(ddsMat)), type = "deseq")
+  samplePoisDistMatrix <- as.matrix(posid$dd)
+  mdsPoisData <- data.frame(cmdscale(samplePoisDistMatrix))
+  names(mdsPoisData) <- c('x_coord', 'y_coord')
+  
+  groups <- factor(rep(1:2, each = 4), labels = c("FLX", "CTROL"))
+  colData <- names(data)
+  
+  ggplot(mdsPoisData, aes(x = x_coord, y = y_coord, color = groups, label = colData)) + 
+  geom_text(size = 4) +
+  labs(title = paste("Multi Dimensional Scaling, Sample", label), x = "Poisson Distance", y = "Poisson Distance") +
+  theme_bw()
+}
+VisualizePoissonDistance(data6[24:31], "6h")
+VisualizePoissonDistance(data36[24:31], "36h")
+```
