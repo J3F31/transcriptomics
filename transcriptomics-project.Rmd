@@ -28,3 +28,11 @@ str(data6)
 data36 <- read.table("./data/GSE268987_LF_48vsC_48_deg.txt", sep = "\t", quote = "", header = T)
 head(data36)
 ```
+
+
+```{r}
+Control_6 <- 2:5 
+
+Exposed_6 <- 6:9 
+```
+
