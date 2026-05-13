@@ -16,6 +16,8 @@ geometry: margin=1in
 
 # Exploratory Data Analysis
 
+## Loading data into R
+
 ```{r}
 data6 <- read.table("./data/GSE268987_LF_6vsC_6_deg.txt", sep = "\t", quote = "", header = T)
 head(data6)
@@ -31,9 +33,92 @@ head(data36)
 
 
 ```{r}
-Control_6 <- 2:5 
+Control_6 <- 24:27 
 
-Exposed_6 <- 6:9 
+Exposed_6 <- 28:31 
+```
+
+```{r}
+names(data6)
+```
+
+The data has a large range with the maximum and average values being very far apart. This will create a lot of outliers in the plot which will be interesting later on.
+
+## Visualizing using `boxplot` and `density plot`
+
+```{r}
+# Load required package
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+
+samples <- c("Q05_count" , "Q06_count" ,"Q07_count","Q08_count",
+             "Q01_count","Q02_count","Q03_count","Q04_count")
+
+(subdata <- data6[samples]
+)
+
+summary(subdata)
+```
+
+**box plot**
+```{r}
+# Convert to long format
+long_df <- subdata %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "sample",
+    values_to = "value"
+  )
+
+ggplot(long_df, aes(x = sample, y = value, fill = sample)) +
+  geom_boxplot() +
+  scale_y_continuous(trans = "log2") +
+ # ylim(0, 600) + 
+  labs(
+    title = "Box Plot of Raw Counts (log₂ scale)",
+    x = "Sample",
+    y = "Counts (log₂)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
+
+**Bar plot**
+```{r}
+ggplot(long_df, aes(x = sample, y = value)) +
+  stat_summary(
+    fun = sum, 
+    geom = "col", 
+    fill = "tomato"
+  )  +
+  scale_y_continuous(labels = scales::comma)+
+
+  theme_minimal()
+
+```
+
+**Density plot**
+
+```{r}
+## The affy library has a density plotting function
+library(affy)
+
+## Create a list of 4 colors to use which are the same used throughout this chapter 
+library(scales)
+myColors <- hue_pal()(2)
+
+## Plot the log2-transformed data with a 0.1 pseudocount
+plotDensity(log2(subdata + 0.1), col=rep(myColors, each=4),
+            lty=c(1:ncol(subdata)), xlab='Log2(count)',
+            main='Expression Distribution')
+
+## Add a legend and vertical line
+legend('topright', names(subdata), lty=c(1:ncol(subdata)),
+       col=rep(myColors, each=4))
+abline(v=-1.5, lwd=1, col='red', lty=2)
 ```
 
 ```{r include=FALSE}
