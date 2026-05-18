@@ -33,13 +33,18 @@ head(data36)
 
 
 ```{r}
-Control_6 <- 24:27 
+Control_6 <- data6[24:27] 
 
-Exposed_6 <- 28:31 
+Exposed_6 <- data6[28:31] 
+
+Control_36 <- data36[24:27] 
+
+Exposed_36 <- data36[28:31] 
+
 ```
 
 ```{r}
-names(data6)
+#names(data6)
 ```
 
 The data has a large range with the maximum and average values being very far apart. This will create a lot of outliers in the plot which will be interesting later on.
@@ -55,13 +60,19 @@ library(dplyr)
 samples <- c("Q05_count" , "Q06_count" ,"Q07_count","Q08_count",
              "Q01_count","Q02_count","Q03_count","Q04_count")
 
-(subdata <- data6[samples]
-)
+(subdata <- data6[samples])
 
 summary(subdata)
+
+samples2 <- c("Q13_count" , "Q14_count" ,"Q15_count","Q16_count",
+             "Q09_count","Q10_count","Q11_count","Q12_count")
+
+subdata2 <- data36[samples2]
+summary(subdata2)
+
 ```
 
-**box plot**
+**box plot after 6 hours**
 ```{r}
 # Convert to long format
 long_df <- subdata %>%
@@ -71,7 +82,31 @@ long_df <- subdata %>%
     values_to = "value"
   )
 
-ggplot(long_df, aes(x = sample, y = value, fill = sample)) +
+ggplot(long_df, aes(x = sample, y = value+1, fill = sample)) +
+  geom_boxplot() +
+  scale_y_continuous(trans = "log2") +
+ # ylim(0, 600) + 
+  labs(
+    title = "Box Plot of Raw Counts (log₂ scale)",
+    x = "Sample",
+    y = "Counts (log₂)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
+**box plot after 36 hours**
+```{r}
+# Convert to long format
+long_df2 <- subdata2 %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "sample",
+    values_to = "value"
+  )
+
+ggplot(long_df2, aes(x = sample, y = value +1, fill = sample)) + # i added 1 to the y values to keep the 0 values ! 
   geom_boxplot() +
   scale_y_continuous(trans = "log2") +
  # ylim(0, 600) + 
@@ -86,7 +121,7 @@ ggplot(long_df, aes(x = sample, y = value, fill = sample)) +
 
 ```
 
-**Bar plot**
+**Bar plot after 6 hours**
 ```{r}
 ggplot(long_df, aes(x = sample, y = value)) +
   stat_summary(
@@ -99,8 +134,21 @@ ggplot(long_df, aes(x = sample, y = value)) +
   theme_minimal()
 
 ```
+**Bar plot after 36 hours**
+```{r}
+ggplot(long_df2, aes(x = sample, y = value)) +
+  stat_summary(
+    fun = sum, 
+    geom = "col", 
+    fill = "tomato"
+  )  +
+  scale_y_continuous(labels = scales::comma)+
 
-**Density plot**
+  theme_minimal()
+
+```
+
+**Density plot after 6 hours**
 
 ```{r}
 ## The affy library has a density plotting function
@@ -120,6 +168,22 @@ legend('topright', names(subdata), lty=c(1:ncol(subdata)),
        col=rep(myColors, each=4))
 abline(v=-1.5, lwd=1, col='red', lty=2)
 ```
+**Density plot after 36 hours**
+```{r}
+
+myColors <- hue_pal()(2)
+
+## Plot the log2-transformed data with a 0.1 pseudocount
+plotDensity(log2(subdata2 + 0.1), col=rep(myColors, each=4),
+            lty=c(1:ncol(subdata2)), xlab='Log2(count)',
+            main='Expression Distribution')
+
+## Add a legend and vertical line
+legend('topright', names(subdata2), lty=c(1:ncol(subdata2)),
+       col=rep(myColors, each=4))
+abline(v=-1.5, lwd=1, col='red', lty=2)
+```
+**heatmap**
 
 ```{r include=FALSE}
 if (!require("pheatmap"))
