@@ -33,17 +33,25 @@ head(data36)
 
 
 ```{r}
-Control_6 <- data6[28:31] 
+Control_6 <- data6[28:31]
+names(Control_6) <- c("C6_r1", "C6_r2", "C6_r3", "C6_r4")
 Control_6_Normalized <- data6[36:39]
+names(Control_6_Normalized) <- c("C6_fkpm_r1", "C6_fkpm_r2", "C6_fkpm_r3", "C6_fkpm_r4")
 
-Exposed_6 <- data6[24:27] 
+Exposed_6 <- data6[24:27]
+names(Exposed_6) <- c("E6_r1", "E6_r2", "E6_r3", "E6_r4")
 Exposed_6_Normalized <- data6[32:35]
+names(Exposed_6_Normalized) <- c("E6_fkpm_r1", "E6_fkpm_r2", "E6_fkpm_r3", "E6_fkpm_r4")
 
-Control_36 <- data36[28:31] 
+Control_36 <- data36[28:31]
+names(Control_36) <- c("C36_r1", "C36_r2", "C36_r3", "C36_r4")
 Control_36_Normalized <- data36[36:39]
+names(Control_36_Normalized) <- c("C36_fkpm_r1", "C36_fkpm_r2", "C36_fkpm_r3", "C36_fkpm_r4")
 
 Exposed_36 <- data36[24:27]
+names(Exposed_36) <- c("E36_r1", "E36_r2", "E36_r3", "E36_r4")
 Exposed_36_Normalized <- data36[32:35]
+names(Exposed_36_Normalized) <- c("E36_fkpm_r1", "E36_fkpm_r2", "E36_fkpm_r3", "E36_fkpm_r4")
 ```
 
 ```{r}
@@ -199,10 +207,19 @@ library(pheatmap)
 
 ```{r}
 VisualizeNormalizedDistanceHeatMap <- function(data, label) {
-  sampleDist <- dist(t(data))
+  ddsMat <- DESeqDataSetFromMatrix(countData = data,
+                                  colData = data.frame(samples = names(data)),
+                                  design = ~ 1)
+  
+  # Perform normalization
+  rld.dds <- vst(ddsMat)
+  # 'Extract' normalized values
+  rld <- assay(rld.dds)
+  
+  sampleDist <- dist(t(rld))
   sampleDistMatrix <- as.matrix(sampleDist)
 
-  annotation <- data.frame(Samples = factor(rep(1:2, each = 4), labels = c("FLX", "CTROL")))
+  annotation <- data.frame(Samples = factor(rep(1:2, each = 4), labels = c("CTROL", "FLX")))
   rownames(annotation) <- names(data)
 
   pheatmap(sampleDistMatrix,
@@ -212,8 +229,8 @@ VisualizeNormalizedDistanceHeatMap <- function(data, label) {
            clustering_distance_cols = sampleDist,
            main = paste("Euclidean Sample Distances", label))
 }
-VisualizeNormalizedDistanceHeatMap(data6[32:39], "6h")
-VisualizeNormalizedDistanceHeatMap(data36[32:39], "36h")
+VisualizeNormalizedDistanceHeatMap(data.frame(Control_6, Exposed_6), "6h")
+VisualizeNormalizedDistanceHeatMap(data.frame(Control_36, Exposed_36), "36h")
 ```
 
 ```{r include=FALSE}
@@ -248,12 +265,18 @@ VisualizePoissonDistance <- function(data, label) {
   ddsMat <- DESeqDataSetFromMatrix(countData = data,
                                   colData = data.frame(samples = names(data)),
                                   design = ~ 1)
+  
+  # Perform normalization
+  rld.dds <- vst(ddsMat)
+  # 'Extract' normalized values
+  rld <- assay(rld.dds)
+
   posid <- PoissonDistance(t(assay(ddsMat)), type = "deseq")
   samplePoisDistMatrix <- as.matrix(posid$dd)
   mdsPoisData <- data.frame(cmdscale(samplePoisDistMatrix))
   names(mdsPoisData) <- c('x_coord', 'y_coord')
   
-  groups <- factor(rep(1:2, each = 4), labels = c("FLX", "CTROL"))
+  groups <- factor(rep(1:2, each = 4), labels = c("CTROL", "FLX"))
   colData <- names(data)
   
   ggplot(mdsPoisData, aes(x = x_coord, y = y_coord, color = groups, label = colData)) + 
@@ -261,6 +284,6 @@ VisualizePoissonDistance <- function(data, label) {
   labs(title = paste("Multi Dimensional Scaling, Sample", label), x = "Poisson Distance", y = "Poisson Distance") +
   theme_bw()
 }
-VisualizePoissonDistance(data6[24:31], "6h")
-VisualizePoissonDistance(data36[24:31], "36h")
+VisualizePoissonDistance(data.frame(Control_6, Exposed_6), "6h")
+VisualizePoissonDistance(data.frame(Control_36, Exposed_36), "36h")
 ```
