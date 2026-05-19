@@ -62,23 +62,20 @@ The data has a large range with the maximum and average values being very far ap
 
 ## Visualizing using `boxplot` and `density plot`
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Load required package
 library(tidyr)
 library(ggplot2)
 library(dplyr)
 
-samples <- c("Q05_count" , "Q06_count" ,"Q07_count","Q08_count",
-             "Q01_count","Q02_count","Q03_count","Q04_count")
 
-(subdata <- data6[samples])
+subdata <- data6[24:31] 
+
 
 summary(subdata)
 
-samples2 <- c("Q13_count" , "Q14_count" ,"Q15_count","Q16_count",
-             "Q09_count","Q10_count","Q11_count","Q12_count")
+subdata2 <- data36[24:31] 
 
-subdata2 <- data36[samples2]
 summary(subdata2)
 
 ```
@@ -92,21 +89,23 @@ long_df <- subdata %>%
     names_to = "sample",
     values_to = "value"
   )
+library(scales)
 
-ggplot(long_df, aes(x = sample, y = value+1, fill = sample)) +
-  geom_boxplot() +
+myColors <- hue_pal()(2)
+
+ggplot(long_df, aes(x = sample, y = value+1)) + # add 1 to solve log (0) values
+  geom_boxplot(col=rep(myColors, each=4)) +
   scale_y_continuous(trans = "log2") +
- # ylim(0, 600) + 
   labs(
-    title = "Box Plot of Raw Counts (log₂ scale)",
+    title = "Box Plot of Raw Counts (log₂ scale) for 6 hours experiment",
     x = "Sample",
     y = "Counts (log₂)"
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-
 ```
+the sample 7 have the highest counts compered with other samples.
 **box plot after 36 hours**
 ```{r}
 # Convert to long format
@@ -117,12 +116,11 @@ long_df2 <- subdata2 %>%
     values_to = "value"
   )
 
-ggplot(long_df2, aes(x = sample, y = value +1, fill = sample)) + # i added 1 to the y values to keep the 0 values ! 
-  geom_boxplot() +
+ggplot(long_df2, aes(x = sample, y = value +1)) + 
+  geom_boxplot(col=rep(myColors, each=4)) +
   scale_y_continuous(trans = "log2") +
- # ylim(0, 600) + 
   labs(
-    title = "Box Plot of Raw Counts (log₂ scale)",
+    title = "Box Plot of Raw Counts (log₂ scale) for 36 hours experiment",
     x = "Sample",
     y = "Counts (log₂)"
   ) +
@@ -133,27 +131,43 @@ ggplot(long_df2, aes(x = sample, y = value +1, fill = sample)) + # i added 1 to 
 ```
 
 **Bar plot after 6 hours**
+
 ```{r}
-ggplot(long_df, aes(x = sample, y = value)) +
+ggplot(long_df, aes(x = sample, y = value/10^6)) +
   stat_summary(
     fun = sum, 
     geom = "col", 
-    fill = "tomato"
+    fill =rep(myColors, each=4)
+
   )  +
   scale_y_continuous(labels = scales::comma)+
+  
+  labs(
+    title = "bar Plot of Raw Counts (/10^6) for 6 hours experiment",
+    x = "Sample",
+    y = "Counts (/10^6)"
+  ) +
 
   theme_minimal()
+
+
 
 ```
 **Bar plot after 36 hours**
 ```{r}
-ggplot(long_df2, aes(x = sample, y = value)) +
+ggplot(long_df2, aes(x = sample, y = value/10^6)) +
   stat_summary(
     fun = sum, 
     geom = "col", 
-    fill = "tomato"
+    fill =rep(myColors, each=4)
   )  +
   scale_y_continuous(labels = scales::comma)+
+   
+  labs(
+    title = "bar Plot of Raw Counts (/10^6) for 36 hours experiment",
+    x = "Sample",
+    y = "Counts (/10^6)"
+  ) +
 
   theme_minimal()
 
@@ -161,13 +175,13 @@ ggplot(long_df2, aes(x = sample, y = value)) +
 
 **Density plot after 6 hours**
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ## The affy library has a density plotting function
 library(affy)
 
 ## Create a list of 4 colors to use which are the same used throughout this chapter 
 library(scales)
-myColors <- hue_pal()(2)
+myColors <- scales::hue_pal()(2)
 
 ## Plot the log2-transformed data with a 0.1 pseudocount
 plotDensity(log2(subdata + 0.1), col=rep(myColors, each=4),
@@ -248,6 +262,11 @@ if (!require("DESeq2"))
 ```
 
 ```{r message=FALSE}
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+
 library(DESeq2)
 ```
 
