@@ -286,12 +286,6 @@ VisualizePoissonDistance <- function(data, label) {
   ddsMat <- DESeqDataSetFromMatrix(countData = data,
                                   colData = data.frame(samples = names(data)),
                                   design = ~ 1)
-  
-  # Perform normalization
-  rld.dds <- vst(ddsMat)
-  # 'Extract' normalized values
-  rld <- assay(rld.dds)
-
   posid <- PoissonDistance(t(assay(ddsMat)), type = "deseq")
   samplePoisDistMatrix <- as.matrix(posid$dd)
   mdsPoisData <- data.frame(cmdscale(samplePoisDistMatrix))
@@ -308,8 +302,34 @@ VisualizePoissonDistance <- function(data, label) {
 VisualizePoissonDistance(data.frame(Control_6, Exposed_6), "6h")
 VisualizePoissonDistance(data.frame(Control_36, Exposed_36), "36h")
 ```
-## clean data 
 
 ```{r}
+data_6 <- data.frame(Control_6, Exposed_6)
+t <- data.frame(samples = names(data_6), group = factor(rep(1:2, each = 4), labels = c("control", "exposed")))
 
+dds <- DESeqDataSetFromMatrix(countData = data_6,
+                                  colData = t,
+                                  design = ~ group)
+
+dds <- DESeq(dds)
+```
+
+```{r}
+res <- results(dds)
+res <- results(dds, name="group_exposed_vs_control")
+#res <- results(dds, contrast=c("group","control","exposed"))
+res
+```
+
+```{r}
+t <- DataFrame(res)
+#t <- drop_na(t)
+
+ggplot(t, aes(x = log2FoldChange, y = -log10(padj))) +
+  geom_point() +
+  geom_hline(yintercept = -log10(0.05))
+```
+
+```{r}
+summary(res)
 ```
