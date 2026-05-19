@@ -33,14 +33,17 @@ head(data36)
 
 
 ```{r}
-Control_6 <- data6[24:27] 
+Control_6 <- data6[28:31] 
+Control_6_Normalized <- data6[36:39]
 
-Exposed_6 <- data6[28:31] 
+Exposed_6 <- data6[24:27] 
+Exposed_6_Normalized <- data6[32:35]
 
-Control_36 <- data36[24:27] 
+Control_36 <- data36[28:31] 
+Control_36_Normalized <- data36[36:39]
 
-Exposed_36 <- data36[28:31] 
-
+Exposed_36 <- data36[24:27]
+Exposed_36_Normalized <- data36[32:35]
 ```
 
 ```{r}
