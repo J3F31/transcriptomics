@@ -240,6 +240,15 @@ if (!require("pheatmap"))
 ```{r message=FALSE, warning=FALSE}
 #library(pheatmap)
 #library(DESeq2)
+gene_ids6 <- data6[, 1]  
+gene_ids36 <- data36[, 1]  
+
+data1 <- data.frame(Control_6[2:5], Exposed_6[2:5])
+rownames(data1) <- gene_ids6  
+
+
+data2 <- data.frame(Control_36[2:5], Exposed_36[2:5])
+rownames(data2) <- gene_ids36  
 ```
 ### Normalization
 
@@ -269,8 +278,8 @@ VisualizeNormalizedDistanceHeatMap <- function(data, label) {
            clustering_distance_cols = sampleDist,
            main = paste("Euclidean Sample Distances", label))
 }
-VisualizeNormalizedDistanceHeatMap(data.frame(Control_6, Exposed_6), "6h")
-VisualizeNormalizedDistanceHeatMap(data.frame(Control_36, Exposed_36), "36h")
+VisualizeNormalizedDistanceHeatMap(data1, "6h")
+VisualizeNormalizedDistanceHeatMap(data2, "36h")
 ```
 
 ```{r include=FALSE}
@@ -325,8 +334,8 @@ VisualizePoissonDistance <- function(data, label) {
   labs(title = paste("Multi Dimensional Scaling, Sample", label), x = "Poisson Distance", y = "Poisson Distance") +
   theme_bw()
 }
-VisualizePoissonDistance(data.frame(Control_6, Exposed_6), "6h")
-VisualizePoissonDistance(data.frame(Control_36, Exposed_36), "36h")
+VisualizePoissonDistance(data1, "6h")
+VisualizePoissonDistance(data2, "36h")
 ```
 After generating heatmaps and MDS plots, the most irregular samples identified are: C36-R1 and E36_R3 from the 36-hour dataset, and C6_R4 from the 6-hour dataset.
 
@@ -338,13 +347,19 @@ Control_36 <- Control_36[-1]  # Removes C36_r1
 Exposed_36 <- Exposed_36[-3]  # Removes E36_r3
 
 ```
-# Discovering Differentialy Expressed Genes (DEGs)
+# Discovering Differentialy Expressed Genes (DEGs)  
+
+**there is a error here in the data becouse we delete samples!, i think we should have similar number of samples in each group!**
 
 ```{r}
-data_6 <- data.frame(Control_6, Exposed_6)
-t <- data.frame(samples = names(data_6), group = factor(rep(1:2, each = 4), labels = c("control", "exposed")))
+#data_6 <- data.frame(Control_6, Exposed_6)
 
-dds <- DESeqDataSetFromMatrix(countData = data_6,
+data1 <- data.frame(Control_6[2:4], Exposed_6[2:5])
+rownames(data1) <- gene_ids6  
+
+t <- data.frame(samples = names(data1), group = factor(rep(1:2, each = 4), labels = c("control", "exposed")))
+
+dds <- DESeqDataSetFromMatrix(countData = data1,
                                   colData = t,
                                   design = ~ group)
 
@@ -383,9 +398,10 @@ plot(resLFC$log2FoldChange, -log10(resLFC$pvalue))
 t <- DataFrame(res)
 #t <- drop_na(t)
 
-ggplot(t, aes(x = log2FoldChange, y = -log10(padj))) +
+ggplot(t, aes(x = log2FoldChange, y = -log10(pvalue))) +
   geom_point() +
   geom_hline(yintercept = -log10(0.05))
+
 ```
 
 ```{r}
