@@ -13,7 +13,34 @@ output:
 fontsize: 12pt
 geometry: margin=1in
 ---
+```{r message=TRUE, warning=FALSE}
+# Core tidyverse packages
+library(tidyverse)      # ggplot2, dplyr, tidyr, readr, etc.
+library(ggplot2)        # plotting
+library(scales)         # comma formatting, hue_pal()
 
+# Color palettes
+#library(RColorBrewer)
+
+# Bioconductor core packages
+library(DESeq2)
+library(SummarizedExperiment)
+library(BiocGenerics)
+library(S4Vectors)
+library(IRanges)
+
+# Data reshaping
+#library(reshape2)
+library(tidyr)
+library(dplyr)
+
+## The affy library has a density plotting function
+library(affy)
+
+library(pheatmap)
+library(PoiClaClu)
+
+```
 # Exploratory Data Analysis
 
 ## Loading data into R
@@ -33,52 +60,47 @@ head(data36)
 
 
 ```{r}
-Control_6 <- data6[28:31]
-names(Control_6) <- c("C6_r1", "C6_r2", "C6_r3", "C6_r4")
-Control_6_Normalized <- data6[36:39]
-names(Control_6_Normalized) <- c("C6_fkpm_r1", "C6_fkpm_r2", "C6_fkpm_r3", "C6_fkpm_r4")
+Control_6 <- data6[, c(1, 28:31)] 
+names(Control_6) <- c("gene_id","C6_r1", "C6_r2", "C6_r3", "C6_r4")
 
-Exposed_6 <- data6[24:27]
-names(Exposed_6) <- c("E6_r1", "E6_r2", "E6_r3", "E6_r4")
-Exposed_6_Normalized <- data6[32:35]
-names(Exposed_6_Normalized) <- c("E6_fkpm_r1", "E6_fkpm_r2", "E6_fkpm_r3", "E6_fkpm_r4")
+Control_6_Normalized <- data6[, c(1, 36:39)]
+names(Control_6_Normalized) <- c("gene_id","C6_fkpm_r1", "C6_fkpm_r2", "C6_fkpm_r3", "C6_fkpm_r4")
 
-Control_36 <- data36[28:31]
-names(Control_36) <- c("C36_r1", "C36_r2", "C36_r3", "C36_r4")
-Control_36_Normalized <- data36[36:39]
-names(Control_36_Normalized) <- c("C36_fkpm_r1", "C36_fkpm_r2", "C36_fkpm_r3", "C36_fkpm_r4")
+Exposed_6 <- data6[, c(1, 24:27)]  
+names(Exposed_6) <- c("gene_id","E6_r1", "E6_r2", "E6_r3", "E6_r4")
+Exposed_6_Normalized <- data6[, c(1, 32:35)]
+names(Exposed_6_Normalized) <- c("gene_id","E6_fkpm_r1", "E6_fkpm_r2", "E6_fkpm_r3", "E6_fkpm_r4")
 
-Exposed_36 <- data36[24:27]
-names(Exposed_36) <- c("E36_r1", "E36_r2", "E36_r3", "E36_r4")
-Exposed_36_Normalized <- data36[32:35]
-names(Exposed_36_Normalized) <- c("E36_fkpm_r1", "E36_fkpm_r2", "E36_fkpm_r3", "E36_fkpm_r4")
-```
+Control_36 <- data36[, c(1, 28:31)] 
+names(Control_36) <- c("gene_id","C36_r1", "C36_r2", "C36_r3", "C36_r4")
+Control_36_Normalized <- data36[, c(1, 36:39)]
+names(Control_36_Normalized) <- c("gene_id","C36_fkpm_r1", "C36_fkpm_r2", "C36_fkpm_r3", "C36_fkpm_r4")
 
-```{r}
-#names(data6)
+Exposed_36 <- data36[, c(1, 24:27)] 
+names(Exposed_36) <- c("gene_id","E36_r1", "E36_r2", "E36_r3", "E36_r4")
+Exposed_36_Normalized <- data36[, c(1, 32:35)]
+names(Exposed_36_Normalized) <- c("gene_id","E36_fkpm_r1", "E36_fkpm_r2", "E36_fkpm_r3", "E36_fkpm_r4")
 ```
 
 The data has a large range with the maximum and average values being very far apart. This will create a lot of outliers in the plot which will be interesting later on.
 
 ## Visualizing using `boxplot` and `density plot`
 
-```{r message=FALSE, warning=FALSE}
-# Load required package
-library(tidyr)
-library(ggplot2)
-library(dplyr)
+### Statistics
 
+```{r}
 
-subdata <- data6[24:31] 
-
+subdata <- cbind(Exposed_6[2:5], Control_6[2:5])
+#subdata
 
 summary(subdata)
 
-subdata2 <- data36[24:31] 
-
+subdata2 <- cbind(Control_36[2:5],Exposed_36[2:5] )
 summary(subdata2)
 
 ```
+
+### Boxplots
 
 **box plot after 6 hours**
 ```{r}
@@ -89,8 +111,6 @@ long_df <- subdata %>%
     names_to = "sample",
     values_to = "value"
   )
-library(scales)
-
 myColors <- hue_pal()(2)
 
 ggplot(long_df, aes(x = sample, y = value+1)) + # add 1 to solve log (0) values
@@ -105,7 +125,7 @@ ggplot(long_df, aes(x = sample, y = value+1)) + # add 1 to solve log (0) values
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
-the sample 7 have the highest counts compered with other samples.
+the sample E6_r3 have the highest counts compered with other samples.
 **box plot after 36 hours**
 ```{r}
 # Convert to long format
@@ -129,10 +149,12 @@ ggplot(long_df2, aes(x = sample, y = value +1)) +
 
 
 ```
+### Barplots
 
 **Bar plot after 6 hours**
 
 ```{r}
+
 ggplot(long_df, aes(x = sample, y = value/10^6)) +
   stat_summary(
     fun = sum, 
@@ -149,9 +171,6 @@ ggplot(long_df, aes(x = sample, y = value/10^6)) +
   ) +
 
   theme_minimal()
-
-
-
 ```
 **Bar plot after 36 hours**
 ```{r}
@@ -171,16 +190,15 @@ ggplot(long_df2, aes(x = sample, y = value/10^6)) +
 
   theme_minimal()
 
+
 ```
+### Density plots
 
 **Density plot after 6 hours**
 
-```{r message=FALSE, warning=FALSE}
-## The affy library has a density plotting function
-library(affy)
+```{r}
 
 ## Create a list of 4 colors to use which are the same used throughout this chapter 
-library(scales)
 myColors <- scales::hue_pal()(2)
 
 ## Plot the log2-transformed data with a 0.1 pseudocount
@@ -208,6 +226,10 @@ legend('topright', names(subdata2), lty=c(1:ncol(subdata2)),
        col=rep(myColors, each=4))
 abline(v=-1.5, lwd=1, col='red', lty=2)
 ```
+After analyzing the above plots, two samples appear irregular: E6_r3 from the 6-hour dataset (though its impact is minimal) and C36_r1 from the 36-hour dataset. These will be noted for potential removal in the final step of analysis.
+
+## Visualizing using `heatmap` and `MDS`
+This section adds a few Exploratory Data Analysis techniques where we will measure and look at distances between samples based on normalized data.
 **heatmap**
 
 ```{r include=FALSE}
@@ -215,9 +237,13 @@ if (!require("pheatmap"))
   BiocManager::install("pheatmap")
 ```
 
-```{r message=FALSE}
-library(pheatmap)
+```{r message=FALSE, warning=FALSE}
+#library(pheatmap)
+#library(DESeq2)
 ```
+### Normalization
+
+The updated values which are now comparable across genes whereas the raw count data was harder to compare.
 
 ```{r}
 VisualizeNormalizedDistanceHeatMap <- function(data, label) {
@@ -253,7 +279,7 @@ if (!require("PoiClaClu"))
 ```
 
 ```{r message=FALSE}
-library(PoiClaClu)
+#library(PoiClaClu)
 ```
 
 ```{r include=FALSE}
@@ -269,7 +295,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 ```
 
 ```{r}
-library(DESeq2)
+#library(DESeq2)
 ```
 
 ```{r include=FALSE}
@@ -278,7 +304,7 @@ if (!require("ggplot2"))
 ```
 
 ```{r message=FALSE}
-library(ggplot2)
+#library(ggplot2)
 ```
 
 ```{r}
@@ -302,6 +328,17 @@ VisualizePoissonDistance <- function(data, label) {
 VisualizePoissonDistance(data.frame(Control_6, Exposed_6), "6h")
 VisualizePoissonDistance(data.frame(Control_36, Exposed_36), "36h")
 ```
+After generating heatmaps and MDS plots, the most irregular samples identified are: C36-R1 and E36_R3 from the 36-hour dataset, and C6_R4 from the 6-hour dataset.
+
+### clean data
+The only clear rule is that each group must retain at least three samples. If one of the three samples visibly deviates from the other replicates, even after normalization, it will stay in your data set and it should be mentioned in your analysis report/ final article that noise may be introduced by this sample. 
+```{r}
+Control_6 <- Control_6[-4]  # Removes C6_r4
+Control_36 <- Control_36[-1]  # Removes C36_r1
+Exposed_36 <- Exposed_36[-3]  # Removes E36_r3
+
+```
+# Discovering Differentialy Expressed Genes (DEGs)
 
 ```{r}
 data_6 <- data.frame(Control_6, Exposed_6)
@@ -317,8 +354,29 @@ dds <- DESeq(dds)
 ```{r}
 res <- results(dds)
 res <- results(dds, name="group_exposed_vs_control")
-#res <- results(dds, contrast=c("group","control","exposed"))
 res
+
+
+plotMA(res)
+
+#resultsNames(dds)
+
+#res <- results(dds, contrast=c("group","exposed","control"))
+#res
+```
+Log fold change shrinkage for visualization and ranking
+“It is more useful visualize the MA-plot for the shrunken log2 fold changes, which remove the noise associated with log2 fold changes from low count genes without requiring arbitrary filtering thresholds.”
+
+```{r message=FALSE, warning=FALSE}
+resLFC <- lfcShrink(dds, coef="group_exposed_vs_control", type="apeglm")
+resLFC
+
+# For MA plots and visualization
+plotMA(resLFC)  # Better than using res
+
+# For volcano plots (use shrunken LFC with original p-values)
+plot(resLFC$log2FoldChange, -log10(resLFC$pvalue))
+
 ```
 
 ```{r}
