@@ -66,12 +66,7 @@ head(data36)
 gene_ids6 <- data6[, 1]  
 gene_ids36 <- data36[, 1]  
 
-data_6 <- data.frame(Control_6, Exposed_6)
-rownames(data_6) <- gene_ids6  
 
-
-data_36 <- data.frame(Control_36, Exposed_36)
-rownames(data_36) <- gene_ids36  
 
 
 Control_6 <- data6[28:31] 
@@ -94,6 +89,14 @@ Exposed_36 <- data36[24:27]
 names(Exposed_36) <- c( "E36_r1", "E36_r2", "E36_r3", "E36_r4")
 Exposed_36_Normalized <- data36[32:35]
 names(Exposed_36_Normalized) <- c( "E36_fkpm_r1", "E36_fkpm_r2", "E36_fkpm_r3", "E36_fkpm_r4")
+
+data_6 <- data.frame(Control_6, Exposed_6)
+rownames(data_6) <- gene_ids6  
+
+
+data_36 <- data.frame(Control_36, Exposed_36)
+rownames(data_36) <- gene_ids36  
+
 ```
 
 The data has a large range with the maximum and average values being very far apart. This will create a lot of outliers in the plot which will be interesting later on.
@@ -104,12 +107,12 @@ The data has a large range with the maximum and average values being very far ap
 
 ```{r}
 
-subdata <- cbind(Exposed_6[2:5], Control_6[2:5])
+subdata <- cbind(Exposed_6, Control_6)
 #subdata
 
 summary(subdata)
 
-subdata2 <- cbind(Control_36[2:5],Exposed_36[2:5] )
+subdata2 <- cbind(Control_36,Exposed_36)
 summary(subdata2)
 
 ```
