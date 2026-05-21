@@ -342,25 +342,25 @@ VisualizePoissonDistance <- function(data, label) {
 VisualizePoissonDistance(data_6, "6h")
 VisualizePoissonDistance(data_36, "36h")
 ```
+
 After generating heatmaps and MDS plots, the most irregular samples identified are: C36-R1 and E36_R3 from the 36-hour dataset, and C6_R4 from the 6-hour dataset.
 
 ### clean data
 The only clear rule is that each group must retain at least three samples. If one of the three samples visibly deviates from the other replicates, even after normalization, it will stay in your data set and it should be mentioned in your analysis report/ final article that noise may be introduced by this sample. 
 ```{r}
-#Control_6 <- Control_6[-4]  # Removes C6_r4
-#Control_36 <- Control_36[-1]  # Removes C36_r1
-#Exposed_36 <- Exposed_36[-3]  # Removes E36_r3
+Control_6 <- Control_6[-4]  # Removes C6_r4
+Control_36 <- Control_36[-1]  # Removes C36_r1
+Exposed_36 <- Exposed_36[-3]  # Removes E36_r3
 
 ```
 # Discovering Differentialy Expressed Genes (DEGs)  
 
-**there is a error here in the data becouse we delete samples!, i think we should have similar number of samples in each group!**
-
 ```{r}
 data_6 <- data.frame(Control_6, Exposed_6)
+rownames(data_6) <- gene_ids6  
 
 
-t <- data.frame(samples = names(data_6), group = factor(c(rep("control", 4), rep("exposed", 4)), labels = c("control", "exposed")))
+t <- data.frame(samples = names(data_6), group = factor(c(rep("control", 3), rep("exposed", 4)), labels = c("control", "exposed")))
 
 dds <- DESeqDataSetFromMatrix(countData = data_6,
                                   colData = t,
@@ -368,6 +368,7 @@ dds <- DESeqDataSetFromMatrix(countData = data_6,
 
 dds <- DESeq(dds)
 ```
+
 In DESeq2, the function plotMA shows the log2 fold changes attributable to a given variable over the mean of normalized counts for all the samples in the DESeqDataSet. Points will be colored blue if the adjusted p value is less than 0.1. Points which fall out of the window are plotted as open triangles pointing either up or down.
 
 
@@ -384,6 +385,7 @@ res
 #res <- results(dds, contrast=c("group","exposed","control"))
 #res
 ```
+
 Log fold change shrinkage for visualization and ranking:
 
 “It is more useful visualize the MA-plot for the shrunken log2 fold changes, which remove the noise associated with log2 fold changes from low count genes without requiring arbitrary filtering thresholds.”
@@ -410,7 +412,7 @@ ggplot(t, aes(x = log2FoldChange, y = -log10(pvalue))) +
 
 ```
 
-```{r, eval=FALSE}
+```{r}
 library(EnhancedVolcano)
 EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue',
                          lab=rownames(res),
@@ -422,12 +424,12 @@ EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue',
                          # Disable legend
                          legendPosition = "none",
                          # Set cutoffs
-               ylim = c(0,4),
+                          ylim = c(0,4),
                          pCutoff = 0.05, FCcutoff = 0)
 
 
 ## Note that the most simplest case is:
-EnhancedVolcano(res, x = 'log2FoldChange', y = 'padj', lab = rownames(res))
+EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue', lab = rownames(res))
 
 
 ```
