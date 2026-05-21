@@ -363,7 +363,7 @@ Exposed_36 <- Exposed_36[-3]  # Removes E36_r3
 **there is a error here in the data becouse we delete samples!, i think we should have similar number of samples in each group!**
 
 ```{r}
-#data_6 <- data.frame(Control_6, Exposed_6)
+data_6 <- data.frame(Control_6, Exposed_6)
 
 t <- data.frame(samples = names(data_6), group = factor(rep(1:2, each = 4), labels = c("control", "exposed")))
 
@@ -373,6 +373,8 @@ dds <- DESeqDataSetFromMatrix(countData = data_6,
 
 dds <- DESeq(dds)
 ```
+In DESeq2, the function plotMA shows the log2 fold changes attributable to a given variable over the mean of normalized counts for all the samples in the DESeqDataSet. Points will be colored blue if the adjusted p value is less than 0.1. Points which fall out of the window are plotted as open triangles pointing either up or down.
+
 
 ```{r}
 res <- results(dds)
@@ -387,7 +389,8 @@ plotMA(res)
 #res <- results(dds, contrast=c("group","exposed","control"))
 #res
 ```
-Log fold change shrinkage for visualization and ranking
+Log fold change shrinkage for visualization and ranking:
+
 “It is more useful visualize the MA-plot for the shrunken log2 fold changes, which remove the noise associated with log2 fold changes from low count genes without requiring arbitrary filtering thresholds.”
 
 ```{r message=FALSE, warning=FALSE}
@@ -409,6 +412,38 @@ t <- DataFrame(res)
 ggplot(t, aes(x = log2FoldChange, y = -log10(pvalue))) +
   geom_point() +
   geom_hline(yintercept = -log10(0.05))
+
+```
+
+```{r, eval=FALSE}
+library(EnhancedVolcano)
+EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue',
+                         lab=rownames(res),
+                         #title = paste(data_6, "control vs exposed"),
+                         subtitle = bquote(italic('FDR <= 0.05 and absolute FC >= 2')),
+                         # Change text and icon sizes
+                       labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
+                         subtitleLabSize=8, captionLabSize=10,
+                         # Disable legend
+                         legendPosition = "none",
+                         # Set cutoffs
+               ylim = c(0,4),
+                         pCutoff = 0.05, FCcutoff = 0)
+
+
+## Note that the most simplest case is:
+EnhancedVolcano(res, x = 'log2FoldChange', y = 'padj', lab = rownames(res))
+
+
+```
+
+```{r}
+#Here we specify the gene which had the smallest p value from the results table created above. You can select the gene to plot by rowname or by numeric index.
+plotCounts(dds, gene=which.min(res$padj), intgroup="group")
+
+#mcols(res)$description
+
+
 
 ```
 
