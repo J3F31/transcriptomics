@@ -13,7 +13,8 @@ output:
 fontsize: 12pt
 geometry: margin=1in
 ---
-```{r message=TRUE, warning=FALSE}
+
+```{r message=FALSE}
 # Core tidyverse packages
 library(tidyverse)      # ggplot2, dplyr, tidyr, readr, etc.
 library(ggplot2)        # plotting
@@ -47,50 +48,32 @@ library(PoiClaClu)
 
 ```{r}
 data6 <- read.table("./data/GSE268987_LF_6vsC_6_deg.txt", sep = "\t", quote = "", header = T)
-str(data6)
+
+control_6 <- data6[28:31] 
+names(control_6) <- c("C6_r1", "C6_r2", "C6_r3", "C6_r4")
+
+exposed_6 <- data6[24:27]  
+names(exposed_6) <- c("E6_r1", "E6_r2", "E6_r3", "E6_r4")
+
+data_6 <- data.frame(control_6, exposed_6)
+rownames(data_6) <- data6[, 1]
+
+head(data_6)
 ```
 
 ```{r}
 data36 <- read.table("./data/GSE268987_LF_48vsC_48_deg.txt", sep = "\t", quote = "", header = T)
-str(data36)
-```
 
-```{r}
+control_36 <- data36[28:31] 
+names(control_36) <- c( "C36_r1", "C36_r2", "C36_r3", "C36_r4")
 
-gene_ids6 <- data6[, 1]  
-gene_ids36 <- data36[, 1]  
+exposed_36 <- data36[24:27] 
+names(exposed_36) <- c( "E36_r1", "E36_r2", "E36_r3", "E36_r4")
 
-Control_6 <- data6[28:31] 
-names(Control_6) <- c("C6_r1", "C6_r2", "C6_r3", "C6_r4")
+data_36 <- data.frame(control_36, exposed_36)
+rownames(data_36) <- data36[, 1]
 
-Control_6_Normalized <- data6[36:39]
-names(Control_6_Normalized) <- c("C6_fkpm_r1", "C6_fkpm_r2", "C6_fkpm_r3", "C6_fkpm_r4")
-
-Exposed_6 <- data6[24:27]  
-names(Exposed_6) <- c("E6_r1", "E6_r2", "E6_r3", "E6_r4")
-
-Exposed_6_Normalized <- data6[32:35]
-names(Exposed_6_Normalized) <- c( "E6_fkpm_r1", "E6_fkpm_r2", "E6_fkpm_r3", "E6_fkpm_r4")
-
-Control_36 <- data36[28:31] 
-names(Control_36) <- c( "C36_r1", "C36_r2", "C36_r3", "C36_r4")
-
-Control_36_Normalized <- data36[36:39]
-names(Control_36_Normalized) <- c( "C36_fkpm_r1", "C36_fkpm_r2", "C36_fkpm_r3", "C36_fkpm_r4")
-
-Exposed_36 <- data36[24:27] 
-names(Exposed_36) <- c( "E36_r1", "E36_r2", "E36_r3", "E36_r4")
-
-Exposed_36_Normalized <- data36[32:35]
-names(Exposed_36_Normalized) <- c( "E36_fkpm_r1", "E36_fkpm_r2", "E36_fkpm_r3", "E36_fkpm_r4")
-
-data_6 <- data.frame(Control_6, Exposed_6)
-rownames(data_6) <- gene_ids6  
-
-
-data_36 <- data.frame(Control_36, Exposed_36)
-rownames(data_36) <- gene_ids36  
-
+head(data_36)
 ```
 
 The data has a large range with the maximum and average values being very far apart. This will create a lot of outliers in the plot which will be interesting later on.
@@ -100,162 +83,113 @@ The data has a large range with the maximum and average values being very far ap
 ### Statistics
 
 ```{r}
-
-subdata <- cbind(Exposed_6, Control_6)
-#subdata
-
-summary(subdata)
-
-subdata2 <- cbind(Control_36,Exposed_36)
-summary(subdata2)
-
+summary(data_6)
+```
+```{r}
+summary(data_36)
 ```
 
 ### Boxplots
 
-**box plot after 6 hours**
 ```{r}
-# Convert to long format
-long_df <- subdata %>%
-  pivot_longer(
-    cols = everything(),
-    names_to = "sample",
-    values_to = "value"
-  )
-myColors <- hue_pal()(2)
-
-ggplot(long_df, aes(x = sample, y = value+1)) + # add 1 to solve log (0) values
+BoxPlotRawCount <- function(data, label) {
+  # Convert to long format
+  long_df <- pivot_longer(data,
+      cols = everything(),
+      names_to = "sample",
+      values_to = "value"
+    )
+  
+  myColors <- hue_pal()(2)
+  
+  ggplot(long_df, aes(x = sample, y = value+1)) + # add 1 to solve log (0) values
   geom_boxplot(col=rep(myColors, each=4)) +
   scale_y_continuous(trans = "log2") +
   labs(
-    title = "Box Plot of Raw Counts (log₂ scale) for 6 hours experiment",
+    title = paste("Box Plot of Raw Counts (log₂ scale) for", label, "hours experiment"),
     x = "Sample",
     y = "Counts (log₂)"
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
+}
 ```
+```{r}
+#Boxplot 6 hours
+BoxPlotRawCount(data_6, "6")
+#Boxplot 36 hours
+BoxPlotRawCount(data_36, "36")
+```
+
 the sample E6_r3 have the highest counts compered with other samples.
-**box plot after 36 hours**
-```{r}
-# Convert to long format
-long_df2 <- subdata2 %>%
-  pivot_longer(
-    cols = everything(),
-    names_to = "sample",
-    values_to = "value"
-  )
 
-ggplot(long_df2, aes(x = sample, y = value +1)) + 
-  geom_boxplot(col=rep(myColors, each=4)) +
-  scale_y_continuous(trans = "log2") +
-  labs(
-    title = "Box Plot of Raw Counts (log₂ scale) for 36 hours experiment",
-    x = "Sample",
-    y = "Counts (log₂)"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
-```
 ### Barplots
 
-**Bar plot after 6 hours**
-
 ```{r}
-barplot(colSums(subdata)/10^6)
-ggplot(long_df, aes(x = sample, y = value/10^6)) +
-  stat_summary(
-    fun = sum, 
-    geom = "col", 
-    fill =rep(myColors, each=4)
-
-  )  +
-  scale_y_continuous(labels = scales::comma)+
+BarPlotRawCount <- function(data, label) {
+  # Convert to long format
+  long_df <- pivot_longer(data,
+      cols = everything(),
+      names_to = "sample",
+      values_to = "value"
+    )
   
-  labs(
-    title = "bar Plot of Raw Counts (/10^6) for 6 hours experiment",
-    x = "Sample",
-    y = "Counts (/10^6)"
-  ) +
-
-  theme_minimal()
+  myColors <- hue_pal()(2)
+  
+  ggplot(long_df, aes(x = sample, y = value/10^6)) +
+    stat_summary(
+      fun = sum, 
+      geom = "col", 
+      fill =rep(myColors, each=4)
+    )  +
+    scale_y_continuous(labels = scales::comma) +
+    labs(
+      title = paste("Bar Plot of Raw Counts (/10^6) for ", label, "hours experiment"),
+      x = "Sample",
+      y = "Counts (/10^6)"
+    ) +
+    theme_minimal()
+}
 ```
-
-**Bar plot after 36 hours**
-
 ```{r}
-ggplot(long_df2, aes(x = sample, y = value/10^6)) +
-  stat_summary(
-    fun = sum, 
-    geom = "col", 
-    fill =rep(myColors, each=4)
-  )  +
-  scale_y_continuous(labels = scales::comma)+
-   
-  labs(
-    title = "bar Plot of Raw Counts (/10^6) for 36 hours experiment",
-    x = "Sample",
-    y = "Counts (/10^6)"
-  ) +
-
-  theme_minimal()
-
-
+#Barplot 6 hours
+BarPlotRawCount(data_6, "6")
+#Barplot 36 hours
+BarPlotRawCount(data_36, "36")
 ```
 
 ### Density plots
 
-**Density plot after 6 hours**
-
 ```{r}
-
-## Create a list of 4 colors to use which are the same used throughout this chapter 
-myColors <- scales::hue_pal()(2)
-
-## Plot the log2-transformed data with a 0.1 pseudocount
-plotDensity(log2(subdata + 0.1), col=rep(myColors, each=4),
-            lty=c(1:ncol(subdata)), xlab='Log2(count)',
-            main='Expression Distribution')
-
-## Add a legend and vertical line
-legend('topright', names(subdata), lty=c(1:ncol(subdata)),
-       col=rep(myColors, each=4))
-abline(v=-1.5, lwd=1, col='red', lty=2)
+DensityPlotRawCount <- function(data) {
+  ## Create a list of 4 colors to use which are the same used throughout this chapter 
+  myColors <- hue_pal()(2)
+  
+  ## Plot the log2-transformed data with a 0.1 pseudocount
+  plotDensity(log2(data + 0.1), col=rep(myColors, each=4),
+              lty=c(1:ncol(data)), xlab='Log2(count)',
+              main='Expression Distribution')
+  
+  ## Add a legend and vertical line
+  legend('topright', names(data), lty=c(1:ncol(data)),
+         col=rep(myColors, each=4))
+  abline(v=-1.5, lwd=1, col='red', lty=2)
+}
 ```
-**Density plot after 36 hours**
 ```{r}
-
-myColors <- hue_pal()(2)
-
-## Plot the log2-transformed data with a 0.1 pseudocount
-plotDensity(log2(subdata2 + 0.1), col=rep(myColors, each=4),
-            lty=c(1:ncol(subdata2)), xlab='Log2(count)',
-            main='Expression Distribution')
-
-## Add a legend and vertical line
-legend('topright', names(subdata2), lty=c(1:ncol(subdata2)),
-       col=rep(myColors, each=4))
-abline(v=-1.5, lwd=1, col='red', lty=2)
+#Density Plot 6 hours
+DensityPlotRawCount(data_6)
+#Density Plot 36 hours
+DensityPlotRawCount(data_36)
 ```
+
 After analyzing the above plots, two samples appear irregular: E6_r3 from the 6-hour dataset (though its impact is minimal) and C36_r1 from the 36-hour dataset. These will be noted for potential removal in the final step of analysis.
 
 ## Visualizing using `heatmap` and `MDS`
 This section adds a few Exploratory Data Analysis techniques where we will measure and look at distances between samples based on normalized data.
 **heatmap**
 
-```{r include=FALSE}
-if (!require("pheatmap"))
-  BiocManager::install("pheatmap")
-```
-
-```{r message=FALSE, warning=FALSE}
-#library(pheatmap)
-#library(DESeq2)
-```
-### Normalization
+### Normalized Distance Heatmap
 
 The updated values which are now comparable across genes whereas the raw count data was harder to compare.
 
@@ -283,49 +217,23 @@ VisualizeNormalizedDistanceHeatMap <- function(data, label) {
            clustering_distance_cols = sampleDist,
            main = paste("Euclidean Sample Distances", label))
 }
-VisualizeNormalizedDistanceHeatMap(data_6, "6h")
-VisualizeNormalizedDistanceHeatMap(data_36, "36h")
 ```
-
-```{r include=FALSE}
-if (!require("PoiClaClu"))
-  BiocManager::install("PoiClaClu")
-```
-
-```{r message=FALSE}
-#library(PoiClaClu)
-```
-
-```{r include=FALSE}
-if (!require("DESeq2"))
-  BiocManager::install("DESeq2")
-```
-
-```{r message=FALSE}
-
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-    install.packages("BiocManager")
-}
-```
-
 ```{r}
-#library(DESeq2)
+#Normalized distance heat map 6 hours
+VisualizeNormalizedDistanceHeatMap(data_6, "6 hours")
+#Normalized distance heat map 36 hours
+VisualizeNormalizedDistanceHeatMap(data_36, "36 hours")
 ```
 
-```{r include=FALSE}
-if (!require("ggplot2"))
-  BiocManager::install("ggplot2")
-```
-
-```{r message=FALSE}
-#library(ggplot2)
-```
+### Poisson Distance
 
 ```{r}
 VisualizePoissonDistance <- function(data, label) {
   ddsMat <- DESeqDataSetFromMatrix(countData = data,
                                   colData = data.frame(samples = names(data)),
                                   design = ~ 1)
+  
+  #Poisson function already performs normalization
   posid <- PoissonDistance(t(assay(ddsMat)), type = "deseq")
   samplePoisDistMatrix <- as.matrix(posid$dd)
   mdsPoisData <- data.frame(cmdscale(samplePoisDistMatrix))
@@ -339,122 +247,156 @@ VisualizePoissonDistance <- function(data, label) {
   labs(title = paste("Multi Dimensional Scaling, Sample", label), x = "Poisson Distance", y = "Poisson Distance") +
   theme_bw()
 }
-VisualizePoissonDistance(data_6, "6h")
-VisualizePoissonDistance(data_36, "36h")
 ```
+```{r}
+#Poisson Distance 6 hours
+VisualizePoissonDistance(data_6, "6 hours")
+#Poisson Distance 36 hours
+VisualizePoissonDistance(data_36, "36 hours")
+```
+
 After generating heatmaps and MDS plots, the most irregular samples identified are: C36-R1 and E36_R3 from the 36-hour dataset, and C6_R4 from the 6-hour dataset.
 
-### clean data
-The only clear rule is that each group must retain at least three samples. If one of the three samples visibly deviates from the other replicates, even after normalization, it will stay in your data set and it should be mentioned in your analysis report/ final article that noise may be introduced by this sample. 
-```{r}
-#Control_6 <- Control_6[-4]  # Removes C6_r4
-#Control_36 <- Control_36[-1]  # Removes C36_r1
-#Exposed_36 <- Exposed_36[-3]  # Removes E36_r3
+## Clean data
 
-```
-# Discovering Differentialy Expressed Genes (DEGs)  
-
-**there is a error here in the data becouse we delete samples!, i think we should have similar number of samples in each group!**
+The only clear rule is that each group must retain at least three samples. If one of the three samples visibly deviates from the other replicates, even after normalization, it will stay in your data set and it should be mentioned in your analysis report/ final article that noise may be introduced by this sample.
 
 ```{r}
-data_6 <- data.frame(Control_6, Exposed_6)
-
-
-t <- data.frame(samples = names(data_6), group = factor(c(rep("control", 4), rep("exposed", 4)), labels = c("control", "exposed")))
-
-dds <- DESeqDataSetFromMatrix(countData = data_6,
-                                  colData = t,
-                                  design = ~ group)
-
-dds <- DESeq(dds)
+data_6_clean <- select(data_6, -c("C6_r4")) # Removes C6_r4
+data_36_clean <- select(data_36, -c("C36_r1", "E36_r3")) # Removes C36_r1 & E36_r3
 ```
+
+# Discovering Differentialy Expressed Genes (DEGs)
+
+```{r}
+DiscoverDEGsWithDESeq <- function(data, controlSamples, exposedSamples) {
+  col <- data.frame(samples = names(data), group = factor(c(rep("control", controlSamples), rep("exposed", exposedSamples)), labels = c("control", "exposed")))
+  
+  dds <- DESeqDataSetFromMatrix(countData = data,
+                                    colData = col,
+                                    design = ~ group)
+  dds <- DESeq(dds)
+  
+  res <- results(dds)
+  res <- results(dds, name="group_exposed_vs_control")
+  resLFC <- lfcShrink(dds, coef="group_exposed_vs_control", type="apeglm")
+  
+  return(list(deg = res, deg_lfcShrink = resLFC))
+}
+```
+```{r}
+#Differential expressed genes 6 hours
+deg_6 <- DiscoverDEGsWithDESeq(data_6_clean, 3, 4)
+summary(deg_6$deg)
+#Differential expressed genes 36 hours
+deg_36 <- DiscoverDEGsWithDESeq(data_36_clean, 3, 3)
+summary(deg_36$deg)
+```
+
 In DESeq2, the function plotMA shows the log2 fold changes attributable to a given variable over the mean of normalized counts for all the samples in the DESeqDataSet. Points will be colored blue if the adjusted p value is less than 0.1. Points which fall out of the window are plotted as open triangles pointing either up or down.
 
-
-```{r}
-res <- results(dds)
-res <- results(dds, name="group_exposed_vs_control")
-res
-
-
-#plotMA(res)
-
-#resultsNames(dds)
-
-#res <- results(dds, contrast=c("group","exposed","control"))
-#res
-```
 Log fold change shrinkage for visualization and ranking:
 
 “It is more useful visualize the MA-plot for the shrunken log2 fold changes, which remove the noise associated with log2 fold changes from low count genes without requiring arbitrary filtering thresholds.”
 
 ```{r message=FALSE, warning=FALSE}
-resLFC <- lfcShrink(dds, coef="group_exposed_vs_control", type="apeglm")
-resLFC
-
-# For MA plots and visualization
-plotMA(resLFC)  # Better than using res
-
-# For volcano plots (use shrunken LFC with original p-values)
-plot(resLFC$log2FoldChange, -log10(resLFC$pvalue))
-
+PlotMA <- function(deg) {
+  # For MA plots and visualization
+  plotMA(deg)  # Better than using res
+  
+  # For volcano plots (use shrunken LFC with original p-values)
+  plot(deg$log2FoldChange, -log10(deg$pvalue))
+}
+```
+```{r}
+#Plot LFC 6 hours
+PlotMA(deg_6$deg_lfcShrink)
+#Plot LFC 36 hours
+PlotMA(deg_36$deg_lfcShrink)
 ```
 
 ```{r}
-t <- DataFrame(res)
-#t <- drop_na(t)
-
-ggplot(t, aes(x = log2FoldChange, y = -log10(pvalue))) +
-  geom_point() +
-  geom_hline(yintercept = -log10(0.05))
-
+PlotPVal <- function(deg, label) {
+  t <- data.frame(deg)
+  t <- drop_na(t)
+  
+  ggplot(t, aes(x = round(pvalue, digits = 2))) +
+    geom_bar() +
+    geom_vline(xintercept = 0.05, colour = "red") +
+    labs(title = paste("PValue Distribution", label))
+}
+```
+```{r}
+#pvalue plot 6 hours
+PlotPVal(deg_6$deg, "6 hours")
+#pvalue plot 36 hours
+PlotPVal(deg_36$deg, "36 hours")
 ```
 
-```{r, eval=FALSE}
-library(EnhancedVolcano)
-EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue',
-                         lab=rownames(res),
+```{r}
+VolcanoPlot <- function(deg, label) {
+  t <- data.frame(deg)
+  t <- drop_na(t)
+
+  ggplot(t, aes(x = log2FoldChange, y = -log10(pvalue))) +
+    geom_point() +
+    geom_hline(yintercept = -log10(0.05)) +
+    labs(title = paste("Volcano Plot", label))
+}
+```
+```{r}
+#Volcano plot 6 hours
+VolcanoPlot(deg_6$deg, "6 hours")
+#Volcano plot 36 hours
+VolcanoPlot(deg_36$deg, "36 hours")
+```
+
+!!! log10 of 0.0000000001 = of 10, is this an outlier?
+
+```{r}
+FilterDEGs <- function(deg) {
+  s <- data.frame(deg)
+  return(filter(s , pvalue < 0.05))
+}
+```
+```{r}
+#Filtered DEGs 6 hours
+deg_6_filtered <- FilterDEGs(deg_6$deg)
+nrow(deg_6_filtered)
+#Filtered DEGs 36 hours
+deg_36_filtered <- FilterDEGs(deg_36$deg)
+nrow(deg_36_filtered)
+```
+
+```{r include=FALSE}
+#if (!require("EnhancedVolcano"))
+  #BiocManager::install("EnhancedVolcano")
+```
+
+```{r}
+#library(EnhancedVolcano)
+#EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue',
+                         #lab=rownames(res),
                          #title = paste(data_6, "control vs exposed"),
-                         subtitle = bquote(italic('FDR <= 0.05 and absolute FC >= 2')),
+                         #subtitle = bquote(italic('FDR <= 0.05 and absolute FC >= 2')),
                          # Change text and icon sizes
-                       labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
-                         subtitleLabSize=8, captionLabSize=10,
+                         #labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
+                         #subtitleLabSize=8, captionLabSize=10,
                          # Disable legend
-                         legendPosition = "none",
+                         #legendPosition = "none",
                          # Set cutoffs
-               ylim = c(0,4),
-                         pCutoff = 0.05, FCcutoff = 0)
+                         #ylim = c(0,4),
+                         #pCutoff = 0.05, FCcutoff = 0)
 
 
 ## Note that the most simplest case is:
-EnhancedVolcano(res, x = 'log2FoldChange', y = 'padj', lab = rownames(res))
-
-
+#EnhancedVolcano(res, x = 'log2FoldChange', y = 'padj', lab = rownames(res))
 ```
 
 ```{r}
 #Here we specify the gene which had the smallest p value from the results table created above. You can select the gene to plot by rowname or by numeric index.
-plotCounts(dds, gene=which.min(res$padj), intgroup="group")
+#plotCounts(dds, gene=which.min(res$padj), intgroup="group")
 
 #mcols(res)$description
 
-
-
-```
-
-```{r}
-#summary(res)
-s <- data.frame(t)
-s <- filter(s , pvalue < 0.05)
-
-
-
-length(s$pvalue)
-89 + 76
-```
-
-```{r}
-ggplot(t, aes(x = round(pvalue, digits = 2))) +
-  geom_bar() +
-  geom_vline(xintercept = 0.05, colour = "red")
 ```
