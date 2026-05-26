@@ -126,7 +126,10 @@ the sample E6_r3 have the highest counts compered with other samples.
 ### Barplots
 
 ```{r}
+  myColors <- hue_pal()(2)
+
 BarPlotRawCount <- function(data, label) {
+  
   # Convert to long format
   long_df <- pivot_longer(data,
       cols = everything(),
@@ -134,7 +137,16 @@ BarPlotRawCount <- function(data, label) {
       values_to = "value"
     )
   
-  myColors <- hue_pal()(2)
+ggplot(long_df, aes(x = sample, y = value/10^6)) +
+  stat_summary(
+    fun = sum, 
+    geom = "col", 
+    fill =rep(myColors, each=4)
+
+  )  +
+  scale_y_continuous(labels = scales::comma)  +
+    theme_minimal()
+
   
   ggplot(long_df, aes(x = sample, y = value/10^6)) +
     stat_summary(
@@ -151,6 +163,7 @@ BarPlotRawCount <- function(data, label) {
     theme_minimal()
 }
 ```
+
 ```{r}
 #Barplot 6 hours
 BarPlotRawCount(data_6, "6")
@@ -284,6 +297,8 @@ DiscoverDEGsWithDESeq <- function(data, controlSamples, exposedSamples) {
   return(list(deg = res, deg_lfcShrink = resLFC))
 }
 ```
+
+
 ```{r}
 #Differential expressed genes 6 hours
 deg_6 <- DiscoverDEGsWithDESeq(data_6_clean, 3, 4)
@@ -308,11 +323,21 @@ PlotMA <- function(deg) {
   plot(deg$log2FoldChange, -log10(deg$pvalue))
 }
 ```
+
 ```{r}
 #Plot LFC 6 hours
 PlotMA(deg_6$deg_lfcShrink)
 #Plot LFC 36 hours
 PlotMA(deg_36$deg_lfcShrink)
+#resLFC <- lfcShrink(dds, coef="group_exposed_vs_control", type="apeglm")
+#resLFC
+
+# For MA plots and visualization
+#plotMA(resLFC)  # Better than using res
+
+# For volcano plots (use shrunken LFC with original p-values)
+#plot(resLFC$log2FoldChange, -log10(resLFC$pvalue))
+
 ```
 
 ```{r}
@@ -326,12 +351,23 @@ PlotPVal <- function(deg, label) {
     labs(title = paste("PValue Distribution", label))
 }
 ```
+
+
 ```{r}
 #pvalue plot 6 hours
 PlotPVal(deg_6$deg, "6 hours")
 #pvalue plot 36 hours
 PlotPVal(deg_36$deg, "36 hours")
 ```
+
+
+```{r include=FALSE}
+#if (!require("BiocManager", quietly = TRUE))
+ #   install.packages("BiocManager")
+
+#BiocManager::install("EnhancedVolcano")
+```
+
 
 ```{r}
 VolcanoPlot <- function(deg, label) {
@@ -344,6 +380,8 @@ VolcanoPlot <- function(deg, label) {
     labs(title = paste("Volcano Plot", label))
 }
 ```
+
+
 ```{r}
 #Volcano plot 6 hours
 VolcanoPlot(deg_6$deg, "6 hours")
@@ -359,6 +397,7 @@ FilterDEGs <- function(deg) {
   return(filter(s , pvalue < 0.05))
 }
 ```
+
 ```{r}
 #Filtered DEGs 6 hours
 deg_6_filtered <- FilterDEGs(deg_6$deg)
@@ -374,23 +413,23 @@ nrow(deg_36_filtered)
 ```
 
 ```{r}
-#library(EnhancedVolcano)
-#EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue',
-                         #lab=rownames(res),
+library(EnhancedVolcano)
+EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue',
+                         lab=rownames(res),
                          #title = paste(data_6, "control vs exposed"),
-                         #subtitle = bquote(italic('FDR <= 0.05 and absolute FC >= 2')),
+                         subtitle = bquote(italic('FDR <= 0.05 and absolute FC >= 2')),
                          # Change text and icon sizes
-                         #labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
-                         #subtitleLabSize=8, captionLabSize=10,
+                       labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
+                         subtitleLabSize=8, captionLabSize=10,
                          # Disable legend
-                         #legendPosition = "none",
+                         legendPosition = "none",
                          # Set cutoffs
-                         #ylim = c(0,4),
-                         #pCutoff = 0.05, FCcutoff = 0)
+                          ylim = c(0,4),
+                         pCutoff = 0.05, FCcutoff = 0)
 
 
 ## Note that the most simplest case is:
-#EnhancedVolcano(res, x = 'log2FoldChange', y = 'padj', lab = rownames(res))
+EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue', lab = rownames(res))
 ```
 
 ```{r}
