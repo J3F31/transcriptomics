@@ -189,6 +189,7 @@ DensityPlotRawCount <- function(data) {
   abline(v=-1.5, lwd=1, col='red', lty=2)
 }
 ```
+
 ```{r}
 #Density Plot 6 hours
 DensityPlotRawCount(data_6)
@@ -329,14 +330,6 @@ PlotMA <- function(deg) {
 PlotMA(deg_6$deg_lfcShrink)
 #Plot LFC 36 hours
 PlotMA(deg_36$deg_lfcShrink)
-#resLFC <- lfcShrink(dds, coef="group_exposed_vs_control", type="apeglm")
-#resLFC
-
-# For MA plots and visualization
-#plotMA(resLFC)  # Better than using res
-
-# For volcano plots (use shrunken LFC with original p-values)
-#plot(resLFC$log2FoldChange, -log10(resLFC$pvalue))
 
 ```
 
@@ -389,8 +382,6 @@ VolcanoPlot(deg_6$deg, "6 hours")
 VolcanoPlot(deg_36$deg, "36 hours")
 ```
 
-!!! log10 of 0.0000000001 = of 10, is this an outlier?
-
 ```{r}
 FilterDEGs <- function(deg) {
   s <- data.frame(deg)
@@ -414,22 +405,22 @@ nrow(deg_36_filtered)
 
 ```{r}
 library(EnhancedVolcano)
-EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue',
-                         lab=rownames(res),
+EnhancedVolcano(deg_6$deg, x = 'log2FoldChange', y = 'pvalue',
+                         lab=rownames(deg_6$deg),
                          #title = paste(data_6, "control vs exposed"),
                          subtitle = bquote(italic('FDR <= 0.05 and absolute FC >= 2')),
                          # Change text and icon sizes
-                       labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
+                         labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
                          subtitleLabSize=8, captionLabSize=10,
                          # Disable legend
                          legendPosition = "none",
                          # Set cutoffs
                           ylim = c(0,4),
-                         pCutoff = 0.05, FCcutoff = 0)
+                        pCutoff = 0.05, FCcutoff = 0)
 
 
 ## Note that the most simplest case is:
-EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue', lab = rownames(res))
+#EnhancedVolcano(deg_6, x = 'log2FoldChange', y = 'pvalue', lab = rownames(deg_6))
 ```
 
 ```{r}
@@ -437,5 +428,74 @@ EnhancedVolcano(res, x = 'log2FoldChange', y = 'pvalue', lab = rownames(res))
 #plotCounts(dds, gene=which.min(res$padj), intgroup="group")
 
 #mcols(res)$description
+```
+### Venn Diagram
+
+i don't know why there are 2 graphs! 
+
+```{r}
+library(VennDiagram)
+## Data preparation
+gene36_Venn <- row.names(deg_36_filtered)
+gene6_Venn <- row.names(deg_6_filtered)
+
+#grid.newpage()   
+draw.pairwise.venn(length(gene36_Venn),
+                                length(gene6_Venn),
+                                # Calculate the intersection of the two sets
+                                length( intersect(gene36_Venn, gene6_Venn) ),
+                                category = c("36Hours vs 6Hours", "6Hours vs 36Hours"), scaled = F,
+                                fill = c("light blue", "pink"), alpha = rep(0.5, 2),
+                                cat.pos = c(0, 0))
+
+
+
+
+## Alternative method using the `gplots` library
+#library(gplots)
+# Create a Venn-diagram given just the list of gene-names for both sets
+#venn(list("6hours   " = gene6_Venn,
+#          "36hours   " = gene36_Venn), )
 
 ```
+
+**groupGO**
+```{r message=FALSE, warning=FALSE}
+#BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
+
+library(org.Hs.eg.db)
+library(clusterProfiler)
+
+keytypes(org.Hs.eg.db)
+
+
+eg = bitr(gene6_Venn, fromType="ENSEMBL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
+head(eg)
+
+ggo <- groupGO(gene     = eg$ENTREZID,
+               OrgDb    = org.Hs.eg.db,
+               ont      = "CC",
+               level    = 3,
+               readable = TRUE)
+
+head(ggo)
+
+view(ggo)
+```
+
+**enrichGO method**
+
+
+```{r}
+ego <- enrichGO(gene          = eg$ENTREZID,
+              #  universe      = names(deg_6_filtered),
+                OrgDb         = org.Hs.eg.db,
+                ont           = "CC",
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 0.1,
+                qvalueCutoff  = 0.1,
+                readable      = TRUE)
+
+head(ego)
+```
+
