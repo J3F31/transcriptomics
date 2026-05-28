@@ -166,9 +166,9 @@ ggplot(long_df, aes(x = sample, y = value/10^6)) +
 
 ```{r}
 #Barplot 6 hours
-BarPlotRawCount(data_6, "6")
+#BarPlotRawCount(data_6, "6")
 #Barplot 36 hours
-BarPlotRawCount(data_36, "36")
+#BarPlotRawCount(data_36, "36")
 ```
 
 ### Density plots
@@ -458,44 +458,52 @@ draw.pairwise.venn(length(gene36_Venn),
 #          "36hours   " = gene36_Venn), )
 
 ```
+**pathview**
 
-**groupGO**
 ```{r message=FALSE, warning=FALSE}
 #BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
 
+library(pathview)
+pathview(gene.data=deg_6_filtered$log2FoldChange,
+         pathway.id="00020", # TCA-cycle
+         species="hsa"     # Organism key
+)
+
+```
+
+**groupGO**
+
+```{r}
 library(org.Hs.eg.db)
 library(clusterProfiler)
 
-keytypes(org.Hs.eg.db)
+#keytypes(org.Hs.eg.db)
 
+ids = bitr(gene6_Venn, fromType="ENSEMBL", toType=c("SYMBOL", "ENTREZID"), OrgDb="org.Hs.eg.db")
+head(ids)
 
-eg = bitr(gene6_Venn, fromType="ENSEMBL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
-head(eg)
-
-ggo <- groupGO(gene     = eg$ENTREZID,
+ggo <- groupGO(gene     = ids$ENTREZID,
                OrgDb    = org.Hs.eg.db,
-               ont      = "CC",
+               ont      = "MF",
                level    = 3,
                readable = TRUE)
 
 head(ggo)
 
-view(ggo)
+barplot(ggo, drop = TRUE, showCategory = 10)
+
+
+ggo <- groupGO(gene     = ids$ENTREZID,
+               OrgDb    = org.Hs.eg.db,
+               ont      = "BP",
+               level    = 3,
+               readable = TRUE)
+
+head(ggo)
+
+barplot(ggo, drop = TRUE, showCategory = 10)
+#view(ggo)
 ```
 
-**enrichGO method**
 
-
-```{r}
-ego <- enrichGO(gene          = eg$ENTREZID,
-              #  universe      = names(deg_6_filtered),
-                OrgDb         = org.Hs.eg.db,
-                ont           = "CC",
-                pAdjustMethod = "BH",
-                pvalueCutoff  = 0.1,
-                qvalueCutoff  = 0.1,
-                readable      = TRUE)
-
-head(ego)
-```
 
