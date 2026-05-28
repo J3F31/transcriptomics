@@ -459,43 +459,79 @@ draw.pairwise.venn(length(gene36_Venn),
 
 ```
 
-**groupGO**
-```{r message=FALSE, warning=FALSE}
+```{r include=FALSE}
+options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
+pak::pkg_install("clusterProfiler")
+
 #BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
 
-library(org.Hs.eg.db)
-library(clusterProfiler)
-
-keytypes(org.Hs.eg.db)
-
-
-eg = bitr(gene6_Venn, fromType="ENSEMBL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
-head(eg)
-
-ggo <- groupGO(gene     = eg$ENTREZID,
-               OrgDb    = org.Hs.eg.db,
-               ont      = "CC",
-               level    = 3,
-               readable = TRUE)
-
-head(ggo)
-
-view(ggo)
+BiocManager::install("ReactomePA")
 ```
-
-**enrichGO method**
-
 
 ```{r}
-ego <- enrichGO(gene          = eg$ENTREZID,
-              #  universe      = names(deg_6_filtered),
-                OrgDb         = org.Hs.eg.db,
-                ont           = "CC",
-                pAdjustMethod = "BH",
-                pvalueCutoff  = 0.1,
-                qvalueCutoff  = 0.1,
-                readable      = TRUE)
-
-head(ego)
+library(org.Hs.eg.db)
+library(clusterProfiler)
+library(ReactomePA)
 ```
 
+```{r}
+GoEnrichmentAnalysis <- function(group_genes) {
+  go_results <- enrichGO(gene          = group_genes$ENTREZID,
+                       OrgDb         = org.Hs.eg.db,
+                       keyType       = 'ENTREZID', # or 'SYMBOL'
+                       ont           = "BP",
+                       pAdjustMethod = "none",
+                       pvalueCutoff  = 0.05,
+                       qvalueCutoff  = 1,
+                       readable      = TRUE)
+
+  #View(as.data.frame(go_results))
+  dotplot(go_results)
+}
+```
+
+```{r}
+KeggEnrichmentAnalysis <- function(group_genes) {
+  kegg_results <- enrichKEGG(gene = group_genes$ENTREZID,
+                             organism = "hsa",
+                             keyType = "kegg",
+                             pvalueCutoff = 0.05,
+                             pAdjustMethod = "none",
+                             minGSSize = 10,
+                             maxGSSize = 500,
+                             qvalueCutoff = 1,
+                             use_internal_data = FALSE)
+  
+  #View(as.data.frame(kegg_results))
+  dotplot(kegg_results)
+}
+```
+
+```{r}
+ReactomeEnrichmentAnalysis <- function(group_genes) {
+  ora_results <- enrichPathway(gene = group_genes$ENTREZID, 
+                               organism = "human",
+                               pvalueCutoff = 0.05,
+                               pAdjustMethod = "none",
+                               qvalueCutoff = 1)
+  
+  #View(as.data.frame(ora_results))
+  dotplot(ora_results)
+}
+```
+
+```{r}
+#Enrichment Analysis 6 hours
+genes_6 <- bitr(row.names(deg_6_filtered), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
+GoEnrichmentAnalysis(genes_6)
+KeggEnrichmentAnalysis(genes_6)
+ReactomeEnrichmentAnalysis(genes_6)
+```
+
+```{r}
+#Enrichment Analysis 36 hours
+genes_36 <- bitr(row.names(deg_36_filtered), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
+GoEnrichmentAnalysis(genes_36)
+KeggEnrichmentAnalysis(genes_36)
+ReactomeEnrichmentAnalysis(genes_36)
+```
