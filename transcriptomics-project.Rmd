@@ -166,9 +166,9 @@ ggplot(long_df, aes(x = sample, y = value/10^6)) +
 
 ```{r}
 #Barplot 6 hours
-BarPlotRawCount(data_6, "6")
+#BarPlotRawCount(data_6, "6")
 #Barplot 36 hours
-BarPlotRawCount(data_36, "36")
+#BarPlotRawCount(data_36, "36")
 ```
 
 ### Density plots
@@ -458,6 +458,7 @@ draw.pairwise.venn(length(gene36_Venn),
 #          "36hours   " = gene36_Venn), )
 
 ```
+**pathview**
 
 ```{r include=FALSE}
 options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
