@@ -321,7 +321,7 @@ PlotMA <- function(deg) {
   plotMA(deg)  # Better than using res
   
   # For volcano plots (use shrunken LFC with original p-values)
-  plot(deg$log2FoldChange, -log10(deg$pvalue))
+ # plot(deg$log2FoldChange, -log10(deg$pvalue))
 }
 ```
 
