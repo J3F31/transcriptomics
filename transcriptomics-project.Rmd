@@ -5,8 +5,8 @@ author: "Roa Hanoun & Jero Eyras"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    toc: false
-    toc_float: false
+    toc: true
+    toc_float: true
     number_sections: false
     theme: cosmo
     highlight: tango
@@ -76,8 +76,6 @@ rownames(data_36) <- data36[, 1]
 head(data_36)
 ```
 
-The data has a large range with the maximum and average values being very far apart. This will create a lot of outliers in the plot which will be interesting later on.
-
 ## Visualizing using `boxplot` and `density plot`
 
 ### Statistics
@@ -89,6 +87,8 @@ summary(data_6)
 ```{r}
 summary(data_36)
 ```
+
+The data has a large range with the maximum and average values being very far apart. This will create a lot of outliers in the plot which will be interesting later on.
 
 ### Boxplots
 
@@ -123,7 +123,7 @@ BoxPlotRawCount(data_6, "6")
 BoxPlotRawCount(data_36, "36")
 ```
 
-the sample E6_r3 have the highest counts compered with other samples.
+The sample E6_r3 has the highest counts compared with other samples.
 
 ### Barplots
 
@@ -168,10 +168,11 @@ ggplot(long_df, aes(x = sample, y = value/10^6)) +
 
 ```{r}
 #Barplot 6 hours
-#BarPlotRawCount(data_6, "6")
+BarPlotRawCount(data_6, "6")
 #Barplot 36 hours
-#BarPlotRawCount(data_36, "36")
+BarPlotRawCount(data_36, "36")
 ```
+Again we observe E6_r3 to have the highest count. Notably E6_r1 has a lower count compared to it's replicates.
 
 ### Density plots
 
@@ -199,11 +200,11 @@ DensityPlotRawCount(data_6)
 DensityPlotRawCount(data_36)
 ```
 
-After analyzing the above plots, two samples appear irregular: E6_r3 from the 6-hour dataset (though its impact is minimal) and C36_r1 from the 36-hour dataset. These will be noted for potential removal in the final step of analysis.
+After analyzing the above plots, two samples appear irregular: E6_r3 from the 6-hour dataset (though its impact is minimal) and C36_r1 from the 36-hour dataset. This is observed in the disparity with their replicate samples in each of the graph's peaks. These will be noted for potential removal in the final step of analysis.
 
 ## Visualizing using `heatmap` and `MDS`
 
-This section adds a few Exploratory Data Analysis techniques where we will measure and look at distances between samples based on normalized data. **heatmap**
+This section adds a few Exploratory Data Analysis techniques where we will measure and look at distances between samples based on normalized data.
 
 ### Normalized Distance Heatmap
 
@@ -241,6 +242,8 @@ VisualizeNormalizedDistanceHeatMap(data_6, "6 hours")
 #Normalized distance heat map 36 hours
 VisualizeNormalizedDistanceHeatMap(data_36, "36 hours")
 ```
+
+Sample groups don't seem to be grouped at all. The most obvious disparity in distance comes from samples C36_r1 and E36_r3.
 
 ### Poisson Distance
 
@@ -286,6 +289,8 @@ data_36_clean <- select(data_36, -c("C36_r1", "E36_r3")) # Removes C36_r1 & E36_
 
 # Discovering Differentialy Expressed Genes (DEGs)
 
+## DESeq2
+
 ```{r}
 DiscoverDEGsWithDESeq <- function(data, controlSamples, exposedSamples) {
   col <- data.frame(samples = names(data), group = factor(c(rep("control", controlSamples), rep("exposed", exposedSamples)), labels = c("control", "exposed")))
@@ -303,14 +308,23 @@ DiscoverDEGsWithDESeq <- function(data, controlSamples, exposedSamples) {
 }
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Differential expressed genes 6 hours
 deg_6 <- DiscoverDEGsWithDESeq(data_6_clean, 3, 4)
+```
+```{r}
 summary(deg_6$deg)
+```
+
+```{r message=FALSE, warning=FALSE}
 #Differential expressed genes 36 hours
 deg_36 <- DiscoverDEGsWithDESeq(data_36_clean, 3, 3)
+```
+```{r}
 summary(deg_36$deg)
 ```
+
+## MA Plot
 
 In DESeq2, the function plotMA shows the log2 fold changes attributable to a given variable over the mean of normalized counts for all the samples in the DESeqDataSet. Points will be colored blue if the adjusted p value is less than 0.1. Points which fall out of the window are plotted as open triangles pointing either up or down.
 
@@ -319,22 +333,15 @@ Log fold change shrinkage for visualization and ranking:
 “It is more useful visualize the MA-plot for the shrunken log2 fold changes, which remove the noise associated with log2 fold changes from low count genes without requiring arbitrary filtering thresholds.”
 
 ```{r message=FALSE, warning=FALSE}
-PlotMA <- function(deg) {
-  # For MA plots and visualization
-  plotMA(deg)  # Better than using res
-  
-  # For volcano plots (use shrunken LFC with original p-values)
- # plot(deg$log2FoldChange, -log10(deg$pvalue))
-}
-```
-
-```{r}
 #Plot LFC 6 hours
-PlotMA(deg_6$deg_lfcShrink)
+plotMA(deg_6$deg_lfcShrink)
 #Plot LFC 36 hours
-PlotMA(deg_36$deg_lfcShrink)
-
+plotMA(deg_36$deg_lfcShrink)
 ```
+
+## Unadjusted P-values
+
+It seems no p-adjusted value is significant enough, even after moving up to 0.1. We can plot the p-value distribution to see if we have some usable values.
 
 ```{r}
 PlotPVal <- function(deg, label) {
@@ -344,7 +351,7 @@ PlotPVal <- function(deg, label) {
   ggplot(t, aes(x = round(pvalue, digits = 2))) +
     geom_bar() +
     geom_vline(xintercept = 0.05, colour = "red") +
-    labs(title = paste("PValue Distribution", label))
+    labs(title = paste("Rounded PValue Distribution", label, "0.05 cutoff"))
 }
 ```
 
@@ -353,32 +360,6 @@ PlotPVal <- function(deg, label) {
 PlotPVal(deg_6$deg, "6 hours")
 #pvalue plot 36 hours
 PlotPVal(deg_36$deg, "36 hours")
-```
-
-```{r include=FALSE}
-#if (!require("BiocManager", quietly = TRUE))
- #   install.packages("BiocManager")
-
-#BiocManager::install("EnhancedVolcano")
-```
-
-```{r}
-VolcanoPlot <- function(deg, label) {
-  t <- data.frame(deg)
-  t <- drop_na(t)
-
-  ggplot(t, aes(x = log2FoldChange, y = -log10(pvalue))) +
-    geom_point() +
-    geom_hline(yintercept = -log10(0.05)) +
-    labs(title = paste("Volcano Plot", label))
-}
-```
-
-```{r}
-#Volcano plot 6 hours
-VolcanoPlot(deg_6$deg, "6 hours")
-#Volcano plot 36 hours
-VolcanoPlot(deg_36$deg, "36 hours")
 ```
 
 ```{r}
@@ -397,80 +378,99 @@ deg_36_filtered <- FilterDEGs(deg_36$deg)
 nrow(deg_36_filtered)
 ```
 
+After using unadjusted p-values we get a similar result as in the scientific paper. The values would be exact without removing the replicate samples in the cleaning step. In order to show results we will proceed with unadjusted p-values. Of course with the disclaimer that we are working with unadjusted p-values.
+
+## Volcano Plot
+
 ```{r include=FALSE}
-#if (!require("EnhancedVolcano"))
-  #BiocManager::install("EnhancedVolcano")
+if (!require("EnhancedVolcano"))
+  BiocManager::install("EnhancedVolcano")
 ```
 
-```{r}
+```{r message=FALSE}
 library(EnhancedVolcano)
-EnhancedVolcano(deg_6$deg, x = 'log2FoldChange', y = 'pvalue',
-                         lab=rownames(deg_6$deg),
-                         #title = paste(data_6, "control vs exposed"),
-                         subtitle = bquote(italic('FDR <= 0.05 and absolute FC >= 2')),
-                         # Change text and icon sizes
-                         labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
-                         subtitleLabSize=8, captionLabSize=10,
-                         # Disable legend
-                         legendPosition = "none",
-                         # Set cutoffs
-                          ylim = c(0,4),
-                        pCutoff = 0.05, FCcutoff = 0)
-
-
-## Note that the most simplest case is:
-#EnhancedVolcano(deg_6, x = 'log2FoldChange', y = 'pvalue', lab = rownames(deg_6))
 ```
 
 ```{r}
-#Here we specify the gene which had the smallest p value from the results table created above. You can select the gene to plot by rowname or by numeric index.
-#plotCounts(dds, gene=which.min(res$padj), intgroup="group")
-
-#mcols(res)$description
+PlotEnhancedVolcano <- function(deg, geneNames, label, yCutoff) {
+  EnhancedVolcano(deg, x = 'log2FoldChange', y = 'pvalue',
+                   lab = geneNames,
+                   title = paste("DEGs sample", label),
+                   subtitle = bquote(italic('')),
+                   # Change text and icon sizes
+                   labSize = 3, pointSize = 1.5, axisLabSize=10, titleLabSize=12,
+                   subtitleLabSize=8, captionLabSize=10,
+                   # Disable legend
+                   legendPosition = "none",
+                   # Set cutoffs
+                   ylim = c(0, yCutoff),
+                   pCutoff = 0.05, FCcutoff = 0)
+}
 ```
 
-### Venn Diagram
+```{r warning=FALSE}
+GetGeneNames <- function(deg, data) {
+  geneNames <- c()
+  for (ensId in rownames(data.frame(deg))) {
+    row <- data[which(data$gene_id == ensId), ]
+    geneNames <- c(geneNames, row$gene_name)
+  }
+  return(geneNames)
+}
+```
 
-i don't know why there are 2 graphs!
+```{r warning=FALSE}
+#Volcano Plot 6 hours
+PlotEnhancedVolcano(deg_6$deg, GetGeneNames(deg_6$deg, data6), "6 hours", 4)
+#Volcano Plot 36 hours
+PlotEnhancedVolcano(deg_36$deg, GetGeneNames(deg_36$deg, data36), "36 hours", 10.5)
+```
 
-```{r}
+## Venn Diagram
+
+```{r message=FALSE}
 library(VennDiagram)
-## Data preparation
-gene36_Venn <- row.names(deg_36_filtered)
-gene6_Venn <- row.names(deg_6_filtered)
-
-#grid.newpage()   
-draw.pairwise.venn(length(gene36_Venn),
-                                length(gene6_Venn),
-                                # Calculate the intersection of the two sets
-                                length( intersect(gene36_Venn, gene6_Venn) ),
-                                category = c("36Hours vs 6Hours", "6Hours vs 36Hours"), scaled = F,
-                                fill = c("light blue", "pink"), alpha = rep(0.5, 2),
-                                cat.pos = c(0, 0))
-
-
-
-
-## Alternative method using the `gplots` library
-#library(gplots)
-# Create a Venn-diagram given just the list of gene-names for both sets
-#venn(list("6hours   " = gene6_Venn,
-#          "36hours   " = gene36_Venn), )
-
 ```
 
-**pathview**
+```{r message=FALSE, warning=FALSE}
+futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
+venn.diagram(
+  x = list(rownames(deg_6_filtered), rownames(deg_36_filtered)),
+  category.names = c("6 hours", "36 hours"),
+  filename = "6h_vs_36h_venn_diagram.png",
+  imagetype = "png",
+  output=TRUE,
+  
+  # Circles
+  lwd = 2,
+  lty = 'blank',
+  fill = myColors,
+  
+  # Numbers
+  fontface = "bold",
+  fontfamily = "sans",
+  
+  # Set names
+  cat.cex = 0.6,
+  cat.fontface = "bold",
+  cat.fontfamily = "sans"
+)
+```
+
+![DEGs 6h samples vs 36h samples](6h_vs_36h_venn_diagram.png)
+
+## Enrichment Analysis
 
 ```{r include=FALSE}
-#options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
-#pak::pkg_install("clusterProfiler")
+options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
+pak::pkg_install("clusterProfiler")
 
-#BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
+BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
 
-#BiocManager::install("ReactomePA")
+BiocManager::install("ReactomePA")
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(org.Hs.eg.db)
 library(clusterProfiler)
 library(ReactomePA)
@@ -530,7 +530,7 @@ ReactomeEnrichmentAnalysis <- function(group_genes) {
 }
 ```
 
-```{r}
+```{r warning=FALSE}
 #Enrichment Analysis 6 hours
 genes_6 <- bitr(row.names(deg_6_filtered), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
 GoEnrichmentAnalysis(genes_6)
@@ -538,7 +538,7 @@ KeggEnrichmentAnalysis(genes_6)
 ReactomeEnrichmentAnalysis(genes_6)
 ```
 
-```{r}
+```{r warning=FALSE}
 #Enrichment Analysis 36 hours
 genes_36 <- bitr(row.names(deg_36_filtered), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
 GoEnrichmentAnalysis(genes_36)
@@ -561,14 +561,4 @@ ReactomeEnrichmentAnalysis(genes_36)
 | **Update frequency** | Monthly                           | Continuous                               | Regular (curated)                                  |
 +----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
 
-I did it as first step before start with dashboerd maybe we need also to store the deg_6_filtered ! ...
-
-```{r}
-Rds6File <- data.frame(deg_6$deg)
-#View(deg_6$deg)
-# Save a DESeq2 results object to a file
-saveRDS(Rds6File, "data/Rds6File.rds")
-#saveRDS(deg_36, "data/deg_36.rds")
-
-```
 
