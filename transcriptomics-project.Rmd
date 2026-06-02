@@ -564,8 +564,10 @@ ReactomeEnrichmentAnalysis(genes_36)
 I did it as first step before start with dashboerd maybe we need also to store the deg_6_filtered ! ...
 
 ```{r}
+Rds6File <- data.frame(deg_6$deg)
+#View(deg_6$deg)
 # Save a DESeq2 results object to a file
-#saveRDS(deg_6, "data/deg_6.rds")
+saveRDS(Rds6File, "data/Rds6File.rds")
 #saveRDS(deg_36, "data/deg_36.rds")
 
 ```
