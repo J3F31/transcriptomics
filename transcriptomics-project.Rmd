@@ -85,6 +85,7 @@ The data has a large range with the maximum and average values being very far ap
 ```{r}
 summary(data_6)
 ```
+
 ```{r}
 summary(data_36)
 ```
@@ -114,6 +115,7 @@ BoxPlotRawCount <- function(data, label) {
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
 ```
+
 ```{r}
 #Boxplot 6 hours
 BoxPlotRawCount(data_6, "6")
@@ -200,8 +202,8 @@ DensityPlotRawCount(data_36)
 After analyzing the above plots, two samples appear irregular: E6_r3 from the 6-hour dataset (though its impact is minimal) and C36_r1 from the 36-hour dataset. These will be noted for potential removal in the final step of analysis.
 
 ## Visualizing using `heatmap` and `MDS`
-This section adds a few Exploratory Data Analysis techniques where we will measure and look at distances between samples based on normalized data.
-**heatmap**
+
+This section adds a few Exploratory Data Analysis techniques where we will measure and look at distances between samples based on normalized data. **heatmap**
 
 ### Normalized Distance Heatmap
 
@@ -232,6 +234,7 @@ VisualizeNormalizedDistanceHeatMap <- function(data, label) {
            main = paste("Euclidean Sample Distances", label))
 }
 ```
+
 ```{r}
 #Normalized distance heat map 6 hours
 VisualizeNormalizedDistanceHeatMap(data_6, "6 hours")
@@ -262,6 +265,7 @@ VisualizePoissonDistance <- function(data, label) {
   theme_bw()
 }
 ```
+
 ```{r}
 #Poisson Distance 6 hours
 VisualizePoissonDistance(data_6, "6 hours")
@@ -298,7 +302,6 @@ DiscoverDEGsWithDESeq <- function(data, controlSamples, exposedSamples) {
   return(list(deg = res, deg_lfcShrink = resLFC))
 }
 ```
-
 
 ```{r}
 #Differential expressed genes 6 hours
@@ -345,7 +348,6 @@ PlotPVal <- function(deg, label) {
 }
 ```
 
-
 ```{r}
 #pvalue plot 6 hours
 PlotPVal(deg_6$deg, "6 hours")
@@ -353,14 +355,12 @@ PlotPVal(deg_6$deg, "6 hours")
 PlotPVal(deg_36$deg, "36 hours")
 ```
 
-
 ```{r include=FALSE}
 #if (!require("BiocManager", quietly = TRUE))
  #   install.packages("BiocManager")
 
 #BiocManager::install("EnhancedVolcano")
 ```
-
 
 ```{r}
 VolcanoPlot <- function(deg, label) {
@@ -373,7 +373,6 @@ VolcanoPlot <- function(deg, label) {
     labs(title = paste("Volcano Plot", label))
 }
 ```
-
 
 ```{r}
 #Volcano plot 6 hours
@@ -429,9 +428,10 @@ EnhancedVolcano(deg_6$deg, x = 'log2FoldChange', y = 'pvalue',
 
 #mcols(res)$description
 ```
+
 ### Venn Diagram
 
-i don't know why there are 2 graphs! 
+i don't know why there are 2 graphs!
 
 ```{r}
 library(VennDiagram)
@@ -458,15 +458,16 @@ draw.pairwise.venn(length(gene36_Venn),
 #          "36hours   " = gene36_Venn), )
 
 ```
+
 **pathview**
 
 ```{r include=FALSE}
-options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
-pak::pkg_install("clusterProfiler")
+#options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
+#pak::pkg_install("clusterProfiler")
 
 #BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
 
-BiocManager::install("ReactomePA")
+#BiocManager::install("ReactomePA")
 ```
 
 ```{r}
@@ -474,6 +475,10 @@ library(org.Hs.eg.db)
 library(clusterProfiler)
 library(ReactomePA)
 ```
+
+**What biological activities are my genes collectively involved in?**
+
+This tells you the functional themes of your gene list at a more granular level than KEGG — helping you understand not just which pathways, but what processes (cell division, metabolism, signaling, etc.) your genes are driving.
 
 ```{r}
 GoEnrichmentAnalysis <- function(group_genes) {
@@ -491,6 +496,8 @@ GoEnrichmentAnalysis <- function(group_genes) {
 }
 ```
 
+**Given my list of genes, which biological processes/pathways are they most likely involved in?**
+
 ```{r}
 KeggEnrichmentAnalysis <- function(group_genes) {
   kegg_results <- enrichKEGG(gene = group_genes$ENTREZID,
@@ -507,6 +514,8 @@ KeggEnrichmentAnalysis <- function(group_genes) {
   dotplot(kegg_results)
 }
 ```
+
+**At the most detailed molecular level, what exact reactions and sub-pathways are my genes involved in?**
 
 ```{r}
 ReactomeEnrichmentAnalysis <- function(group_genes) {
@@ -536,3 +545,28 @@ GoEnrichmentAnalysis(genes_36)
 KeggEnrichmentAnalysis(genes_36)
 ReactomeEnrichmentAnalysis(genes_36)
 ```
+
++----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
+|                      | **\                               | **GO (BP)**                              | **Reactome**                                       |
+|                      | KEGG**                            |                                          |                                                    |
++======================+:==================================+:=========================================+:===================================================+
+| **Scope**            | \~300 pathways                    | Thousands of terms                       | \~2,000+ pathways                                  |
++----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
+| **Detail level**     | Medium                            | Very granular (specific processes)       | Very high (reaction-level)                         |
++----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
+| **Best for**         | Quick overview, standard pathways | Functional themes & biological processes | Deep mechanistic insight                           |
++----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
+| **Example**          | "Cell cycle"                      | "G1/S transition of mitotic cell cycle"  | "Cyclin A/Cdk2-associated events at S phase entry" |
++----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
+| **Update frequency** | Monthly                           | Continuous                               | Regular (curated)                                  |
++----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
+
+I did it as first step before start with dashboerd maybe we need also to store the deg_6_filtered ! ...
+
+```{r}
+# Save a DESeq2 results object to a file
+#saveRDS(deg_6, "data/deg_6.rds")
+#saveRDS(deg_36, "data/deg_36.rds")
+
+```
+
