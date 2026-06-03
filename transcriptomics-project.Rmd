@@ -561,4 +561,10 @@ ReactomeEnrichmentAnalysis(genes_36)
 | **Update frequency** | Monthly                           | Continuous                               | Regular (curated)                                  |
 +----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
 
+Lastly we export our data files to include in the Shiny application.
+
+```{r}
+saveRDS(data.frame(deg_6$deg, geneName = GetGeneNames(deg_6$deg, data6)), "deg_6.rds")
+saveRDS(data.frame(deg_36$deg, geneName = GetGeneNames(deg_36$deg, data36)), "deg_36.rds")
+```
 
