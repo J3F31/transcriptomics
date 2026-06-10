@@ -11,8 +11,8 @@ library(clusterProfiler)
 library(ReactomePA)
 
 
-deg6 <- readRDS("~/Desktop/Shiny Test/Test/deg_6.rds")
-deg36 <- readRDS("~/Desktop/Shiny Test/Test/deg_36.rds")
+deg6 <- readRDS("./deg_6.rds")
+deg36 <- readRDS("./deg_36.rds")
 
 
 PlotEnhancedVolcano <- function(deg, yCutoff, pCutOff,Fcutoff, genenames) {
@@ -30,18 +30,16 @@ PlotEnhancedVolcano <- function(deg, yCutoff, pCutOff,Fcutoff, genenames) {
 }
 
 FilterDEGs <- function(deg ,Pvalue , Fvalue) {
-  
   S <- filter(deg , pvalue <= Pvalue )
-  
   S <- filter(S , abs(log2FoldChange) > Fvalue )
-  
   return(S)
 }
 
+genes6 <- bitr(row.names(FilterDEGs(deg6,0.05,0)), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
+genes36 <- bitr(row.names(FilterDEGs(deg36,0.05,0)), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
+
 GoEnrichmentAnalysis <- function(group_genes, pvalue , Ont) {
-genes_6 <- bitr(row.names(FilterDEGs(group_genes,0.05,0)), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
-  
-  go_results <- enrichGO(gene          = genes_6$ENTREZID,
+  go_results <- enrichGO(gene          = group_genes$ENTREZID,
                          OrgDb         = org.Hs.eg.db,
                          keyType       = 'ENTREZID', 
                          ont           = Ont,
@@ -52,13 +50,10 @@ genes_6 <- bitr(row.names(FilterDEGs(group_genes,0.05,0)), fromType = "ENSEMBL",
   
   #View(as.data.frame(go_results))
   return(go_results)
-  
 }
 
 KeggEnrichmentAnalysis <- function(group_genes, pvalue) {
-  genes_6 <- bitr(row.names(FilterDEGs(group_genes,0.05,0)), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
-  
-  kegg_results <- enrichKEGG(gene = genes_6$ENTREZID,
+kegg_results <- enrichKEGG(gene = group_genes$ENTREZID,
                              organism = "hsa",
                              keyType = "kegg",
                              pvalueCutoff = pvalue,
@@ -73,9 +68,7 @@ KeggEnrichmentAnalysis <- function(group_genes, pvalue) {
 }
 
 ReactomeEnrichmentAnalysis <- function(group_genes, pvalue) {
-  genes_6 <- bitr(row.names(FilterDEGs(group_genes,0.05,0)), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
-  
-  ora_results <- enrichPathway(gene = genes_6$ENTREZID, 
+ora_results <- enrichPathway(gene = group_genes$ENTREZID, 
                                organism = "human",
                                pvalueCutoff = pvalue,
                                pAdjustMethod = "none",
@@ -92,13 +85,13 @@ ui <- fluidPage(
     nav_panel("DEG 6 Hours",
               
       selectInput( 
-        "select", 
+        "select6", 
         "Select options below:", 
-        list("Volcano Plot" = "one","ENRICHMENT ANALYSIS" = "1B", "KEGG ANALYSIS" = "1C","Reactome ANALYSIS" = "1D"
+        list("Volcano Plot" = "volcano","ENRICHMENT ANALYSIS" = "go", "KEGG ANALYSIS" = "kegg","Reactome ANALYSIS" = "react"
           ) 
         ),
       conditionalPanel(
-        condition = "input.select == 'one'",
+        condition = "input.select6 == 'volcano'",
         fluidRow(  
           column(5, numericInput( 
             "PID6", 
@@ -119,7 +112,7 @@ ui <- fluidPage(
         ),
       
       conditionalPanel(
-        condition = "input.select == '1B'",
+        condition = "input.select6 == 'go'",
         fluidRow(  
           column(5, numericInput( 
             "PVE", 
@@ -140,7 +133,7 @@ ui <- fluidPage(
       ),
       
       conditionalPanel(
-        condition = "input.select == '1C'",
+        condition = "input.select6 == 'kegg'",
         fluidRow(  
           column(5, numericInput( 
             "PVK", 
@@ -155,7 +148,7 @@ ui <- fluidPage(
       ),
       
       conditionalPanel(
-        condition = "input.select == '1D'",
+        condition = "input.select6 == 'react'",
         fluidRow(  
           column(5, numericInput( 
             "PVR", 
@@ -175,13 +168,13 @@ ui <- fluidPage(
     nav_panel("DEG 36 Hours",
               
       selectInput( 
-        "select", 
+        "select36", 
         "Select options below:", 
-        list("Volcano Plot" = "one","ENRICHMENT ANALYSIS" = "1B", "KEGG ANALYSIS" = "1C","Reactome ANALYSIS" = "1D"
+        list("Volcano Plot" = "volcano","ENRICHMENT ANALYSIS" = "go", "KEGG ANALYSIS" = "kegg","Reactome ANALYSIS" = "react"
         ) 
       ),
       conditionalPanel(
-        condition = "input.select == 'one'",
+        condition = "input.select36 == 'volcano'",
         fluidRow(  
           column(5, numericInput(  
             "PID36", 
@@ -201,7 +194,7 @@ ui <- fluidPage(
         dataTableOutput("table36")
       ),
       conditionalPanel(
-        condition = "input.select == '1B'",
+        condition = "input.select36 == 'go'",
         fluidRow(  
           column(5, numericInput( 
             "PVE36", 
@@ -221,7 +214,7 @@ ui <- fluidPage(
         dataTableOutput("tableEnrich36"),
       ), 
       conditionalPanel(
-        condition = "input.select == '1C'",
+        condition = "input.select36 == 'kegg'",
         fluidRow(  
           column(5, numericInput( 
             "PVK36", 
@@ -236,7 +229,7 @@ ui <- fluidPage(
       ),
       
       conditionalPanel(
-        condition = "input.select == '1D'",
+        condition = "input.select36 == 'react'",
         fluidRow(  
           column(5, numericInput( 
             "PVR36", 
@@ -261,138 +254,73 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
-  observe(print(input$select))
-   
-    output$volcanoOut6 <- renderPlot({
-      
-    req(deg6 )
-
-    tryCatch({
-      PlotEnhancedVolcano(deg6, 4 , input$PID6, input$FID6, FilterDEGs(deg6, input$PID6, input$FID6)[input$table6_rows_selected,]$geneName)
-    }, error = function(e) {
-      output$error_msg <- renderText(e$message)
-      NULL
-    })
-  })
   
-  output$volcanoOut36 <- renderPlot({
-    req(deg36)
-    
-    tryCatch({
-      PlotEnhancedVolcano(deg36, 10.5 , input$PID36, input$FID36, FilterDEGs(deg36, input$PID36, input$FID36)[input$table36_rows_selected,]$geneName)
-    }, error = function(e) {
-      output$error_msg <- renderText(e$message)
-      NULL
-    })
+  #Outputs for 6 hours
+  #Volcano 
+  output$volcanoOut6 <- renderPlot({
+    PlotEnhancedVolcano(deg6, 4 , input$PID6, input$FID6, FilterDEGs(deg6, input$PID6, input$FID6)[input$table6_rows_selected,]$geneName)
   })
-  
   output$table6 <- renderDataTable({
     datatable(FilterDEGs(deg6, input$PID6, input$FID6))
   }) 
+  #Go
+  output$Goenrich <- renderPlot({
+    dotplot(GoEnrichmentAnalysis(genes6,input$PVE, input$selectOnt))
+  })
+  output$tableEnrich <- renderDataTable({
+    datatable(as.data.frame(GoEnrichmentAnalysis(genes6,input$PVE, input$selectOnt)))
+  }) 
+  #Kegg
+  output$Kegg <- renderPlot({
+    dotplot(KeggEnrichmentAnalysis(genes6,input$PVK))
+  })
+  output$tableKegg <- renderDataTable({
+    datatable(as.data.frame(KeggEnrichmentAnalysis(genes6,input$PVK)))
+  })
+  #Reactome
+  output$Reactome <- renderPlot({
+    dotplot(ReactomeEnrichmentAnalysis(genes6,input$PVR))
+  })
+  output$tableReactome <- renderDataTable({
+    datatable(as.data.frame(ReactomeEnrichmentAnalysis(genes6,input$PVR)))
+  })
   
+  #Outputs for 36 hours
+  #Volcano
+  output$volcanoOut36 <- renderPlot({
+    PlotEnhancedVolcano(deg36, 10.5 , input$PID36, input$FID36, FilterDEGs(deg36, input$PID36, input$FID36)[input$table36_rows_selected,]$geneName)
+  })
   output$table36 <- renderDataTable({
     datatable(FilterDEGs(deg36, input$PID36, input$FID36))
+  })
+  #Go
+  output$Goenrich36 <- renderPlot({
+    dotplot(GoEnrichmentAnalysis(genes36,input$PVE36, input$selectOnt36))
+  })
+  output$tableEnrich36 <- renderDataTable({
+    datatable(as.data.frame(GoEnrichmentAnalysis(genes36,input$PVE36, input$selectOnt36)))
   }) 
-  
+  #Kegg
+  output$Kegg36 <- renderPlot({
+    dotplot(KeggEnrichmentAnalysis(genes36,input$PVK36))
+  })
+  output$tableKegg36 <- renderDataTable({
+    datatable(as.data.frame(KeggEnrichmentAnalysis(genes36,input$PVK36)))
+  })
+  #Reactome
+  output$Reactome36 <- renderPlot({
+    dotplot(ReactomeEnrichmentAnalysis(genes36,input$PVR36))
+  })
+  output$tableReactome36 <- renderDataTable({
+    datatable(as.data.frame(ReactomeEnrichmentAnalysis(genes36,input$PVR36)))
+  })
+
   output$image <- renderImage(
-    
     { 
       list(src = "6h_vs_36h_venn_diagram.png", height = "100%") 
     }, 
     deleteFile = FALSE 
   )
-  
-  output$Goenrich <- renderPlot({
-    req(deg6)
-    
-    tryCatch({
-      dotplot(GoEnrichmentAnalysis(deg6,input$PVE, input$selectOnt))
-    }, error = function(e) {
-      output$error_msg <- renderText(e$message)
-      NULL
-    })
-  })
-  
-  output$tableEnrich <- renderDataTable({
-    datatable(as.data.frame(GoEnrichmentAnalysis(deg6,input$PVE, input$selectOnt)))
-  }) 
-  
-  output$Kegg <- renderPlot({
-    req(deg6)
-    
-    tryCatch({
-      dotplot(KeggEnrichmentAnalysis(deg6,input$PVK))
-    }, error = function(e) {
-      output$error_msg <- renderText(e$message)
-      NULL
-    })
-  })
-  
-  output$tableKegg <- renderDataTable({
-    datatable(as.data.frame(KeggEnrichmentAnalysis(deg6,input$PVK)))
-  })
-  
-  output$Reactome <- renderPlot({
-    req(deg6)
-    
-    tryCatch({
-      dotplot(ReactomeEnrichmentAnalysis(deg6,input$PVR))
-    }, error = function(e) {
-      output$error_msg <- renderText(e$message)
-      NULL
-    })
-  })
-  
-  output$tableReactome <- renderDataTable({
-    datatable(as.data.frame(ReactomeEnrichmentAnalysis(deg6,input$PVR)))
-  })
-  
-  # 36 hour
-  output$Goenrich36 <- renderPlot({
-    req(deg6)
-    
-    tryCatch({
-      dotplot(GoEnrichmentAnalysis(deg36,input$PVE36, input$selectOnt36))
-    }, error = function(e) {
-      output$error_msg <- renderText(e$message)
-      NULL
-    })
-  })
-  
-  output$tableEnrich36 <- renderDataTable({
-    datatable(as.data.frame(GoEnrichmentAnalysis(deg36,input$PVE36, input$selectOnt36)))
-  }) 
-  
-  
-  output$Kegg36 <- renderPlot({
-    req(deg6)
-    
-    tryCatch({
-      dotplot(KeggEnrichmentAnalysis(deg36,input$PVK36))
-    }, error = function(e) {
-      output$error_msg <- renderText(e$message)
-      NULL
-    })
-  })
-  
-  output$tableKegg36 <- renderDataTable({
-    datatable(as.data.frame(KeggEnrichmentAnalysis(deg36,input$PVK36)))
-  })
-  
-  output$Reactome36 <- renderPlot({
-    req(deg6)
-    
-    tryCatch({
-      dotplot(ReactomeEnrichmentAnalysis(deg36,input$PVR36))
-    }, error = function(e) {
-      output$error_msg <- renderText(e$message)
-      NULL
-    })
-  })
-  
-  output$tableReactome36 <- renderDataTable({
-    datatable(as.data.frame(ReactomeEnrichmentAnalysis(deg36,input$PVR36)))
-  })
 }
 
 shinyApp(ui, server)
