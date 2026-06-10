@@ -9,11 +9,27 @@ library(ggplot2)
 library(org.Hs.eg.db)
 library(clusterProfiler)
 library(ReactomePA)
+library(DOSE)
+library(ggVennDiagram)
 
 
 deg6 <- readRDS("./deg_6.rds")
+
 deg36 <- readRDS("./deg_36.rds")
 
+goBP6 <- readRDS("./go_bp_6.rds")
+goCC6 <- readRDS("./go_cc_6.rds")
+goMF6 <- readRDS("./go_mf_6.rds")
+go6 <- goBP6
+kegg6 <- readRDS("./kegg_6.rds")
+react6 <- readRDS("./react_6.rds")
+
+goBP36 <- readRDS("./go_bp_36.rds")
+goCC36 <- readRDS("./go_cc_36.rds")
+goMF36 <- readRDS("./go_mf_36.rds")
+go36 <- goBP36
+kegg36 <- readRDS("./kegg_36.rds")
+react36 <- readRDS("./react_36.rds")
 
 PlotEnhancedVolcano <- function(deg, yCutoff, pCutOff,Fcutoff, genenames) {
   
@@ -35,60 +51,48 @@ FilterDEGs <- function(deg ,Pvalue , Fvalue) {
   return(S)
 }
 
-genes6 <- bitr(row.names(FilterDEGs(deg6,0.05,0)), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
-genes36 <- bitr(row.names(FilterDEGs(deg36,0.05,0)), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
-
-GoEnrichmentAnalysis <- function(group_genes, pvalue , Ont) {
-  go_results <- enrichGO(gene          = group_genes$ENTREZID,
-                         OrgDb         = org.Hs.eg.db,
-                         keyType       = 'ENTREZID', 
-                         ont           = Ont,
-                         pAdjustMethod = "none",
-                         pvalueCutoff  = pvalue,
-                         qvalueCutoff  = 1,
-                         readable      = TRUE)
-  
-  #View(as.data.frame(go_results))
-  return(go_results)
+FilterEnrich <- function(data, pval) {
+  return(filter(data, pvalue <= pval))
 }
 
-KeggEnrichmentAnalysis <- function(group_genes, pvalue) {
-kegg_results <- enrichKEGG(gene = group_genes$ENTREZID,
-                             organism = "hsa",
-                             keyType = "kegg",
-                             pvalueCutoff = pvalue,
-                             pAdjustMethod = "none",
-                             minGSSize = 10,
-                             maxGSSize = 500,
-                             qvalueCutoff = 1,
-                             use_internal_data = FALSE)
+PlotEnrichmentAnalysis <- function(data, pval) {
+  #Filter top 10 by padjust value
+  t <- filter(data, pvalue <= pval)
+  t <- t[order(t$p.adjust, decreasing = F),]
+  t <- t[1:10,]
+  t <- drop_na(t)
   
-  #View(as.data.frame(kegg_results))
-  return(kegg_results)
+  #Parse gene ratio & order entries by count
+  t$GeneRatio <- parse_ratio(t$GeneRatio)
+  t <- t[order(t$Count),]
+  t <- cbind(t, order = 1:nrow(t))
+  
+  #Plot
+  ggplot(t, aes(x = GeneRatio, y = order, size = Count, color = p.adjust)) +
+    geom_point() +
+    scale_colour_gradient(low = "#C21807", high = "#6495ED") +
+    labs(y = "") +
+    scale_y_continuous(breaks = 1:nrow(t), labels = t$Description) +
+    theme(text = element_text(size = 20))
 }
 
-ReactomeEnrichmentAnalysis <- function(group_genes, pvalue) {
-ora_results <- enrichPathway(gene = group_genes$ENTREZID, 
-                               organism = "human",
-                               pvalueCutoff = pvalue,
-                               pAdjustMethod = "none",
-                               qvalueCutoff = 1)
-  
-  #View(as.data.frame(ora_results))
-  return(ora_results)
+PlotVennDiagram <- function(pval, fval) {
+  d6 <- FilterDEGs(deg6, pval, fval)
+  d36 <- FilterDEGs(deg36, pval, fval)
+  x <- list(`+6h` = rownames(d6), `+36h` = rownames(d36))
+  ggVennDiagram(x)
 }
 
 ui <- fluidPage(
  
   navset_pill(
     
-    nav_panel("DEG 6 Hours",
+    nav_panel("Sample +6h",
               
       selectInput( 
         "select6", 
-        "Select options below:", 
-        list("Volcano Plot" = "volcano","ENRICHMENT ANALYSIS" = "go", "KEGG ANALYSIS" = "kegg","Reactome ANALYSIS" = "react"
-          ) 
+        "Select Visualization", 
+        list("Volcano Plot" = "volcano","Go Terms" = "go", "Kegg Analysis" = "kegg","Reactome Analysis" = "react")
         ),
       conditionalPanel(
         condition = "input.select6 == 'volcano'",
@@ -103,7 +107,7 @@ ui <- fluidPage(
           column(5, numericInput( 
             "FID6", 
             "Log2 Fold Change", 
-            value = 1, 
+            value = 0, 
             min = 0, 
             max = 1 
           ))),
@@ -116,14 +120,14 @@ ui <- fluidPage(
         fluidRow(  
           column(5, numericInput( 
             "PVE", 
-            "P value", 
+            "P Value", 
             value = 0.05, 
             min = 0, 
             max = 1 
           )), 
           column(5,  selectInput( 
             "selectOnt", 
-            "Select options below:", 
+            "Select Ontology", 
             list("biological process" = "BP","cellular component " = "CC", "molecular function" = "MF"
             ) 
           )
@@ -137,7 +141,7 @@ ui <- fluidPage(
         fluidRow(  
           column(5, numericInput( 
             "PVK", 
-            "P value", 
+            "P Value", 
             value = 0.05, 
             min = 0, 
             max = 1 
@@ -152,7 +156,7 @@ ui <- fluidPage(
         fluidRow(  
           column(5, numericInput( 
             "PVR", 
-            "P value", 
+            "P Value", 
             value = 0.05, 
             min = 0, 
             max = 1 
@@ -165,20 +169,19 @@ ui <- fluidPage(
       
       ), 
     
-    nav_panel("DEG 36 Hours",
+    nav_panel("Sample +36h",
               
       selectInput( 
         "select36", 
-        "Select options below:", 
-        list("Volcano Plot" = "volcano","ENRICHMENT ANALYSIS" = "go", "KEGG ANALYSIS" = "kegg","Reactome ANALYSIS" = "react"
-        ) 
+        "Select Visualization", 
+        list("Volcano Plot" = "volcano","Go Terms" = "go", "Kegg Analysis" = "kegg","Reactome Analysis" = "react") 
       ),
       conditionalPanel(
         condition = "input.select36 == 'volcano'",
         fluidRow(  
           column(5, numericInput(  
             "PID36", 
-            "P value", 
+            "P Value", 
             value = 0.05, 
             min = 0, 
             max = 1 
@@ -186,7 +189,7 @@ ui <- fluidPage(
           column(5, numericInput(  
             "FID36", 
             "Log2 Fold Change", 
-            value = 1, 
+            value = 0, 
             min = 0, 
             max = 1 
           ))),
@@ -198,15 +201,15 @@ ui <- fluidPage(
         fluidRow(  
           column(5, numericInput( 
             "PVE36", 
-            "P value", 
+            "P Value", 
             value = 0.05, 
             min = 0, 
             max = 1 
           )), 
           column(5,  selectInput( 
             "selectOnt36", 
-            "Select options below:", 
-            list("biological process" = "BP","cellular component " = "CC", "molecular function" = "MF"
+            "Select Ontology", 
+            list("Biological Process" = "BP","Cellular Component " = "CC", "Molecular Function" = "MF"
             ) 
           )
           )),
@@ -218,7 +221,7 @@ ui <- fluidPage(
         fluidRow(  
           column(5, numericInput( 
             "PVK36", 
-            "P value", 
+            "P Value", 
             value = 0.05, 
             min = 0, 
             max = 1 
@@ -233,7 +236,7 @@ ui <- fluidPage(
         fluidRow(  
           column(5, numericInput( 
             "PVR36", 
-            "P value", 
+            "P Value", 
             value = 0.05, 
             min = 0, 
             max = 1 
@@ -245,10 +248,33 @@ ui <- fluidPage(
 
     ), 
     
-    nav_panel("6 Hours VS 36 Hours",
-              
-    imageOutput("image") 
-  ), 
+    nav_panel("Samples Compared",
+      fluidRow(  
+        column(
+          5, 
+          numericInput(  
+            "PVvenn", 
+            "P Value", 
+            value = 0.05, 
+            min = 0, 
+            max = 1
+          )
+        ),
+        column(
+          5, 
+          numericInput(  
+            "LFCvenn", 
+            "Log2 Fold Change", 
+            value = 0, 
+            min = 0, 
+            max = 1 
+          )
+        )
+      ),
+      plotOutput("vennDiagram"),
+      h3("Overlapping genes"),
+      dataTableOutput("vennDiagramTable")
+    ), 
   ), id = "tab",
 )
 
@@ -265,24 +291,58 @@ server <- function(input, output, session) {
   }) 
   #Go
   output$Goenrich <- renderPlot({
-    dotplot(GoEnrichmentAnalysis(genes6,input$PVE, input$selectOnt))
+    PlotEnrichmentAnalysis(go6, input$PVE)
   })
   output$tableEnrich <- renderDataTable({
-    datatable(as.data.frame(GoEnrichmentAnalysis(genes6,input$PVE, input$selectOnt)))
+    datatable(FilterEnrich(go6, input$PVE))
   }) 
   #Kegg
   output$Kegg <- renderPlot({
-    dotplot(KeggEnrichmentAnalysis(genes6,input$PVK))
+    PlotEnrichmentAnalysis(kegg6, input$PVK)
   })
   output$tableKegg <- renderDataTable({
-    datatable(as.data.frame(KeggEnrichmentAnalysis(genes6,input$PVK)))
+    datatable(FilterEnrich(kegg6, input$PVK))
   })
   #Reactome
   output$Reactome <- renderPlot({
-    dotplot(ReactomeEnrichmentAnalysis(genes6,input$PVR))
+    PlotEnrichmentAnalysis(react6, input$PVR)
   })
   output$tableReactome <- renderDataTable({
-    datatable(as.data.frame(ReactomeEnrichmentAnalysis(genes6,input$PVR)))
+    datatable(FilterEnrich(react6, input$PVR))
+  })
+  #Go Ontology
+  observe({
+    input$selectOnt
+    switch(
+      input$selectOnt,
+      "BP" = {
+        go6 <- goBP6
+        output$Goenrich <- renderPlot({
+          PlotEnrichmentAnalysis(go6, input$PVE)
+        })
+        output$tableEnrich <- renderDataTable({
+          datatable(FilterEnrich(go6, input$PVE))
+        }) 
+      },
+      "CC" = {
+        go6 <- goCC6
+        output$Goenrich <- renderPlot({
+          PlotEnrichmentAnalysis(go6, input$PVE)
+        })
+        output$tableEnrich <- renderDataTable({
+          datatable(FilterEnrich(go6, input$PVE))
+        }) 
+      },
+      "MF" = {
+        go6 <- goMF6
+        output$Goenrich <- renderPlot({
+          PlotEnrichmentAnalysis(go6, input$PVE)
+        })
+        output$tableEnrich <- renderDataTable({
+          datatable(FilterEnrich(go6, input$PVE))
+        }) 
+      }
+    )
   })
   
   #Outputs for 36 hours
@@ -295,32 +355,67 @@ server <- function(input, output, session) {
   })
   #Go
   output$Goenrich36 <- renderPlot({
-    dotplot(GoEnrichmentAnalysis(genes36,input$PVE36, input$selectOnt36))
+    PlotEnrichmentAnalysis(go36, input$PVE36)
   })
   output$tableEnrich36 <- renderDataTable({
-    datatable(as.data.frame(GoEnrichmentAnalysis(genes36,input$PVE36, input$selectOnt36)))
+    datatable(FilterEnrich(go36, input$PVE36))
   }) 
   #Kegg
   output$Kegg36 <- renderPlot({
-    dotplot(KeggEnrichmentAnalysis(genes36,input$PVK36))
+    PlotEnrichmentAnalysis(kegg36, input$PVK36)
   })
   output$tableKegg36 <- renderDataTable({
-    datatable(as.data.frame(KeggEnrichmentAnalysis(genes36,input$PVK36)))
+    datatable(FilterEnrich(kegg36, input$PVK36))
   })
   #Reactome
   output$Reactome36 <- renderPlot({
-    dotplot(ReactomeEnrichmentAnalysis(genes36,input$PVR36))
+    PlotEnrichmentAnalysis(react36, input$PVR36)
   })
   output$tableReactome36 <- renderDataTable({
-    datatable(as.data.frame(ReactomeEnrichmentAnalysis(genes36,input$PVR36)))
+    datatable(FilterEnrich(react36, input$PVR36))
+  })
+  #Go Ontology
+  observe({
+    input$selectOnt36
+    switch(
+      input$selectOnt,
+      "BP" = {
+        go36 <- goBP36
+        output$Goenrich <- renderPlot({
+          PlotEnrichmentAnalysis(go36, input$PVE)
+        })
+        output$tableEnrich <- renderDataTable({
+          datatable(FilterEnrich(go36, input$PVE))
+        })
+      },
+      "CC" = {
+        go36 <- goCC36
+        output$Goenrich <- renderPlot({
+          PlotEnrichmentAnalysis(go36, input$PVE)
+        })
+        output$tableEnrich <- renderDataTable({
+          datatable(FilterEnrich(go36, input$PVE))
+        }) 
+      },
+      "MF" = {
+        go36 <- goMF36
+        output$Goenrich <- renderPlot({
+          PlotEnrichmentAnalysis(go36, input$PVE)
+        })
+        output$tableEnrich <- renderDataTable({
+          datatable(FilterEnrich(go36, input$PVE))
+        }) 
+      }
+    )
   })
 
-  output$image <- renderImage(
-    { 
-      list(src = "6h_vs_36h_venn_diagram.png", height = "100%") 
-    }, 
-    deleteFile = FALSE 
-  )
+  #Venn Diagram
+  output$vennDiagram <- renderPlot({
+    PlotVennDiagram(input$PVvenn, input$LFCvenn)
+  })
+  output$vennDiagramTable <- renderDataTable({
+    datatable(deg6[intersect(rownames(FilterDEGs(deg6, input$PVvenn, input$LFCvenn)), rownames(FilterDEGs(deg36, input$PVvenn, input$LFCvenn))),])
+  })
 }
 
 shinyApp(ui, server)
