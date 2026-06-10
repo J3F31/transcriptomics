@@ -168,9 +168,9 @@ ggplot(long_df, aes(x = sample, y = value/10^6)) +
 
 ```{r}
 #Barplot 6 hours
-BarPlotRawCount(data_6, "6")
+#BarPlotRawCount(data_6, "6")
 #Barplot 36 hours
-BarPlotRawCount(data_36, "36")
+#BarPlotRawCount(data_36, "36")
 ```
 Again we observe E6_r3 to have the highest count. Notably E6_r1 has a lower count compared to it's replicates.
 
@@ -463,7 +463,9 @@ venn.diagram(
 
 ```{r include=FALSE}
 options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
-pak::pkg_install("clusterProfiler")
+pak::pkg_install(c("gdtools", "systemfonts","igraph","clusterProfiler"))
+
+BiocManager::install("reactome.db")
 
 BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
 
@@ -559,6 +561,14 @@ dotplot(ReactomeEnrichmentAnalysis(genes_36, 0.05))
 +----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
 | **Update frequency** | Monthly                           | Continuous                               | Regular (curated)                                  |
 +----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
+
+### 36 hours pathview
+
+KEGG analysis revealed significant enrichment of the Human T‑cell leukemia virus 1 infection pathway following fluoxetine exposure. Several genes involved in MAPK, PI3K‑AKT, NF‑κB, and p53 signaling were upregulated, indicating activation of stress‑response and survival mechanisms. These pathways are known to regulate inflammation, cell cycle progression, and apoptosis. The observed gene expression pattern suggests that fluoxetine triggers protective cellular signaling similar to immune activation, helping skin cells maintain viability and support proliferation during chemical stress.
+
+### 6 hours pathview
+
+KEGG analysis identified significant enrichment of the Platinum Drug Resistance pathway in fluoxetine‑treated skin cells. Several genes involved in detoxification (GST/GSH), and apoptosis regulation (CASP3, BIRC5) were upregulated. These changes indicate activation of cellular defense mechanisms that enhance stress tolerance and survival. The expression pattern suggests that fluoxetine stimulates protective responses similar to those used by cells to resist chemical damage, supporting improved viability and proliferation during environmental exposure.
 
 Lastly we export our data files to include in the Shiny application.
 
