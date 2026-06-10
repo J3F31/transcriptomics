@@ -5,12 +5,16 @@ library(EnhancedVolcano)
 library(bslib)
 library(reactable)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(org.Hs.eg.db)
 library(clusterProfiler)
 library(ReactomePA)
 library(DOSE)
 library(ggVennDiagram)
+library(pathview)
+library(png)
+library(magick)
 
 
 deg6 <- readRDS("./deg_6.rds")
@@ -51,6 +55,8 @@ FilterDEGs <- function(deg ,Pvalue , Fvalue) {
   return(S)
 }
 
+genes_6 <- bitr(rownames(FilterDEGs(deg6, 0.05, 0)), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
+
 FilterEnrich <- function(data, pval) {
   return(filter(data, pvalue <= pval))
 }
@@ -80,7 +86,9 @@ PlotVennDiagram <- function(pval, fval) {
   d6 <- FilterDEGs(deg6, pval, fval)
   d36 <- FilterDEGs(deg36, pval, fval)
   x <- list(`+6h` = rownames(d6), `+36h` = rownames(d36))
-  ggVennDiagram(x)
+  ggVennDiagram(x) +
+    scale_fill_gradient(low = "#C21807", high = "#6495ED") +
+    theme(legend.position = "none")
 }
 
 ui <- fluidPage(
@@ -92,8 +100,8 @@ ui <- fluidPage(
       selectInput( 
         "select6", 
         "Select Visualization", 
-        list("Volcano Plot" = "volcano","Go Terms" = "go", "Kegg Analysis" = "kegg","Reactome Analysis" = "react")
-        ),
+        list("Volcano Plot" = "volcano","Go Terms" = "go", "Kegg Analysis" = "kegg", "Kegg Pathway" = "path", "Reactome Analysis" = "react")
+      ),
       conditionalPanel(
         condition = "input.select6 == 'volcano'",
         fluidRow(  
@@ -152,6 +160,21 @@ ui <- fluidPage(
       ),
       
       conditionalPanel(
+        condition = "input.select6 == 'path'",
+        fluidRow(  
+          column(5, numericInput( 
+            "PVpath", 
+            "P Value", 
+            value = 0.05, 
+            min = 0, 
+            max = 1 
+          )), 
+        ),
+        plotOutput("pathview", width = 1626, height = "auto"),
+        dataTableOutput("pathviewTable"),
+      ),
+      
+      conditionalPanel(
         condition = "input.select6 == 'react'",
         fluidRow(  
           column(5, numericInput( 
@@ -174,7 +197,7 @@ ui <- fluidPage(
       selectInput( 
         "select36", 
         "Select Visualization", 
-        list("Volcano Plot" = "volcano","Go Terms" = "go", "Kegg Analysis" = "kegg","Reactome Analysis" = "react") 
+        list("Volcano Plot" = "volcano","Go Terms" = "go", "Kegg Analysis" = "kegg", "Kegg Pathway" = "path","Reactome Analysis" = "react") 
       ),
       conditionalPanel(
         condition = "input.select36 == 'volcano'",
@@ -232,6 +255,21 @@ ui <- fluidPage(
       ),
       
       conditionalPanel(
+        condition = "input.select6 == 'path'",
+        fluidRow(  
+          column(5, numericInput( 
+            "PVpath36", 
+            "P Value", 
+            value = 0.05, 
+            min = 0, 
+            max = 1 
+          )), 
+        ),
+        plotOutput("pathview36", width = 1626, height = "auto"),
+        dataTableOutput("pathviewTable36"),
+      ),
+      
+      conditionalPanel(
         condition = "input.select36 == 'react'",
         fluidRow(  
           column(5, numericInput( 
@@ -272,7 +310,7 @@ ui <- fluidPage(
         )
       ),
       plotOutput("vennDiagram"),
-      h3("Overlapping genes"),
+      h3("Overlapping DEGs"),
       dataTableOutput("vennDiagramTable")
     ), 
   ), id = "tab",
@@ -302,6 +340,49 @@ server <- function(input, output, session) {
   })
   output$tableKegg <- renderDataTable({
     datatable(FilterEnrich(kegg6, input$PVK))
+  })
+  #Pathview
+  my_img <- reactive({
+    id <- rownames(FilterEnrich(kegg6, input$PVpath)[input$pathviewTable_rows_selected,])
+    if (identical(id, character(0))) return()
+    
+    pathview(gene.data = genes_6$ENTREZID, pathway.id = id, species = "hsa")
+    img <- image_read(paste0("./", id, ".pathview.png"))
+    invisible(file.remove(paste0("./", id, ".png")))
+    invisible(file.remove(paste0("./", id, ".pathview.png")))
+    invisible(file.remove(paste0("./", id, ".xml")))
+    w <- image_info(img)$width
+    h <- image_info(img)$height
+    list(
+      raster = as.raster(img),
+      w = w,
+      h = h
+    )
+  })
+  img_dim_f <- function(parm) {
+    function() {
+      p <- 0
+      i <- my_img()
+      if (isTruthy(i)) {
+        if (isTruthy(i[[parm]])) {
+          p <- i[[parm]]
+        }
+      }
+      p
+    }
+  }
+  output$pathview <- renderPlot(
+    expr = {
+      i <- req(my_img())
+      r <- req(i$raster)
+      plot(r)
+    }, 
+    width = img_dim_f("w"),
+    height = img_dim_f("h")
+  ) 
+  
+  output$pathviewTable <- renderDataTable({
+    datatable(FilterEnrich(kegg6, input$PVpath), selection = 'single')
   })
   #Reactome
   output$Reactome <- renderPlot({
@@ -366,6 +447,49 @@ server <- function(input, output, session) {
   })
   output$tableKegg36 <- renderDataTable({
     datatable(FilterEnrich(kegg36, input$PVK36))
+  })
+  #Pathview
+  my_img36 <- reactive({
+    id <- rownames(FilterEnrich(kegg36, input$PVpath36)[input$pathviewTable36_rows_selected,])
+    if (identical(id, character(0))) return()
+    
+    pathview(gene.data = genes_36$ENTREZID, pathway.id = id, species = "hsa")
+    img <- image_read(paste0("./", id, ".pathview.png"))
+    invisible(file.remove(paste0("./", id, ".png")))
+    invisible(file.remove(paste0("./", id, ".pathview.png")))
+    invisible(file.remove(paste0("./", id, ".xml")))
+    w <- image_info(img)$width
+    h <- image_info(img)$height
+    list(
+      raster = as.raster(img),
+      w = w,
+      h = h
+    )
+  })
+  img_dim_f36 <- function(parm) {
+    function() {
+      p <- 0
+      i <- my_img36()
+      if (isTruthy(i)) {
+        if (isTruthy(i[[parm]])) {
+          p <- i[[parm]]
+        }
+      }
+      p
+    }
+  }
+  output$pathview36 <- renderPlot(
+    expr = {
+      i <- req(my_img36())
+      r <- req(i$raster)
+      plot(r)
+    }, 
+    width = img_dim_f36("w"),
+    height = img_dim_f36("h")
+  ) 
+  
+  output$pathviewTable36 <- renderDataTable({
+    datatable(FilterEnrich(kegg36, input$PVpath36), selection = 'single')
   })
   #Reactome
   output$Reactome36 <- renderPlot({
