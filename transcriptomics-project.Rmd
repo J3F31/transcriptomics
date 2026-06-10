@@ -481,69 +481,68 @@ library(ReactomePA)
 This tells you the functional themes of your gene list at a more granular level than KEGG — helping you understand not just which pathways, but what processes (cell division, metabolism, signaling, etc.) your genes are driving.
 
 ```{r}
-GoEnrichmentAnalysis <- function(group_genes) {
+GoEnrichmentAnalysis <- function(group_genes, pval, ont) {
   go_results <- enrichGO(gene          = group_genes$ENTREZID,
                        OrgDb         = org.Hs.eg.db,
                        keyType       = 'ENTREZID', # or 'SYMBOL'
-                       ont           = "BP",
+                       ont           = ont,
                        pAdjustMethod = "none",
-                       pvalueCutoff  = 0.05,
+                       pvalueCutoff  = pval,
                        qvalueCutoff  = 1,
                        readable      = TRUE)
 
-  #View(as.data.frame(go_results))
-  dotplot(go_results)
+  return(go_results)
 }
 ```
 
 **Given my list of genes, which biological processes/pathways are they most likely involved in?**
 
 ```{r}
-KeggEnrichmentAnalysis <- function(group_genes) {
+KeggEnrichmentAnalysis <- function(group_genes, pval) {
   kegg_results <- enrichKEGG(gene = group_genes$ENTREZID,
                              organism = "hsa",
                              keyType = "kegg",
-                             pvalueCutoff = 0.05,
+                             pvalueCutoff = pval,
                              pAdjustMethod = "none",
                              minGSSize = 10,
                              maxGSSize = 500,
                              qvalueCutoff = 1,
                              use_internal_data = FALSE)
   
-  #View(as.data.frame(kegg_results))
-  dotplot(kegg_results)
+  return(kegg_results)
 }
 ```
 
 **At the most detailed molecular level, what exact reactions and sub-pathways are my genes involved in?**
 
 ```{r}
-ReactomeEnrichmentAnalysis <- function(group_genes) {
+ReactomeEnrichmentAnalysis <- function(group_genes, pval) {
   ora_results <- enrichPathway(gene = group_genes$ENTREZID, 
                                organism = "human",
-                               pvalueCutoff = 0.05,
+                               pvalueCutoff = pval,
                                pAdjustMethod = "none",
                                qvalueCutoff = 1)
   
-  #View(as.data.frame(ora_results))
-  dotplot(ora_results)
+  return(ora_results)
 }
 ```
 
 ```{r warning=FALSE}
 #Enrichment Analysis 6 hours
 genes_6 <- bitr(row.names(deg_6_filtered), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
-GoEnrichmentAnalysis(genes_6)
-KeggEnrichmentAnalysis(genes_6)
-ReactomeEnrichmentAnalysis(genes_6)
+dotplot(GoEnrichmentAnalysis(genes_6, 0.05, "BP"))
+dotplot(GoEnrichmentAnalysis(genes_6, 0.05, "CC"))
+dotplot(GoEnrichmentAnalysis(genes_6, 0.05, "MF"))
+dotplot(KeggEnrichmentAnalysis(genes_6, 0.05))
+dotplot(ReactomeEnrichmentAnalysis(genes_6, 0.05))
 ```
 
 ```{r warning=FALSE}
 #Enrichment Analysis 36 hours
 genes_36 <- bitr(row.names(deg_36_filtered), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
-GoEnrichmentAnalysis(genes_36)
-KeggEnrichmentAnalysis(genes_36)
-ReactomeEnrichmentAnalysis(genes_36)
+dotplot(GoEnrichmentAnalysis(genes_36, 0.05, "BP"))
+dotplot(KeggEnrichmentAnalysis(genes_36, 0.05))
+dotplot(ReactomeEnrichmentAnalysis(genes_36, 0.05))
 ```
 
 +----------------------+-----------------------------------+------------------------------------------+----------------------------------------------------+
@@ -568,3 +567,28 @@ saveRDS(data.frame(deg_6$deg, geneName = GetGeneNames(deg_6$deg, data6)), "deg_6
 saveRDS(data.frame(deg_36$deg, geneName = GetGeneNames(deg_36$deg, data36)), "deg_36.rds")
 ```
 
+```{r}
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "BP")), "go_bp_6.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "CC")), "go_cc_6.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "MF")), "go_mf_6.rds")
+saveRDS(data.frame(KeggEnrichmentAnalysis(genes_6, 1)), "kegg_6.rds")
+saveRDS(data.frame(ReactomeEnrichmentAnalysis(genes_6, 1)), "react_6.rds")
+
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "BP")), "go_bp_36.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "CC")), "go_cc_36.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "MF")), "go_mf_36.rds")
+saveRDS(data.frame(KeggEnrichmentAnalysis(genes_36, 1)), "kegg_36.rds")
+saveRDS(data.frame(ReactomeEnrichmentAnalysis(genes_36, 1)), "react_36.rds")
+```
+
+```{r message=FALSE}
+library(pathview)
+pathview(gene.data = genes_36$ENTREZID,
+         pathway.id = "hsa05166",
+         species = "hsa")
+ 
+ 
+pathview(gene.data = genes_6$ENTREZID,
+         pathway.id = "hsa01524",
+         species = "hsa")
+```
