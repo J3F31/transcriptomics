@@ -170,6 +170,7 @@ ui <- fluidPage(
             max = 1 
           )), 
         ),
+        h3("Select entry to generate pathway"),
         plotOutput("pathview", width = 1626, height = "auto"),
         dataTableOutput("pathviewTable"),
       ),
@@ -265,6 +266,7 @@ ui <- fluidPage(
             max = 1 
           )), 
         ),
+        h3("Select entry to generate pathway"),
         plotOutput("pathview36", width = 1626, height = "auto"),
         dataTableOutput("pathviewTable36"),
       ),
@@ -371,15 +373,20 @@ server <- function(input, output, session) {
       p
     }
   }
-  output$pathview <- renderPlot(
-    expr = {
-      i <- req(my_img())
-      r <- req(i$raster)
-      plot(r)
-    }, 
-    width = img_dim_f("w"),
-    height = img_dim_f("h")
-  ) 
+  observe({
+    id <- rownames(FilterEnrich(kegg6, input$PVpath)[input$pathviewTable_rows_selected,])
+    if (identical(id, character(0))) return()
+    output$pathview <- renderPlot(
+      expr = {
+        i <- req(my_img())
+        r <- req(i$raster)
+        plot(r)
+      }, 
+      width = img_dim_f("w"),
+      height = img_dim_f("h")
+    )
+  })
+  
   
   output$pathviewTable <- renderDataTable({
     datatable(FilterEnrich(kegg6, input$PVpath), selection = 'single')
@@ -478,15 +485,19 @@ server <- function(input, output, session) {
       p
     }
   }
-  output$pathview36 <- renderPlot(
-    expr = {
-      i <- req(my_img36())
-      r <- req(i$raster)
-      plot(r)
-    }, 
-    width = img_dim_f36("w"),
-    height = img_dim_f36("h")
-  ) 
+  observe({
+    id <- rownames(FilterEnrich(kegg36, input$PVpath36)[input$pathviewTable36_rows_selected,])
+    if (identical(id, character(0))) return()
+    output$pathview36 <- renderPlot(
+      expr = {
+        i <- req(my_img36())
+        r <- req(i$raster)
+        plot(r)
+      }, 
+      width = img_dim_f36("w"),
+      height = img_dim_f36("h")
+    )
+  })
   
   output$pathviewTable36 <- renderDataTable({
     datatable(FilterEnrich(kegg36, input$PVpath36), selection = 'single')
