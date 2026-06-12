@@ -17,23 +17,23 @@ library(png)
 library(magick)
 
 
-deg6 <- readRDS("./deg_6.rds")
+deg6 <- readRDS("./rds-files/deg_6.rds")
 
-deg36 <- readRDS("./deg_36.rds")
+deg36 <- readRDS("./rds-files/deg_36.rds")
 
-goBP6 <- readRDS("./go_bp_6.rds")
-goCC6 <- readRDS("./go_cc_6.rds")
-goMF6 <- readRDS("./go_mf_6.rds")
+goBP6 <- readRDS("./rds-files/go_bp_6.rds")
+goCC6 <- readRDS("./rds-files/go_cc_6.rds")
+goMF6 <- readRDS("./rds-files/go_mf_6.rds")
 go6 <- goBP6
-kegg6 <- readRDS("./kegg_6.rds")
-react6 <- readRDS("./react_6.rds")
+kegg6 <- readRDS("./rds-files/kegg_6.rds")
+react6 <- readRDS("./rds-files/react_6.rds")
 
-goBP36 <- readRDS("./go_bp_36.rds")
-goCC36 <- readRDS("./go_cc_36.rds")
-goMF36 <- readRDS("./go_mf_36.rds")
+goBP36 <- readRDS("./rds-files/go_bp_36.rds")
+goCC36 <- readRDS("./rds-files/go_cc_36.rds")
+goMF36 <- readRDS("./rds-files/go_mf_36.rds")
 go36 <- goBP36
-kegg36 <- readRDS("./kegg_36.rds")
-react36 <- readRDS("./react_36.rds")
+kegg36 <- readRDS("./rds-files/kegg_36.rds")
+react36 <- readRDS("./rds-files/react_36.rds")
 
 PlotEnhancedVolcano <- function(deg, yCutoff, pCutOff,Fcutoff, genenames) {
   
@@ -256,7 +256,7 @@ ui <- fluidPage(
       ),
       
       conditionalPanel(
-        condition = "input.select6 == 'path'",
+        condition = "input.select36 == 'path'",
         fluidRow(  
           column(5, numericInput( 
             "PVpath36", 

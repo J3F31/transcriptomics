@@ -573,32 +573,20 @@ KEGG analysis identified significant enrichment of the Platinum Drug Resistance 
 Lastly we export our data files to include in the Shiny application.
 
 ```{r}
-saveRDS(data.frame(deg_6$deg, geneName = GetGeneNames(deg_6$deg, data6)), "deg_6.rds")
-saveRDS(data.frame(deg_36$deg, geneName = GetGeneNames(deg_36$deg, data36)), "deg_36.rds")
+saveRDS(data.frame(deg_6$deg, geneName = GetGeneNames(deg_6$deg, data6)), "./rds-files/deg_6.rds")
+saveRDS(data.frame(deg_36$deg, geneName = GetGeneNames(deg_36$deg, data36)), "./rds-files/deg_36.rds")
 ```
 
 ```{r}
-saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "BP")), "go_bp_6.rds")
-saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "CC")), "go_cc_6.rds")
-saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "MF")), "go_mf_6.rds")
-saveRDS(data.frame(KeggEnrichmentAnalysis(genes_6, 1)), "kegg_6.rds")
-saveRDS(data.frame(ReactomeEnrichmentAnalysis(genes_6, 1)), "react_6.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "BP")), "./rds-files/go_bp_6.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "CC")), "./rds-files/go_cc_6.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_6, 1, "MF")), "./rds-files/go_mf_6.rds")
+saveRDS(data.frame(KeggEnrichmentAnalysis(genes_6, 1)), "./rds-files/kegg_6.rds")
+saveRDS(data.frame(ReactomeEnrichmentAnalysis(genes_6, 1)), "./rds-files/react_6.rds")
 
-saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "BP")), "go_bp_36.rds")
-saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "CC")), "go_cc_36.rds")
-saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "MF")), "go_mf_36.rds")
-saveRDS(data.frame(KeggEnrichmentAnalysis(genes_36, 1)), "kegg_36.rds")
-saveRDS(data.frame(ReactomeEnrichmentAnalysis(genes_36, 1)), "react_36.rds")
-```
-
-```{r message=FALSE}
-library(pathview)
-pathview(gene.data = genes_36$ENTREZID,
-         pathway.id = "hsa05166",
-         species = "hsa")
- 
- 
-pathview(gene.data = genes_6$ENTREZID,
-         pathway.id = "hsa01524",
-         species = "hsa")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "BP")), "./rds-files/go_bp_36.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "CC")), "./rds-files/go_cc_36.rds")
+saveRDS(data.frame(GoEnrichmentAnalysis(genes_36, 1, "MF")), "./rds-files/go_mf_36.rds")
+saveRDS(data.frame(KeggEnrichmentAnalysis(genes_36, 1)), "./rds-files/kegg_36.rds")
+saveRDS(data.frame(ReactomeEnrichmentAnalysis(genes_36, 1)), "./rds-files/react_36.rds")
 ```
