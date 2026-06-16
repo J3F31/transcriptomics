@@ -37,14 +37,14 @@ The present study focuses exclusively on the transcriptomic component of the ori
 
 ### Cells and clinical samples
 
-HaCaT cells are spontaneously immortalised human keratinocytes from the cultivation of normal human adult skin keratinocytes and were purchased from AddexBio. HaCaT cells have been extensively used as a model system in skin research (Jin et al., 2024; Curtytek et al., 2021; Kim et al., 2018; Mokrzynski & Szewczyk, 2024; Payuhakrit et al., 2024). HaCaT cells were cultured in 5% CO2 incubators at 37 °C and passaged every 3 days or when at 80% confluence.
+HaCaT cells are immortalised human keratinocytes derived from normal adult human skin and were obtained from AddexBio. Due to their well-characterised behaviour and relevance to skin biology, HaCaT cells are widely established as a model system in dermatological research. Cells were maintained in 5% CO2 incubation chambers at 37 °C and subcultured every 3 days or upon reaching approximately 80% confluency.
 
+To investigate the transcriptomic effects of Fluoxetine (FLX) on wound healing, a scratch assay was performed on HaCaT cell monolayers. Following the scratch, cells were treated with FLX at a concentration of 540 ng/L. Conditions were defined as a combination of treatment (FLX vs. control) and time post-scratch (6 h and 36 h), resulting in a total of four samples across both conditions.
 
 ### RNA sequancing 
 
-HaCaT cells grown in 6-well plates were scratched three times per well and total RNA was isolated after either 6 or 36 h using the PureLink™ RNA Mini Kit (#12183020, Thermo Fisher Scientific) following the manufacturer's instructions. Total RNA was analysed to yield the transcriptomic profile of the cells in the four different conditions (exposed to 540 ng/l FLX for 6 and 36 h, and corresponding time controls). For each condition, four biological replicates were done at each of four cell passages. Library preparation and RNA sequencing were done by Novogene Co. Ltd. (Cambridge, UK) using the Illumina NovaSeq 6000 platform. 
-
-Briefly, the HISAT2 algorithm was used for read alignment and FPKM to normalise gene expression. Differential gene expression was determined from read counts using the DESeq2 R package. Gene expression was log2 transformed, and the calculated p-values were adjusted using the Benjamini–Hochberg correction for false discovery rate (padj) (Feugere et al., 2022). Genes significantly (padj ≤0.05) up- or down-regulated with a gene symbol/ID annotation were used in subsequent analysis.
+HaCaT cells were scratched three times per well in 6-well plates, and total RNA was isolated at 6 h and 36 h post-scratch using the PureLink™ RNA Mini Kit (Thermo Fisher Scientific), following the manufacturer's instructions. Library preparation and RNA sequencing were carried out by Novogene Co. Ltd. (Cambridge, UK) using the Illumina NovaSeq 6000 platform. The sequencing output consisted of two files, one for each comparison (6 h and 36 h), each containing one FLX-exposed sample and one untreated control sample. Each file included gene annotation columns (gene name, gene ID, chromosome, start and end positions, strand, length, and biotype), raw read counts per sample, FPKM-normalised expression values, and statistical outputs including log2log_2
+log2. fold change, p-value, and adjusted p-value (padj). Raw read counts were used as input for all downstream differential expression analysis.
 
 
 Most likely this will be the largest section in your report (depending on the number of images you show in the `Results` section). Take a look at your experiments article to see how they organised its content to see if this is also suitable for your report.
@@ -55,29 +55,23 @@ Most likely this will be the largest section in your report (depending on the nu
 
 Do not show any results in this section, for instance when stating that you filtered t-test p-values on a certain value, you do not list how many genes were left, that is for the next section.
 
-### Cell samples
+### Data Pre-processing
 
-HaCaT cells...
+Prior to differential expression analysis, sample quality was assessed using multiple visualizations. Raw count data were normalized using Variance Stabilizing Transformation (VST) as implemented in `DESeq2`, and Poisson distance-based normalization was applied to measure dissimilarity between samples. Sample-to-sample distances were visualized using heatmaps and Multidimensional Scaling (MDS) plots, generated with `PoiClaClu`, `ggplot2` and `pheatmap` in R, alongside `DESeq2` built-in plotting functions. Additionally, bar plots and density plots were produced to inspect the distribution of counts across samples.
 
-### RNA Sequencing
+Based on these quality control visualizations, three irregular samples were identified and removed from the analysis: `C36-R1` and `E36-R3` from the 36-hour dataset, and `C6-R4` from the 6-hour dataset. Sample removal was performed while ensuring that each experimental group retained a minimum of three biological replicates, in order to maintain statistical reliability in the downstream analysis.
 
-Illumina and else
+### Differential Expression & Enrichment Analysis
 
-### Data analysis
+Differential gene expression analysis was performed separately for each time point (6 h and 36 h) using the DESeq2 R package. Genes were considered differentially expressed at an unadjusted p-value threshold of `p < 0.05`. It should be noted that unadjusted p-values were used in place of adjusted p-values (padj), as this approach yielded results most comparable to those reported in the original study.
 
-ggplot (data visualization)
+Entrez gene IDs (ENTREZID) were used as the primary gene identifier for all enrichment analyses, as they provide a standardised identifier supported across biological databases. Three complementary enrichment analyses were performed using the `clusterProfiler` and `ReactomePA` R packages, with gene annotations provided by `org.Hs.eg.db`, all applying a significance threshold of pp `p < 0.05` without p-value adjustment:
 
-#### Data description
+- **Gene Ontology (GO) enrichment (enrichGO)** was performed across all three ontology domains — Biological Process (BP), Cellular Component (CC), and Molecular Function (MF) — as each domain captures a distinct and complementary aspect of gene function.
 
-RNA sequence output, 2 files, x columns...
+- **KEGG pathway enrichment (enrichKEGG)** was applied to identify which known biological pathways were significantly represented among the DEGs, with gene set sizes restricted between 10 and 500 genes.
 
-#### Data cleaning
-
-Poisson distance, heatmap...
-
-### DEGs
-
-DeSeq2 (pval, padj), enrichment (pval)
+- **Reactome pathway enrichment (enrichPathway)** was used to identify precise molecular reactions and sub-pathways driven by the DEGs.
 
 ## Results
 
