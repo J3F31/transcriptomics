@@ -27,13 +27,11 @@ Pharmaceutical pollution has become a growing environmental concern, particularl
 
 Serotonin is not only a neurotransmitter but also plays a well-established role in peripheral tissues, including the skin, where it is involved in regulating cell proliferation and wound healing. Wound healing is a complex and tightly coordinated biological process that proceeds through three overlapping phases: inflammation, proliferation, and tissue remodelling. During the proliferation phase, keratinocytes — the dominant cell type of the outermost skin layer (the epidermis) — migrate toward the wound edge and actively divide to restore the skin barrier. Any disruption or enhancement of this process can have significant clinical implications. Given that FLX modulates serotonin signalling, and serotonin itself plays a role in keratinocyte activity, it is biologically plausible that environmental FLX exposure could meaningfully influence skin repair mechanisms.
 
-The original study by \citet{R} Hossain et al. (2024) was the first to investigate this link experimentally, using a multi-omics approach combining transcriptomics, phosphoproteomics, and kinase profiling. Their transcriptomic analysis identified 350 differentially expressed genes (DEGs) in FLX-exposed keratinocytes, with upregulated genes linked to cell proliferation and tissue morphogenesis, and downregulated genes associated with mitochondrial function and metabolism (Hossain et al., 2024). These findings provided a molecular basis for the observed enhancement in wound closure, but left room for deeper temporal investigation of how gene expression changes evolve over time during FLX exposure.
+The original study by \citep{rodriguez:2024} was the first to investigate this link experimentally, using a multi-omics approach combining transcriptomics, phosphoproteomics, and kinase profiling. Their transcriptomic analysis identified 350 differentially expressed genes (DEGs) in FLX-exposed keratinocytes, with upregulated genes linked to cell proliferation and tissue morphogenesis, and downregulated genes associated with mitochondrial function and metabolism \citep{rodriguez:2024}. These findings provided a molecular basis for the observed enhancement in wound closure, but left room for deeper temporal investigation of how gene expression changes evolve over time during FLX exposure.
 
-Transcriptomics is the large-scale study of all RNA molecules expressed in a cell or tissue at a given moment, essentially providing a snapshot of which genes are active and to what degree. By comparing gene expression between exposed and unexposed cells, it is possible to identify which biological processes are being switched on or off in response to a treatment. In this study, we use RNA sequencing (RNA-seq) data analysed with DESeq2, a statistical tool specifically designed to detect differentially expressed genes from count-based sequencing data while accounting for biological variability between samples \citet{R}(Love et al., 2014).
+Transcriptomics is the large-scale study of all RNA molecules expressed in a cell or tissue at a given moment, essentially providing a snapshot of which genes are active and to what degree. By comparing gene expression between exposed and unexposed cells, it is possible to identify which biological processes are being switched on or off in response to a treatment. In this study, we use RNA sequencing (RNA-seq) data analysed with DESeq2, a statistical tool specifically designed to detect differentially expressed genes from count-based sequencing data while accounting for biological variability between samples.
 
-The present study focuses exclusively on the transcriptomic component of the original research. We analysed gene expression in scratched HaCaT human keratinocytes exposed to 540 ng/L FLX at two time points: 6 and 36 hours, mirroring the time points used in the transcriptomic section of the original study (Hossain et al., 2024). The 6-hour time point captures the early transcriptional response to FLX exposure, reflecting immediate cellular adjustments, while the 36-hour time point represents a later stage where more sustained gene expression changes associated with active wound closure are expected. Our central research question is: does FLX exposure significantly alter gene expression in human keratinocytes in ways that support enhanced wound healing, and how does this response evolve between 6 and 36 hours of exposure? To address this, DEGs were identified at each time point and compared to unexposed control cells, followed by enrichment analysis to map these genes to relevant biological pathways. An intersection analysis was further performed to identify genes consistently differentially expressed across both time points. We also explored whether enrichment analysis could reveal additional gene functions and pathways beyond those reported in the original article \citet{R}(Hossain et al., 2024).
-
-Introductory section which may include references in parentheses \citep{R}, or cite a reference such as \citet{R} in the text, see the last section in this document for a how-to on references.
+The present study focuses exclusively on the transcriptomic component of the original research. We analysed gene expression in scratched HaCaT human keratinocytes exposed to 540 ng/L FLX at two time points: 6 and 36 hours, mirroring the time points used in the transcriptomic section of the original study \citep{rodriguez:2024}. The 6-hour time point captures the early transcriptional response to FLX exposure, reflecting immediate cellular adjustments, while the 36-hour time point represents a later stage where more sustained gene expression changes associated with active wound closure are expected. Our central research question is: does FLX exposure significantly alter gene expression in human keratinocytes in ways that support enhanced wound healing, and how does this response evolve between 6 and 36 hours of exposure? To address this, DEGs were identified at each time point and compared to unexposed control cells, followed by enrichment analysis to map these genes to relevant biological pathways. An intersection analysis was further performed to identify genes consistently differentially expressed across both time points. We also explored whether enrichment analysis could reveal additional gene functions and pathways beyond those reported in the original article \citep{rodriguez:2024}.
 
 ## Materials and Methods
 
@@ -42,6 +40,30 @@ Most likely this will be the largest section in your report (depending on the nu
 This section must at the very least contain information about the **data**; how many samples from what organism + strain (if applicable), what kind of data is there available (not only saying **FPKM** but also the sequencer type that generated this data). Also, information about all the **software** that you used during your analysis (i.e. `R` and its libraries, `bioConductor`, `DESeq2`, etc.) and all **methods** that you applied (both filtering steps and statistical analysis steps). Try to use the proper terms and symbols if needed, i.e. "*We filtered for DEGs with an* $\alpha$ < 0.05". [Symbols](https://www.artofproblemsolving.com/wiki/index.php/LaTeX:Symbols) need to be surrounded with `$` signs, otherwise you will get an error when knitting.
 
 Do not show any results in this section, for instance when stating that you filtered t-test p-values on a certain value, you do not list how many genes were left, that is for the next section.
+
+### Cell samples
+
+HaCaT cells...
+
+### RNA Sequencing
+
+Illumina and else
+
+### Data analysis
+
+ggplot (data visualization)
+
+#### Data description
+
+RNA sequence output, 2 files, x columns...
+
+#### Data cleaning
+
+Poisson distance, heatmap...
+
+### DEGs
+
+DeSeq2 (pval, padj), enrichment (pval)
 
 ## Results
 
@@ -93,6 +115,15 @@ This file containing the references can be edited in RStudio too, browse to the 
     doi = {10.1155/2014/390296},
     url = {http://dx.doi.org/10.1155/2014/390296},
     year = 2014
+}
+
+@article{rodriguez,
+    author = {Quentin Rodriguez-Barucg, Angel A. Garcia, Belen Garcia-Merino, Tomilayo Akinmola, Temisanren Okotie-Eboh, Thomas Francis, Eugenio Bringas, Inmaculada Ortiz, Mark A.               Wade, Adam Dowle, Domino A. Joyce, Matthew J. Hardman, Holly N. Wilkinson, Pedro Beltran-Alvarez},
+    title = {Environmental fluoxetine promotes skin cell proliferation and wound healing},
+    journal = {Environmental Pollution},
+    doi = {10.1016/2024/124952},
+    url = {https://doi.org/10.1016/j.envpol.2024.124952},
+    year = 2024
 }
 ```
 
