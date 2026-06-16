@@ -37,9 +37,23 @@ Introductory section which may include references in parentheses \citep{R}, or c
 
 ## Materials and Methods
 
+### Cells and clinical samples
+
+HaCaT cells are spontaneously immortalised human keratinocytes from the cultivation of normal human adult skin keratinocytes and were purchased from AddexBio. HaCaT cells have been extensively used as a model system in skin research (Jin et al., 2024; Curtytek et al., 2021; Kim et al., 2018; Mokrzynski & Szewczyk, 2024; Payuhakrit et al., 2024). HaCaT cells were cultured in 5% CO2 incubators at 37 °C and passaged every 3 days or when at 80% confluence.
+
+
+### RNA sequancing 
+
+HaCaT cells grown in 6-well plates were scratched three times per well and total RNA was isolated after either 6 or 36 h using the PureLink™ RNA Mini Kit (#12183020, Thermo Fisher Scientific) following the manufacturer's instructions. Total RNA was analysed to yield the transcriptomic profile of the cells in the four different conditions (exposed to 540 ng/l FLX for 6 and 36 h, and corresponding time controls). For each condition, four biological replicates were done at each of four cell passages. Library preparation and RNA sequencing were done by Novogene Co. Ltd. (Cambridge, UK) using the Illumina NovaSeq 6000 platform. 
+
+Briefly, the HISAT2 algorithm was used for read alignment and FPKM to normalise gene expression. Differential gene expression was determined from read counts using the DESeq2 R package. Gene expression was log2 transformed, and the calculated p-values were adjusted using the Benjamini–Hochberg correction for false discovery rate (padj) (Feugere et al., 2022). Genes significantly (padj ≤0.05) up- or down-regulated with a gene symbol/ID annotation were used in subsequent analysis.
+
+
 Most likely this will be the largest section in your report (depending on the number of images you show in the `Results` section). Take a look at your experiments article to see how they organised its content to see if this is also suitable for your report.
 
-This section must at the very least contain information about the **data**; how many samples from what organism + strain (if applicable), what kind of data is there available (not only saying **FPKM** but also the sequencer type that generated this data). Also, information about all the **software** that you used during your analysis (i.e. `R` and its libraries, `bioConductor`, `DESeq2`, etc.) and all **methods** that you applied (both filtering steps and statistical analysis steps). Try to use the proper terms and symbols if needed, i.e. "*We filtered for DEGs with an* $\alpha$ < 0.05". [Symbols](https://www.artofproblemsolving.com/wiki/index.php/LaTeX:Symbols) need to be surrounded with `$` signs, otherwise you will get an error when knitting.
+1. This section must at the very least contain information about the **data**; how many samples from what organism + strain (if applicable), what kind of data is there available (not only saying **FPKM** but also the sequencer type that generated this data). 
+
+2. Also, information about all the **software** that you used during your analysis (i.e. `R` and its libraries, `bioConductor`, `DESeq2`, etc.) and all **methods** that you applied (both filtering steps and statistical analysis steps). Try to use the proper terms and symbols if needed, i.e. "*We filtered for DEGs with an* $\alpha$ < 0.05". [Symbols](https://www.artofproblemsolving.com/wiki/index.php/LaTeX:Symbols) need to be surrounded with `$` signs, otherwise you will get an error when knitting.
 
 Do not show any results in this section, for instance when stating that you filtered t-test p-values on a certain value, you do not list how many genes were left, that is for the next section.
 
