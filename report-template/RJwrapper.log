@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2025.10.20)  16 JUN 2026 16:16
+=======
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2025.10.21)  16 JUN 2026 22:30
+>>>>>>> refs/remotes/origin/main
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -800,8 +804,13 @@ Package hyperref Warning: Difference (2) between bookmark levels is greater
 dist/fonts/enc/dvips/base/8r.enc}
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 10
-4.
+LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 1
+10.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ppl.fd
+File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
+)
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 13
+7.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
@@ -810,27 +819,27 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 1
-17.
+54.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
 LaTeX Font Info:    Trying to load font information for OML+zplm on input line 
-117.
+154.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 
-117.
+154.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 
-117.
+154.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 
-117.
+154.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
@@ -839,22 +848,23 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 117.
+(Font)              scaled to size 9.37807pt on input line 154.
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 117.
+(Font)              scaled to size 7.29405pt on input line 154.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 117.
+(Font)              scaled to size 5.21004pt on input line 154.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 117.
+(Font)              scaled to size 9.37807pt on input line 154.
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 117.
+(Font)              scaled to size 7.29405pt on input line 154.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
+<<<<<<< HEAD
 (Font)              scaled to size 5.21004pt on input line 117.
 
 
@@ -965,11 +975,27 @@ t_GoCC_36h.png (PNG copy)> <./images/Enrichment_GoMF_6h.png (PNG copy)> <./imag
 es/Enrichment_GoMF_36h.png (PNG copy)> <./images/Enrichment_Kegg_6h.png (PNG co
 py)> <./images/Enrichment_Kegg_36h.png (PNG copy)>]
 <report-template_files/figure-latex/MDS-Figure-1.pdf, id=97, 361.35pt x 174.652
+=======
+(Font)              scaled to size 5.21004pt on input line 154.
+
+
+[2]
+<images/pheatmap.png, id=70, 894.34125pt x 429.605pt>
+File: images/pheatmap.png Graphic file (type png)
+<use images/pheatmap.png>
+Package pdftex.def Info: images/pheatmap.png  used on input line 245.
+(pdftex.def)             Requested size: 338.59021pt x 162.64851pt.
+
+
+[3 <./images/pheatmap.png>]
+<report-template_files/figure-latex/MDS-Figure-1.pdf, id=78, 361.35pt x 174.652
+>>>>>>> refs/remotes/origin/main
 5pt>
 File: report-template_files/figure-latex/MDS-Figure-1.pdf Graphic file (type pd
 f)
 <use report-template_files/figure-latex/MDS-Figure-1.pdf>
 Package pdftex.def Info: report-template_files/figure-latex/MDS-Figure-1.pdf  u
+<<<<<<< HEAD
 sed on input line 348.
 (pdftex.def)             Requested size: 361.34912pt x 174.65207pt.
 
@@ -978,18 +1004,34 @@ sed on input line 348.
 me_36h.png (PNG copy)> <./images/pheatmap.png> <./report-template_files/figure-
 latex/MDS-Figure-1.pdf>]
 Overfull \hbox (39.3545pt too wide) in paragraph at lines 376--384
+=======
+sed on input line 266.
+(pdftex.def)             Requested size: 361.34912pt x 174.65207pt.
+
+Overfull \hbox (39.3545pt too wide) in paragraph at lines 294--302
+>>>>>>> refs/remotes/origin/main
 \T1/ppl/m/n/9 (-20) time in a folder with the same name as the cur-rent mark-do
 wn file (\T1/pcr/m/n/9 ./report-template/RJreferences.bib
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (33.66093pt too wide) in paragraph at lines 412--412
+=======
+Overfull \hbox (33.66093pt too wide) in paragraph at lines 330--330
+>>>>>>> refs/remotes/origin/main
 []    \T1/pcr/m/n/9 title = {Functional expression study of igf2 antisense tran
 script in mouse},[] 
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (1178.45964pt too wide) in paragraph at lines 412--412
+=======
+
+[4 <./report-template_files/figure-latex/MDS-Figure-1.pdf>]
+Overfull \hbox (1178.45964pt too wide) in paragraph at lines 330--330
+>>>>>>> refs/remotes/origin/main
 []    \T1/pcr/m/n/9 author = {Quentin Rodriguez-Barucg, Angel A. Garcia, Belen 
 Garcia-Merino, Tomilayo Akinmola, Temisanren Okotie-Eboh, Thomas Francis, Eugen
 io Bringas, Inmaculada Ortiz, Mark A.               Wade, Adam Dowle, Domino A.
@@ -997,7 +1039,11 @@ io Bringas, Inmaculada Ortiz, Mark A.               Wade, Adam Dowle, Domino A.
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (87.66087pt too wide) in paragraph at lines 412--412
+=======
+Overfull \hbox (87.66087pt too wide) in paragraph at lines 330--330
+>>>>>>> refs/remotes/origin/main
 []    \T1/pcr/m/n/9 title = {Environmental fluoxetine promotes skin cell prolif
 eration and wound healing},[] 
  []
@@ -1008,12 +1054,19 @@ eration and wound healing},[]
 
 )
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
+<<<<<<< HEAD
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 432.
 
 
 [6])
 
 [7] (./RJwrapper.aux)
+=======
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 350.
+)
+
+[5] (./RJwrapper.aux)
+>>>>>>> refs/remotes/origin/main
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1021,6 +1074,7 @@ L3 programming layer <2025-01-18>
 Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: C1BC6C26081413AA8EC93848C6128C40;1321.
 Package rerunfilecheck Info: File `RJwrapper.brf' has not changed.
+<<<<<<< HEAD
 (rerunfilecheck)             Checksum: EEB5531104A20C9231C2EC72214BAE5F;326.
  ) 
 Here is how much of TeX's memory you used:
@@ -1031,16 +1085,37 @@ Here is how much of TeX's memory you used:
  598709 words of font info for 222 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  117i,11n,121p,1006b,790s stack positions out of 10000i,1000n,20000p,200000b,200000s
+=======
+(rerunfilecheck)             Checksum: 50D67F57EF4455F608D581E875066CC5;326.
+ ) 
+Here is how much of TeX's memory you used:
+ 26713 strings out of 473197
+ 481848 string characters out of 5718604
+ 902411 words of memory out of 5000000
+ 49235 multiletter control sequences out of 15000+600000
+ 598176 words of font info for 244 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 117i,11n,121p,1006b,827s stack positions out of 10000i,1000n,20000p,200000b,200000s
+>>>>>>> refs/remotes/origin/main
 </usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fo
 nts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
 w/palatino/uplb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/u
 plr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+<<<<<<< HEAD
 Output written on RJwrapper.pdf (7 pages, 1939134 bytes).
 PDF statistics:
  177 PDF objects out of 1000 (max. 8388607)
  132 compressed objects within 2 object streams
  26 named destinations out of 1000 (max. 500000)
  60565 words of extra memory for PDF output out of 61914 (max. 10000000)
+=======
+Output written on RJwrapper.pdf (5 pages, 161474 bytes).
+PDF statistics:
+ 149 PDF objects out of 1000 (max. 8388607)
+ 120 compressed objects within 2 object streams
+ 21 named destinations out of 1000 (max. 500000)
+ 58447 words of extra memory for PDF output out of 61914 (max. 10000000)
+>>>>>>> refs/remotes/origin/main
 
