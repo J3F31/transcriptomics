@@ -149,6 +149,158 @@ DeSeq2 (pval, padj), enrichment (pval)
 
 \subsection{Results}\label{results}
 
+\subsubsection{Data Analysis}\label{data-analysis-1}
+
+\begin{quote}
+plots
+\end{quote}
+
+After generating heatmaps and MDS plots, the most irregular samples
+identified are: C36-R1 and E36\_R3 from the 36-hour dataset, and C6\_R4
+from the 6-hour dataset. These samples don't seem grouped and are quite
+far apart from the rest. This is the reason we chose to continue without
+those samples in the following DEGs section. From the 4 samples groups 3
+have now only 3 replicates and the 4rth one remains with 4.
+
+\subsubsection{DEGs}\label{degs-1}
+
+No significant differentialy expressed genes where found using a
+p-adjusted value \texttt{padj\ \textless{}\ 0.05}. Thus, we proceed with
+p-values, although with the warning that we are not using p-adjusted
+values. Some significance can be seen in the following p-value
+distribution plots for both samples.
+
+\begin{quote}
+pval plots
+\end{quote}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Pval_6h.png}
+    \caption{A}
+    \label{figure:pval_distribution_6h}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Pval_36h.png}
+    \caption{B}
+    \label{figure:pval_distribution_36h}
+  \end{subfigure}
+  
+  \label{figure:pval_plots}
+\end{figure}
+
+With a p-value cutoff of 0.05 we end up with a similar number of DEGs as
+the original article. Of course, due to the data cleaning we end up with
+a lower amount, while without cleaning it would result in the exact
+number. The following volcano plots showcase the resulting DEGs.
+
+\begin{quote}
+volcano plots
+\end{quote}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Volcano_6h.png}
+    \caption{A}
+    \label{figure:volcano_6h}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Volcano_36h.png}
+    \caption{B}
+    \label{figure:volcano_36h}
+  \end{subfigure}
+  
+  \label{figure:volcano_plots}
+\end{figure}
+
+\subsubsection{Enrichment analysis}\label{enrichment-analysis}
+
+\begin{quote}
+go plots
+\end{quote}
+
+\begin{figure}[!h]
+  \centering
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoBP_6h.png}
+    \caption{A}
+    \label{figure:enrichment_gobp_6h}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoBP_36h.png}
+    \caption{B}
+    \label{figure:Enrichment_gobp_36h}
+  \end{subfigure}
+  
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoCC_6h.png}
+    \caption{A}
+    \label{figure:enrichment_gocc_6h}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoCC_36h.png}
+    \caption{B}
+    \label{figure:Enrichment_gocc_36h}
+  \end{subfigure}
+  
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoMF_6h.png}
+    \caption{A}
+    \label{figure:enrichment_gomf_6h}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoMF_36h.png}
+    \caption{B}
+    \label{figure:Enrichment_gomf_36h}
+  \end{subfigure}
+  
+  \label{figure:enrichment_go_plots}
+\end{figure}
+
+\begin{quote}
+kegg plots
+\end{quote}
+
+\begin{figure}[!h]
+  \centering
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_Kegg_6h.png}
+    \caption{A}
+    \label{figure:enrichment_kegg_6h}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_Kegg_36h.png}
+    \caption{B}
+    \label{figure:enrichment_kegg_36h}
+  \end{subfigure}
+  
+  \label{figure:enrichment_kegg_plots}
+\end{figure}
+
+\begin{quote}
+reactome plots
+\end{quote}
+
+\begin{figure}[!h]
+  \centering
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_Reactome_6h.png}
+    \caption{A}
+    \label{figure:enrichment_reactome_6h}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=0.9\linewidth]{images/Enrichment_Reactome_36h.png}
+    \caption{B}
+    \label{figure:enrichment_reactome_36h}
+  \end{subfigure}
+  
+  \label{figure:enrichment_reactome_plots}
+\end{figure}
+
+\subsubsection{Pathview}\label{pathview}
+
 Here you will only focus on your own results, start at the beginning but
 only show the interesting results. This section works best if you
 alternate between text introducing some result, a figure or table

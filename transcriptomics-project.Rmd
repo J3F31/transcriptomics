@@ -461,15 +461,17 @@ venn.diagram(
 
 ## Enrichment Analysis
 
-```{r include=FALSE}
-options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
-pak::pkg_install(c("gdtools", "systemfonts","igraph","clusterProfiler"))
-
-BiocManager::install("reactome.db")
-
-BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
-
-BiocManager::install("ReactomePA")
+```{r eval=FALSE, include=FALSE}
+if (!(require("ReactomePA"))) {
+  options(repos = c(  PPM = "https://packagemanager.posit.co/cran/__linux__/jammy/latest",   CRAN = "https://cloud.r-project.org"))
+  pak::pkg_install(c("gdtools", "systemfonts","igraph","clusterProfiler"))
+  
+  BiocManager::install("reactome.db")
+  
+  BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
+  
+  BiocManager::install("ReactomePA")
+}
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -543,6 +545,8 @@ dotplot(ReactomeEnrichmentAnalysis(genes_6, 0.05))
 #Enrichment Analysis 36 hours
 genes_36 <- bitr(row.names(deg_36_filtered), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")
 dotplot(GoEnrichmentAnalysis(genes_36, 0.05, "BP"))
+dotplot(GoEnrichmentAnalysis(genes_36, 0.05, "CC"))
+dotplot(GoEnrichmentAnalysis(genes_36, 0.05, "MF"))
 dotplot(KeggEnrichmentAnalysis(genes_36, 0.05))
 dotplot(ReactomeEnrichmentAnalysis(genes_36, 0.05))
 ```
