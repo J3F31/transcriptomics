@@ -1,6 +1,6 @@
 % !TeX root = RJwrapper.tex
 \title{Environmental fluoxetine promotes skin cell proliferation and
-wound healing.}
+wound healing}
 \author{by Roa Hanoun and Jero Eyras}
 
 \maketitle
@@ -29,7 +29,7 @@ conclusion that environmental FLX exposure modulates gene expression in
 ways that may meaningfully impact skin wound healing.
 }
 
-\subsection{Introduction}\label{introduction}
+\section{Introduction}\label{introduction}
 
 Pharmaceutical pollution has become a growing environmental concern,
 particularly the presence of antidepressants in aquatic ecosystems.
@@ -39,18 +39,17 @@ works by blocking the reabsorption of serotonin in the brain, thereby
 increasing serotonin availability and improving mood regulation. Due to
 incomplete metabolisation in the human body and inadequate removal by
 wastewater treatment plants, FLX is consistently detected in surface
-waters at concentrations ranging from nanograms to micrograms per litre
-\citet{R}(Metcalfe et al., 2010).
+waters at concentrations ranging from nanograms to micrograms per liter.
 
 Serotonin is not only a neurotransmitter but also plays a
 well-established role in peripheral tissues, including the skin, where
 it is involved in regulating cell proliferation and wound healing. Wound
 healing is a complex and tightly coordinated biological process that
 proceeds through three overlapping phases: inflammation, proliferation,
-and tissue remodelling. During the proliferation phase, keratinocytes
---- the dominant cell type of the outermost skin layer (the epidermis)
---- migrate toward the wound edge and actively divide to restore the
-skin barrier. Any disruption or enhancement of this process can have
+and tissue remodeling. During the proliferation phase, keratinocytes ---
+the dominant cell type of the outermost skin layer (the epidermis) ---
+migrate toward the wound edge and actively divide to restore the skin
+barrier. Any disruption or enhancement of this process can have
 significant clinical implications. Given that FLX modulates serotonin
 signalling, and serotonin itself plays a role in keratinocyte activity,
 it is biologically plausible that environmental FLX exposure could
@@ -98,9 +97,9 @@ both time points. We also explored whether enrichment analysis could
 reveal additional gene functions and pathways beyond those reported in
 the original article \citep{rodriguez:2024}.
 
-\subsection{Materials and Methods}\label{materials-and-methods}
+\section{Materials and Methods}\label{materials-and-methods}
 
-\subsubsection{Cells and clinical
+\subsection{Cells and clinical
 samples}\label{cells-and-clinical-samples}
 
 HaCaT cells are immortalised human keratinocytes derived from normal
@@ -117,7 +116,7 @@ Following the scratch, cells were treated with FLX at a concentration of
 vs.~control) and time post-scratch (6 h and 36 h), resulting in a total
 of four samples across both conditions.
 
-\subsubsection{RNA sequancing}\label{rna-sequancing}
+\subsection{RNA sequencing}\label{rna-sequencing}
 
 HaCaT cells were scratched three times per well in 6-well plates, and
 total RNA was isolated at 6 h and 36 h post-scratch using the PureLink™
@@ -129,40 +128,11 @@ comparison (6 h and 36 h), each containing one FLX-exposed sample and
 one untreated control sample. Each file included gene annotation columns
 (gene name, gene ID, chromosome, start and end positions, strand,
 length, and biotype), raw read counts per sample, FPKM-normalised
-expression values, and statistical outputs including log2log\_2 log2.
-fold change, p-value, and adjusted p-value (padj). Raw read counts were
-used as input for all downstream differential expression analysis.
+expression values, and statistical outputs including log2. fold change,
+p-value, and adjusted p-value (padj). Raw read counts were used as input
+for all downstream differential expression analysis.
 
-Most likely this will be the largest section in your report (depending
-on the number of images you show in the \texttt{Results} section). Take
-a look at your experiments article to see how they organised its content
-to see if this is also suitable for your report.
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  This section must at the very least contain information about the
-  \textbf{data}; how many samples from what organism + strain (if
-  applicable), what kind of data is there available (not only saying
-  \textbf{FPKM} but also the sequencer type that generated this data).
-\item
-  Also, information about all the \textbf{software} that you used during
-  your analysis (i.e.~\texttt{R} and its libraries,
-  \texttt{bioConductor}, \texttt{DESeq2}, etc.) and all \textbf{methods}
-  that you applied (both filtering steps and statistical analysis
-  steps). Try to use the proper terms and symbols if needed,
-  i.e.~``\emph{We filtered for DEGs with an} \(\alpha\) \textless{}
-  0.05''.
-  \href{https://www.artofproblemsolving.com/wiki/index.php/LaTeX:Symbols}{Symbols}
-  need to be surrounded with \texttt{\$} signs, otherwise you will get
-  an error when knitting.
-\end{enumerate}
-
-Do not show any results in this section, for instance when stating that
-you filtered t-test p-values on a certain value, you do not list how
-many genes were left, that is for the next section.
-
-\subsubsection{Data Pre-processing}\label{data-pre-processing}
+\subsection{Data Pre-processing}\label{data-pre-processing}
 
 Prior to differential expression analysis, sample quality was assessed
 using multiple visualizations. Raw count data were normalized using
@@ -182,7 +152,7 @@ were identified and removed from the analysis: \texttt{C36-R1} and
 experimental group retained a minimum of three biological replicates, in
 order to maintain statistical reliability in the downstream analysis.
 
-\subsubsection{Differential Expression \& Enrichment
+\subsection{Differential Expression \& Enrichment
 Analysis}\label{differential-expression-enrichment-analysis}
 
 Differential gene expression analysis was performed separately for each
@@ -217,22 +187,9 @@ analyses were performed using the \texttt{clusterProfiler} and
   DEGs.
 \end{itemize}
 
-\subsection{Results}\label{results}
+\section{Results}\label{results}
 
-\subsubsection{Data Analysis}\label{data-analysis-1}
-
-\begin{quote}
-plots
-\end{quote}
-
-After generating heatmaps and MDS plots, the most irregular samples
-identified are: C36-R1 and E36\_R3 from the 36-hour dataset, and C6\_R4
-from the 6-hour dataset. These samples don't seem grouped and are quite
-far apart from the rest. This is the reason we chose to continue without
-those samples in the following DEGs section. From the 4 samples groups 3
-have now only 3 replicates and the 4rth one remains with 4.
-
-\subsubsection{DEGs}\label{degs-1}
+\subsection{DEGs}\label{degs}
 
 No significant differentialy expressed genes where found using a
 p-adjusted value \texttt{padj\ \textless{}\ 0.05}. Thus, we proceed with
@@ -240,23 +197,17 @@ p-values, although with the warning that we are not using p-adjusted
 values. Some significance can be seen in the following p-value
 distribution plots for both samples.
 
-\begin{quote}
-pval plots
-\end{quote}
-
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Pval_6h.png}
-    \caption{A}
     \label{figure:pval_distribution_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Pval_36h.png}
-    \caption{B}
     \label{figure:pval_distribution_36h}
   \end{subfigure}
-  
+  \caption{P-value distribution for both sample groups. Namely, distribution shows enough values with significance to proceed with unadjusted p-values.}
   \label{figure:pval_plots}
 \end{figure}
 
@@ -265,228 +216,159 @@ the original article. Of course, due to the data cleaning we end up with
 a lower amount, while without cleaning it would result in the exact
 number. The following volcano plots showcase the resulting DEGs.
 
-\begin{quote}
-volcano plots
-\end{quote}
-
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Volcano_6h.png}
-    \caption{A}
     \label{figure:volcano_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Volcano_36h.png}
-    \caption{B}
     \label{figure:volcano_36h}
   \end{subfigure}
-  
+  \caption{Volcano plots for both sample groups. A total of 147 DEGs at +6 hours, 86 upregulated and 61 downregulated, and 242 DEGs at +36 hours, 110 upregulated and 132 downregulated.}
   \label{figure:volcano_plots}
 \end{figure}
 
-\subsubsection{Enrichment analysis}\label{enrichment-analysis}
+\subsection{Enrichment Analysis}\label{enrichment-analysis}
 
-\begin{quote}
-go plots
-\end{quote}
+\subsubsection{Go Terms}\label{go-terms}
 
-\begin{figure}[!h]
+Go enrichment analysis for the +6 hours group shows reduced metabolic
+functions in the cell as well as regulation of Wnt signaling, commonly
+implicated in regeneration, cancer and epithelial development. For the
++36 hours group upregulated genes are related to cell signaling and
+membrane organization.
+
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoBP_6h.png}
-    \caption{A}
+    \caption{biological process, +6 hours sample group}
     \label{figure:enrichment_gobp_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoBP_36h.png}
-    \caption{B}
+    \caption{biological process, +36 hours sample group}
     \label{figure:Enrichment_gobp_36h}
   \end{subfigure}
-  
+  \label{figure:enrichment_gobp_plots}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoCC_6h.png}
-    \caption{A}
+    \caption{cellular component, +6 hours sample group}
     \label{figure:enrichment_gocc_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoCC_36h.png}
-    \caption{B}
+    \caption{cellular component, +36 hours sample group}
     \label{figure:Enrichment_gocc_36h}
   \end{subfigure}
-  
+  \label{figure:enrichment_gocc_plots}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoMF_6h.png}
-    \caption{A}
+    \caption{molecular function, +6 hours sample group}
     \label{figure:enrichment_gomf_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoMF_36h.png}
-    \caption{B}
+    \caption{molecular function, +36 hours sample group}
     \label{figure:Enrichment_gomf_36h}
   \end{subfigure}
-  
-  \label{figure:enrichment_go_plots}
+  \label{figure:enrichment_gomf_plots}
 \end{figure}
 
-\begin{quote}
-kegg plots
-\end{quote}
+\subsubsection{Pathway Analysis}\label{pathway-analysis}
 
-\begin{figure}[!h]
+Kegg and reactome analysis results suggest response to oxidative and
+chemical stress rather than disease-specific processes for the +6 hours
+group, typicaly a detoxification response. Whereas for the +36 hours
+group suggests regulation of cellular stress responses, proliferative
+signaling, metabolic adaptation, and inflammatory processes.
+
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Kegg_6h.png}
-    \caption{A}
+    \caption{kegg, +6 hours sample group}
     \label{figure:enrichment_kegg_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Kegg_36h.png}
-    \caption{B}
+    \caption{kegg, +36 hours sample group}
     \label{figure:enrichment_kegg_36h}
   \end{subfigure}
   
   \label{figure:enrichment_kegg_plots}
 \end{figure}
 
-\begin{quote}
-reactome plots
-\end{quote}
-
-\begin{figure}[!h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Reactome_6h.png}
-    \caption{A}
+    \caption{reactome, +6 hours sample group}
     \label{figure:enrichment_reactome_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Reactome_36h.png}
-    \caption{B}
+    \caption{reactome, +36 hours sample group}
     \label{figure:enrichment_reactome_36h}
   \end{subfigure}
   
   \label{figure:enrichment_reactome_plots}
 \end{figure}
 
-\subsubsection{Pathview}\label{pathview}
+\section{Conclusion}\label{conclusion}
 
-Here you will only focus on your own results, start at the beginning but
-only show the interesting results. This section works best if you
-alternate between text introducing some result, a figure or table
-showing the result, and a short text segment analyzing the presented
-result \emph{and} introducing the next figure, etc.
+Given the results shown above cell signaling and proliferation seem to
+be the most notable upsides given the exposure to FLX. Notably, an
+initial exposure fires negative responses related to cell stress and
+detoxification processes in the cell. There are some week links to
+formation of illnesess, specially cancer since we are talking about skin
+cells. The most important aspect is that we cannot entirely ensure these
+effects given that the p adjusted values proved no significance,
+possibly related to sample noise. However, p values showed some
+interesting significance which could prompt further research into the
+topic.
 
-Although we have worked in \texttt{R} a lot, the results are almost
-never pieces of \texttt{R} code. If you have written your own algorithm
-or analysis method try to present it in a formula \emph{followed} by the
-\texttt{R} implementation, otherwise this section should mainly contain
-figures and tables.
+\section{Discussion}\label{discussion}
 
-There are multiple methods of including a figure in this section. Figure
-\ref{figure:sample_heatmap} shows the \LaTeX method (see the source
-code) giving very fine control over size and placement of a figure. The
-size of a figure is determined by the width of the text column, Figure
-\ref{figure:sample_heatmap} is scaled as 85\% of the text width. The
-\href{https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions\#Figures}{Wikibooks.org}
-website shows some examples for placement (for instance, what the
-\texttt{{[}htbp{]}} means), scaling and captions.
+The aim of this analysis was to reproduce the differential gene
+expression results reported by \citep{rodriguez:2024} using the same
+RNA-seq dataset of FLX-exposed HaCaT cells at two time points (6 h and
+36 h post-scratch).
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.85\textwidth]{images/pheatmap.png}
-  \caption{Heatmap showing sample distances and clustering.}
-  \label{figure:sample_heatmap}
-\end{figure}
+\textbf{Comparison with the original article}
 
-\newpage
+Prior to sample cleaning, our DESeq2 analysis yielded exactly the same
+number of DEGs as reported in the original article: 165 DEGs at 6 h and
+350 DEGs at 36 h. Following the removal of three irregular samples
+identified during quality control, the number of DEGs decreased to 147
+at 6 h (86 upregulated, 61 downregulated) and 242 at 36 h (110
+upregulated, 132 downregulated). The genes identified after cleaning
+appear to be a subset of those found before cleaning, suggesting that
+sample removal reduced statistical power rather than introducing
+different signals.
 
-Alternatively the previously shown \texttt{R} method using the
-\texttt{PNG} library can be used which allows changing the \emph{heigth}
-and \emph{width} of an image but lacks the possibility of referencing
-the figure in the text, aligning the figure (the heatmap is centered),
-providing a figure caption and automatic numbering of figures.
+\textbf{p-value vs adjusted p-value}
 
-\begin{Schunk}
-\begin{Sinput}
-library(png)
-library(grid)
-img <- readPNG("images/mds.png")
-grid.raster(img)
-\end{Sinput}
+Replicating the original DEG counts was only achievable using unadjusted
+p-values, despite the article stating padj was used. This discrepancy
+remains an open question and a limitation of the current analysis.
 
-\includegraphics{report-template_files/figure-latex/MDS-Figure-1} \end{Schunk}
+\textbf{Overlap between time points}
 
-\subsection{Conclusion}\label{conclusion}
-
-Limit to your \emph{own} conclusions, based on what is shown in the
-\textbf{Results} section. Do not include any comparison to the original
-article as that is the content of the next section, the
-\textbf{Discussion}. Usually you refer back to all steps outlined in the
-results section since you included it there for a reason.
-
-\subsection{Discussion}\label{discussion}
-
-An important section in your report; here you can compare your findings
-with the findings presented in the original article. If you found
-exactly the same results - and that was your goal from the start - this
-will be a bit shorter section and you should focus on other parts of
-your research that hasn't been discussed or shown in the article,
-i.e.~any findings from the exploratory data analysis or differences in
-DEGs using the manual- and library-method.
-
-Besides comparing the two `experiments', this is also the place to
-discuss how reliable your results are. Did anything go wrong or did you
-get unexpected outcomes using some method and if so, what did you do to
-solve it or are there still open discussion points on this subject.
-
-\subsection{\texorpdfstring{Notes on the \texttt{bibliography}
-section}{Notes on the bibliography section}}\label{notes-on-the-bibliography-section}
-
-The last section in the report contains all the used references that are
-used throughout the text in a section called the \texttt{Bibliography}.
-In the text you can link to references using the \LaTeX commands (see
-the source of this file for instructions). These references must be
-present in a file named \texttt{RJreferences.bib} which is automatically
-generated once you click the \texttt{Knit} button for the first time in
-a folder with the same name as the current markdown file
-(\texttt{./report-template/RJreferences.bib} for this example file).
-
-This file containing the references can be edited in RStudio too, browse
-to the folder (after Knitting) and click on the \texttt{.bib} file to
-edit. If, for example, I want to add the article that is available for
-the experiment used in the week 4 - 7 assignment document, I would first
-lookup the paper in
-\href{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3914337/}{PubMed} to
-get the details and add these details to the \texttt{.bib} file as
-follows:
-
-\begin{verbatim}
-@article{garcia,
-    author = {Duart-Garcia, Braunschweig},
-    title = {Functional expression study of igf2 antisense transcript in mouse},
-    journal = {International Journal of Genomics},
-    doi = {10.1155/2014/390296},
-    url = {http://dx.doi.org/10.1155/2014/390296},
-    year = 2014
-}
-
-@article{rodriguez,
-    author = {Quentin Rodriguez-Barucg, Angel A. Garcia, Belen Garcia-Merino, Tomilayo Akinmola, Temisanren Okotie-Eboh, Thomas Francis, Eugenio Bringas, Inmaculada Ortiz, Mark A.               Wade, Adam Dowle, Domino A. Joyce, Matthew J. Hardman, Holly N. Wilkinson, Pedro Beltran-Alvarez},
-    title = {Environmental fluoxetine promotes skin cell proliferation and wound healing},
-    journal = {Environmental Pollution},
-    doi = {10.1016/2024/124952},
-    url = {https://doi.org/10.1016/j.envpol.2024.124952},
-    year = 2024
-}
-\end{verbatim}
-
-References added to this file do not automatically show up in your
-document, unless you actually refer to it. To add a reference, like so:
-\citep{garcia:2014}, you need to use the
-\texttt{\textbackslash{}citep\{\}} or \texttt{\textbackslash{}citer\{\}}
-\LaTeX command combined with the given ID which is \texttt{garcia} in
-our case.
+A Venn diagram comparison revealed three genes shared across both time
+points: NRARP, TMEM238, and IKBKGP1. The fact that these three genes
+appear in both time points suggests they may play an ongoing role in how
+cells respond to FLX during wound healing.
 
 \bibliography{RJreferences}
 
@@ -494,7 +376,7 @@ our case.
 \address{%
 Roa Hanoun\\
 Hanze University of Applied Sciences\\%
-Zernikeplein 11\\ room D1.12\\
+\\
 %
 %
 %
@@ -504,9 +386,9 @@ Zernikeplein 11\\ room D1.12\\
 \address{%
 Jero Eyras\\
 Hanze University of Applied Sciences\\%
-line 1\\ line 2\\
+\\
 %
 %
 %
-\href{mailto:author2@work}{\nolinkurl{author2@work}}%
+\href{mailto:j.eyras.jimenez@st.hanze.nl}{\nolinkurl{j.eyras.jimenez@st.hanze.nl}}%
 }

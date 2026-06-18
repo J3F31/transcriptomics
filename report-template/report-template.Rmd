@@ -3,9 +3,6 @@ title: Environmental fluoxetine promotes skin cell proliferation and wound heali
 author:
   - name: Roa Hanoun
     affiliation: Hanze University of Applied Sciences
-    address:
-    - Zernikeplein 11
-    - room D1.12
     email:  rjm.hanoun@st.hanze.nl
   - name: Jero Eyras
     affiliation: Hanze University of Applied Sciences
@@ -41,17 +38,7 @@ To investigate the transcriptomic effects of Fluoxetine (FLX) on wound healing, 
 
 ## RNA sequencing 
 
-HaCaT cells were scratched three times per well in 6-well plates, and total RNA was isolated at 6 h and 36 h post-scratch using the PureLink™ RNA Mini Kit (Thermo Fisher Scientific), following the manufacturer's instructions. Library preparation and RNA sequencing were carried out by Novogene Co. Ltd. (Cambridge, UK) using the Illumina NovaSeq 6000 platform. The sequencing output consisted of two files, one for each comparison (6 h and 36 h), each containing one FLX-exposed sample and one untreated control sample. Each file included gene annotation columns (gene name, gene ID, chromosome, start and end positions, strand, length, and biotype), raw read counts per sample, FPKM-normalised expression values, and statistical outputs including log2log_2
-log2. fold change, p-value, and adjusted p-value (padj). Raw read counts were used as input for all downstream differential expression analysis.
-
-
-Most likely this will be the largest section in your report (depending on the number of images you show in the `Results` section). Take a look at your experiments article to see how they organised its content to see if this is also suitable for your report.
-
-1. This section must at the very least contain information about the **data**; how many samples from what organism + strain (if applicable), what kind of data is there available (not only saying **FPKM** but also the sequencer type that generated this data). 
-
-2. Also, information about all the **software** that you used during your analysis (i.e. `R` and its libraries, `bioConductor`, `DESeq2`, etc.) and all **methods** that you applied (both filtering steps and statistical analysis steps). Try to use the proper terms and symbols if needed, i.e. "*We filtered for DEGs with an* $\alpha$ < 0.05". [Symbols](https://www.artofproblemsolving.com/wiki/index.php/LaTeX:Symbols) need to be surrounded with `$` signs, otherwise you will get an error when knitting.
-
-Do not show any results in this section, for instance when stating that you filtered t-test p-values on a certain value, you do not list how many genes were left, that is for the next section.
+HaCaT cells were scratched three times per well in 6-well plates, and total RNA was isolated at 6 h and 36 h post-scratch using the PureLink™ RNA Mini Kit (Thermo Fisher Scientific), following the manufacturer's instructions. Library preparation and RNA sequencing were carried out by Novogene Co. Ltd. (Cambridge, UK) using the Illumina NovaSeq 6000 platform. The sequencing output consisted of two files, one for each comparison (6 h and 36 h), each containing one FLX-exposed sample and one untreated control sample. Each file included gene annotation columns (gene name, gene ID, chromosome, start and end positions, strand, length, and biotype), raw read counts per sample, FPKM-normalised expression values, and statistical outputs including log2. fold change, p-value, and adjusted p-value (padj). Raw read counts were used as input for all downstream differential expression analysis.
 
 ## Data Pre-processing
 
@@ -200,8 +187,18 @@ Given the results shown above cell signaling and proliferation seem to be the mo
 
 # Discussion
 
-An important section in your report; here you can compare your findings with the findings presented in the original article. If you found exactly the same results - and that was your goal from the start - this will be a bit shorter section and you should focus on other parts of your research that hasn't been discussed or shown in the article, i.e. any findings from the exploratory data analysis or differences in DEGs using the manual- and library-method.
+The aim of this analysis was to reproduce the differential gene expression results reported by \citep{rodriguez:2024} using the same RNA-seq dataset of FLX-exposed HaCaT cells at two time points (6 h and 36 h post-scratch).
 
-Besides comparing the two 'experiments', this is also the place to discuss how reliable your results are. Did anything go wrong or did you get unexpected outcomes using some method and if so, what did you do to solve it or are there still open discussion points on this subject.
+**Comparison with the original article**
+
+Prior to sample cleaning, our DESeq2 analysis yielded exactly the same number of DEGs as reported in the original article: 165 DEGs at 6 h and 350 DEGs at 36 h. Following the removal of three irregular samples identified during quality control, the number of DEGs decreased to 147 at 6 h (86 upregulated, 61 downregulated) and 242 at 36 h (110 upregulated, 132 downregulated). The genes identified after cleaning appear to be a subset of those found before cleaning, suggesting that sample removal reduced statistical power rather than introducing different signals.
+
+**p-value vs adjusted p-value**
+
+Replicating the original DEG counts was only achievable using unadjusted p-values, despite the article stating padj was used. This discrepancy remains an open question and a limitation of the current analysis.
+
+**Overlap between time points**
+
+A Venn diagram comparison revealed three genes shared across both time points: NRARP, TMEM238, and IKBKGP1. The fact that these three genes appear in both time points suggests they may play an ongoing role in how cells respond to FLX during wound healing.
 
 \bibliography{RJreferences}

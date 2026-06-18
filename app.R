@@ -16,7 +16,6 @@ library(pathview)
 library(png)
 library(magick)
 
-
 deg6 <- readRDS("./rds-files/deg_6.rds")
 
 deg36 <- readRDS("./rds-files/deg_36.rds")
