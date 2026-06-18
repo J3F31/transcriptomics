@@ -8,8 +8,7 @@ author:
     affiliation: Hanze University of Applied Sciences
     email: j.eyras.jimenez@st.hanze.nl
 abstract: >
-    Pharmaceutical pollutants, including the antidepressant fluoxetine (FLX, commercial name: Prozac), are increasingly detected in aquatic environments, raising concerns about their effects on non-target organisms, including humans. The original study demonstrated that environmentally-relevant FLX concentrations promote wound closure in human skin biopsies and keratinocytes through enhanced cell proliferation and serotonin signalling, supported by transcriptomic, phosphoproteomic, and kinase profiling analyses. Building on these findings, the present study extends the transcriptomic analysis by examining gene expression in scratched HaCaT keratinocytes exposed to 540 ng/L FLX at two time points: 6 and 36 hours. Differentially expressed genes (DEGs) were identified at each time point and compared to unexposed control cells, with an intersection analysis performed between both conditions. We identified 147 DEGs at 6 hours and 250 DEGs at 36 hours, with upregulated genes associated with cell proliferation and cellular stress defence mechanisms. The difference in DEG numbers compared to the original study reflects sample quality filtering applied during data processing. These results provide a more detailed temporal resolution of FLX-induced transcriptomic changes and support the conclusion that environmental FLX exposure modulates gene expression in ways that may meaningfully impact skin wound healing.
-    
+    Pharmaceutical pollutants, including the antidepressant fluoxetine (FLX), are increasingly detected in aquatic environments, raising concerns about their effects on non-target organisms. The original study demonstrated that environmentally-relevant FLX concentrations promote wound closure in human keratinocytes through enhanced cell proliferation and serotonin signalling. Building on these findings, the present study extends the transcriptomic analysis by examining gene expression in scratched HaCaT keratinocytes exposed to 540 ng/L FLX at 6 and 36 hours. We identified 147 DEGs at 6 hours and 242 DEGs at 36 hours, with upregulated genes associated with cell proliferation and cellular stress defence. The difference in DEG numbers compared to the original study reflects sample quality filtering applied during data processing. These results support the conclusion that environmental FLX exposure modulates gene expression in ways that may meaningfully impact skin wound healing.
 preamble: >
   \usepackage{subcaption}
   \usepackage{float}
@@ -18,23 +17,20 @@ output: rticles::rjournal_article
 
 # Introduction
 
-Pharmaceutical pollution has become a growing environmental concern, particularly the presence of antidepressants in aquatic ecosystems. Fluoxetine (FLX), commercially known as Prozac, is one of the most widely prescribed selective serotonin reuptake inhibitors (SSRIs) and works by blocking the reabsorption of serotonin in the brain, thereby increasing serotonin availability and improving mood regulation. Due to incomplete metabolisation in the human body and inadequate removal by wastewater treatment plants, FLX is consistently detected in surface waters at concentrations ranging from nanograms to micrograms per liter.
+Pharmaceutical pollution has become a growing environmental concern, particularly the presence of antidepressants in aquatic ecosystems. Fluoxetine (FLX), commercially known as Prozac, is one of the most widely prescribed selective serotonin reuptake inhibitors (SSRIs). Due to incomplete metabolisation in the human body and inadequate removal by wastewater treatment plants, FLX is consistently detected in surface waters at concentrations ranging from nanograms to micrograms per liter.
 
-Serotonin is not only a neurotransmitter but also plays a well-established role in peripheral tissues, including the skin, where it is involved in regulating cell proliferation and wound healing. Wound healing is a complex and tightly coordinated biological process that proceeds through three overlapping phases: inflammation, proliferation, and tissue remodeling. During the proliferation phase, keratinocytes — the dominant cell type of the outermost skin layer (the epidermis) — migrate toward the wound edge and actively divide to restore the skin barrier. Any disruption or enhancement of this process can have significant clinical implications. Given that FLX modulates serotonin signalling, and serotonin itself plays a role in keratinocyte activity, it is biologically plausible that environmental FLX exposure could meaningfully influence skin repair mechanisms.
+Serotonin plays a well-established role in peripheral tissues, including the skin, where it is involved in regulating cell proliferation and wound healing. Wound healing proceeds through three overlapping phases: inflammation, proliferation, and tissue remodeling. During the proliferation phase, keratinocytes migrate toward the wound edge and actively divide to restore the skin barrier. Given that FLX modulates serotonin signalling, it is biologically plausible that environmental FLX exposure could influence skin repair mechanisms.
 
-The original study by \citep{rodriguez:2024} was the first to investigate this link experimentally, using a multi-omics approach combining transcriptomics, phosphoproteomics, and kinase profiling. Their transcriptomic analysis identified 350 differentially expressed genes (DEGs) in FLX-exposed keratinocytes, with upregulated genes linked to cell proliferation and tissue morphogenesis, and downregulated genes associated with mitochondrial function and metabolism \citep{rodriguez:2024}. These findings provided a molecular basis for the observed enhancement in wound closure, but left room for deeper temporal investigation of how gene expression changes evolve over time during FLX exposure.
+The original study by \citep{rodriguez:2024} was the first to investigate this link experimentally, identifying 350 DEGs in FLX-exposed keratinocytes, with upregulated genes linked to cell proliferation and downregulated genes associated with mitochondrial function \citep{rodriguez:2024}.
 
-Transcriptomics is the large-scale study of all RNA molecules expressed in a cell or tissue at a given moment, essentially providing a snapshot of which genes are active and to what degree. By comparing gene expression between exposed and unexposed cells, it is possible to identify which biological processes are being switched on or off in response to a treatment. In this study, we use RNA sequencing (RNA-seq) data analysed with DESeq2, a statistical tool specifically designed to detect differentially expressed genes from count-based sequencing data while accounting for biological variability between samples.
-
-The present study focuses exclusively on the transcriptomic component of the original research. We analysed gene expression in scratched HaCaT human keratinocytes exposed to 540 ng/L FLX at two time points: 6 and 36 hours, mirroring the time points used in the transcriptomic section of the original study \citep{rodriguez:2024}. The 6-hour time point captures the early transcriptional response to FLX exposure, reflecting immediate cellular adjustments, while the 36-hour time point represents a later stage where more sustained gene expression changes associated with active wound closure are expected. Our central research question is: does FLX exposure significantly alter gene expression in human keratinocytes in ways that support enhanced wound healing, and how does this response evolve between 6 and 36 hours of exposure? To address this, DEGs were identified at each time point and compared to unexposed control cells, followed by enrichment analysis to map these genes to relevant biological pathways. An intersection analysis was further performed to identify genes consistently differentially expressed across both time points. We also explored whether enrichment analysis could reveal additional gene functions and pathways beyond those reported in the original article \citep{rodriguez:2024}.
+The present study focuses exclusively on the transcriptomic component of the original research, analysing gene expression in scratched HaCaT keratinocytes exposed to 540 ng/L FLX at 6 and 36 hours. Our central research question is: does FLX exposure significantly alter gene expression in human keratinocytes in ways that support enhanced wound healing, and how does this response evolve between 6 and 36 hours?
 
 # Materials and Methods
 
 ## Cells and clinical samples
 
-HaCaT cells are immortalised human keratinocytes derived from normal adult human skin and were obtained from AddexBio. Due to their well-characterised behaviour and relevance to skin biology, HaCaT cells are widely established as a model system in dermatological research. Cells were maintained in 5% CO2 incubation chambers at 37 °C and subcultured every 3 days or upon reaching approximately 80% confluency.
-
-To investigate the transcriptomic effects of Fluoxetine (FLX) on wound healing, a scratch assay was performed on HaCaT cell monolayers. Following the scratch, cells were treated with FLX at a concentration of 540 ng/L. Conditions were defined as a combination of treatment (FLX vs. control) and time post-scratch (6 h and 36 h), resulting in a total of four samples across both conditions.
+HaCaT cells are immortalised human keratinocytes derived from normal adult human skin, widely used as a model system in dermatological research, and were obtained from AddexBio. Cells were maintained in 5% CO2 at 37 °C and subcultured every 3 days or at approximately 80% confluency.
+A scratch assay was performed on HaCaT monolayers to simulate wound healing, followed by FLX treatment at 540 ng/L. Conditions were defined as a combination of treatment (FLX vs. control) and time post-scratch (6 h and 36 h).
 
 ## RNA sequencing 
 
@@ -48,15 +44,9 @@ Based on these quality control visualizations, three irregular samples were iden
 
 ## Differential Expression & Enrichment Analysis
 
-Differential gene expression analysis was performed separately for each time point (6 h and 36 h) using the DESeq2 R package. Genes were considered differentially expressed at an unadjusted p-value threshold of `p < 0.05`. It should be noted that unadjusted p-values were used in place of adjusted p-values (padj), as this approach yielded results most comparable to those reported in the original study.
+Differential gene expression analysis was performed separately for each time point (6 h and 36 h) using the DESeq2 R package, with genes considered differentially expressed at an unadjusted p-value threshold of `p < 0.05`. Unadjusted p-values were used in place of adjusted p-values (padj), as this approach yielded results most comparable to those reported in the original study.
 
-Entrez gene IDs (ENTREZID) were used as the primary gene identifier for all enrichment analyses, as they provide a standardised identifier supported across biological databases. Three complementary enrichment analyses were performed using the `clusterProfiler` and `ReactomePA` R packages, with gene annotations provided by `org.Hs.eg.db`, all applying a significance threshold of pp `p < 0.05` without p-value adjustment:
-
-- **Gene Ontology (GO) enrichment (enrichGO)** was performed across all three ontology domains — Biological Process (BP), Cellular Component (CC), and Molecular Function (MF) — as each domain captures a distinct and complementary aspect of gene function.
-
-- **KEGG pathway enrichment (enrichKEGG)** was applied to identify which known biological pathways were significantly represented among the DEGs, with gene set sizes restricted between 10 and 500 genes.
-
-- **Reactome pathway enrichment (enrichPathway)** was used to identify precise molecular reactions and sub-pathways driven by the DEGs.
+Three complementary enrichment analyses were performed using the clusterProfiler and ReactomePA R packages, with gene annotations provided by `org.Hs.eg.db` and `Entrez` gene IDs (ENTREZID) as the primary identifier, all at a significance threshold of `p < 0.05` without p-value adjustment. Gene Ontology (GO) enrichment was performed across all three ontology domains — Biological Process (BP), Cellular Component (CC), and Molecular Function (MF) — as each captures a distinct aspect of gene function. KEGG pathway enrichment was applied to identify significantly represented biological pathways among the DEGs, with gene set sizes restricted between 10 and 500 genes. Reactome pathway enrichment was additionally used to identify precise molecular reactions and sub-pathways driven by the DEGs.
 
 # Results
 
@@ -182,18 +172,6 @@ Given the results shown above cell signaling and proliferation seem to be the mo
 
 # Discussion
 
-The aim of this analysis was to reproduce the differential gene expression results reported by \citep{rodriguez:2024} using the same RNA-seq dataset of FLX-exposed HaCaT cells at two time points (6 h and 36 h post-scratch).
-
-**Comparison with the original article**
-
-Prior to sample cleaning, our DESeq2 analysis yielded exactly the same number of DEGs as reported in the original article: 165 DEGs at 6 h and 350 DEGs at 36 h. Following the removal of three irregular samples identified during quality control, the number of DEGs decreased to 147 at 6 h (86 upregulated, 61 downregulated) and 242 at 36 h (110 upregulated, 132 downregulated). The genes identified after cleaning appear to be a subset of those found before cleaning, suggesting that sample removal reduced statistical power rather than introducing different signals.
-
-**p-value vs adjusted p-value**
-
-Replicating the original DEG counts was only achievable using unadjusted p-values, despite the article stating padj was used. This discrepancy remains an open question and a limitation of the current analysis.
-
-**Overlap between time points**
-
-A Venn diagram comparison revealed three genes shared across both time points: NRARP, TMEM238, and IKBKGP1. The fact that these three genes appear in both time points suggests they may play an ongoing role in how cells respond to FLX during wound healing.
+The aim of this analysis was to reproduce the differential gene expression results reported by \citep{rodriguez:2024} using the same RNA-seq dataset of FLX-exposed HaCaT cells at two time points (6 h and 36 h post-scratch). Prior to sample cleaning, our DESeq2 analysis yielded exactly the same number of DEGs as reported in the original article: 165 DEGs at 6 h and 350 DEGs at 36 h. Following the removal of three irregular samples identified during quality control, the number of DEGs decreased to 147 at 6 h (86 upregulated, 61 downregulated) and 242 at 36 h (110 upregulated, 132 downregulated). The genes identified after cleaning appear to be a subset of those found before cleaning, suggesting that sample removal reduced statistical power rather than introducing different signals. Notably, replicating the original DEG counts was only achievable using unadjusted p-values, despite the article stating padj was used, which remains an open question and a limitation of the current analysis. Finally, a Venn diagram comparison revealed three genes shared across both time points — NRARP, TMEM238, and IKBKGP1 — suggesting they may play an ongoing role in the cellular response to FLX during wound healing.
 
 \bibliography{RJreferences}
