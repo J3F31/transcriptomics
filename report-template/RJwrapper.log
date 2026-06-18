@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2025.10.21)  18 JUN 2026 14:18
+=======
+<<<<<<< HEAD
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2025.10.20)  16 JUN 2026 16:16
+=======
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2025.10.21)  16 JUN 2026 22:30
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 7f0f4ca96a976e8ed226ff32808fb2c8e0a8acf2
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -671,9 +679,15 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@thisruleclass=\count329
 \@lastruleclass=\count330
 \@thisrulewidth=\dimen300
+) (/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count331
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count332
 ) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count331
+\l__color_backend_stack_int=\count333
 \l__pdf_internal_box=\box70
 ) (./RJwrapper.aux)
 \openout1 = `RJwrapper.aux'.
@@ -698,16 +712,16 @@ LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count332
+\scratchcounter=\count334
 \scratchdimen=\dimen301
 \scratchbox=\box71
-\nofMPsegments=\count333
-\nofMParguments=\count334
+\nofMPsegments=\count335
+\nofMParguments=\count336
 \everyMPshowfont=\toks45
-\MPscratchCnt=\count335
+\MPscratchCnt=\count337
 \MPscratchDim=\dimen302
-\MPnumerator=\count336
-\makeMPintoPDFobject=\count337
+\MPnumerator=\count338
+\makeMPintoPDFobject=\count339
 \everyMPtoPDFconversion=\toks46
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -854,6 +868,118 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 7.29405pt on input line 154.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
+<<<<<<< HEAD
+(Font)              scaled to size 5.21004pt on input line 117.
+
+
+[2]
+<images/Pval_6h.png, id=65, 505.89pt x 361.35pt>
+File: images/Pval_6h.png Graphic file (type png)
+<use images/Pval_6h.png>
+Package pdftex.def Info: images/Pval_6h.png  used on input line 180.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Pval_36h.png, id=66, 505.89pt x 361.35pt>
+File: images/Pval_36h.png Graphic file (type png)
+<use images/Pval_36h.png>
+Package pdftex.def Info: images/Pval_36h.png  used on input line 185.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Volcano_6h.png, id=67, 505.89pt x 361.35pt>
+File: images/Volcano_6h.png Graphic file (type png)
+<use images/Volcano_6h.png>
+Package pdftex.def Info: images/Volcano_6h.png  used on input line 205.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Volcano_36h.png, id=68, 505.89pt x 361.35pt>
+File: images/Volcano_36h.png Graphic file (type png)
+<use images/Volcano_36h.png>
+Package pdftex.def Info: images/Volcano_36h.png  used on input line 210.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Enrichment_GoBP_6h.png, id=69, 505.89pt x 361.35pt>
+File: images/Enrichment_GoBP_6h.png Graphic file (type png)
+<use images/Enrichment_GoBP_6h.png>
+Package pdftex.def Info: images/Enrichment_GoBP_6h.png  used on input line 227.
+
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Enrichment_GoBP_36h.png, id=70, 505.89pt x 361.35pt>
+File: images/Enrichment_GoBP_36h.png Graphic file (type png)
+<use images/Enrichment_GoBP_36h.png>
+Package pdftex.def Info: images/Enrichment_GoBP_36h.png  used on input line 232
+.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Enrichment_GoCC_6h.png, id=71, 505.89pt x 361.35pt>
+File: images/Enrichment_GoCC_6h.png Graphic file (type png)
+<use images/Enrichment_GoCC_6h.png>
+Package pdftex.def Info: images/Enrichment_GoCC_6h.png  used on input line 238.
+
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Enrichment_GoCC_36h.png, id=72, 505.89pt x 361.35pt>
+File: images/Enrichment_GoCC_36h.png Graphic file (type png)
+<use images/Enrichment_GoCC_36h.png>
+Package pdftex.def Info: images/Enrichment_GoCC_36h.png  used on input line 243
+.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Enrichment_GoMF_6h.png, id=73, 505.89pt x 361.35pt>
+File: images/Enrichment_GoMF_6h.png Graphic file (type png)
+<use images/Enrichment_GoMF_6h.png>
+Package pdftex.def Info: images/Enrichment_GoMF_6h.png  used on input line 249.
+
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Enrichment_GoMF_36h.png, id=74, 505.89pt x 361.35pt>
+File: images/Enrichment_GoMF_36h.png Graphic file (type png)
+<use images/Enrichment_GoMF_36h.png>
+Package pdftex.def Info: images/Enrichment_GoMF_36h.png  used on input line 254
+.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<images/Enrichment_Kegg_6h.png, id=75, 505.89pt x 361.35pt>
+File: images/Enrichment_Kegg_6h.png Graphic file (type png)
+<use images/Enrichment_Kegg_6h.png>
+Package pdftex.def Info: images/Enrichment_Kegg_6h.png  used on input line 269.
+
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Enrichment_Kegg_36h.png, id=76, 505.89pt x 361.35pt>
+File: images/Enrichment_Kegg_36h.png Graphic file (type png)
+<use images/Enrichment_Kegg_36h.png>
+Package pdftex.def Info: images/Enrichment_Kegg_36h.png  used on input line 274
+.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<images/Enrichment_Reactome_6h.png, id=77, 505.89pt x 361.35pt>
+File: images/Enrichment_Reactome_6h.png Graphic file (type png)
+<use images/Enrichment_Reactome_6h.png>
+Package pdftex.def Info: images/Enrichment_Reactome_6h.png  used on input line 
+289.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+<images/Enrichment_Reactome_36h.png, id=78, 505.89pt x 361.35pt>
+File: images/Enrichment_Reactome_36h.png Graphic file (type png)
+<use images/Enrichment_Reactome_36h.png>
+Package pdftex.def Info: images/Enrichment_Reactome_36h.png  used on input line
+ 294.
+(pdftex.def)             Requested size: 179.25113pt x 128.03477pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+
+[3 <./images/PVal_6h.png (PNG copy)> <./images/PVal_36h.png (PNG copy)> <./imag
+es/Volcano_6h.png (PNG copy)> <./images/Volcano_36h.png (PNG copy)>]
+<images/pheatmap.png, id=88, 894.34125pt x 429.605pt>
+File: images/pheatmap.png Graphic file (type png)
+<use images/pheatmap.png>
+Package pdftex.def Info: images/pheatmap.png  used on input line 327.
+(pdftex.def)             Requested size: 338.59021pt x 162.64851pt.
+
+
+[4 <./images/Enrichment_GoBP_6h.png (PNG copy)> <./images/Enrichment_GoBP_36h.p
+ng (PNG copy)> <./images/Enrichment_GoCC_6h.png (PNG copy)> <./images/Enrichmen
+t_GoCC_36h.png (PNG copy)> <./images/Enrichment_GoMF_6h.png (PNG copy)> <./imag
+es/Enrichment_GoMF_36h.png (PNG copy)> <./images/Enrichment_Kegg_6h.png (PNG co
+py)> <./images/Enrichment_Kegg_36h.png (PNG copy)>]
+<report-template_files/figure-latex/MDS-Figure-1.pdf, id=97, 361.35pt x 174.652
+=======
 (Font)              scaled to size 5.21004pt on input line 154.
 
 
@@ -867,29 +993,49 @@ Package pdftex.def Info: images/pheatmap.png  used on input line 245.
 
 [3 <./images/pheatmap.png>]
 <report-template_files/figure-latex/MDS-Figure-1.pdf, id=78, 361.35pt x 174.652
+>>>>>>> refs/remotes/origin/main
 5pt>
 File: report-template_files/figure-latex/MDS-Figure-1.pdf Graphic file (type pd
 f)
 <use report-template_files/figure-latex/MDS-Figure-1.pdf>
 Package pdftex.def Info: report-template_files/figure-latex/MDS-Figure-1.pdf  u
+<<<<<<< HEAD
+sed on input line 348.
+(pdftex.def)             Requested size: 361.34912pt x 174.65207pt.
+
+
+[5 <./images/Enrichment_Reactome_6h.png (PNG copy)> <./images/Enrichment_Reacto
+me_36h.png (PNG copy)> <./images/pheatmap.png> <./report-template_files/figure-
+latex/MDS-Figure-1.pdf>]
+Overfull \hbox (39.3545pt too wide) in paragraph at lines 376--384
+=======
 sed on input line 266.
 (pdftex.def)             Requested size: 361.34912pt x 174.65207pt.
 
 Overfull \hbox (39.3545pt too wide) in paragraph at lines 294--302
+>>>>>>> refs/remotes/origin/main
 \T1/ppl/m/n/9 (-20) time in a folder with the same name as the cur-rent mark-do
 wn file (\T1/pcr/m/n/9 ./report-template/RJreferences.bib
  []
 
 
+<<<<<<< HEAD
+Overfull \hbox (33.66093pt too wide) in paragraph at lines 412--412
+=======
 Overfull \hbox (33.66093pt too wide) in paragraph at lines 330--330
+>>>>>>> refs/remotes/origin/main
 []    \T1/pcr/m/n/9 title = {Functional expression study of igf2 antisense tran
 script in mouse},[] 
  []
 
 
+<<<<<<< HEAD
+Overfull \hbox (1178.45964pt too wide) in paragraph at lines 412--412
+=======
 
 [4 <./report-template_files/figure-latex/MDS-Figure-1.pdf>]
 Overfull \hbox (1178.45964pt too wide) in paragraph at lines 330--330
+>>>>>>> refs/remotes/origin/main
 []    \T1/pcr/m/n/9 author = {Quentin Rodriguez-Barucg, Angel A. Garcia, Belen 
 Garcia-Merino, Tomilayo Akinmola, Temisanren Okotie-Eboh, Thomas Francis, Eugen
 io Bringas, Inmaculada Ortiz, Mark A.               Wade, Adam Dowle, Domino A.
@@ -897,7 +1043,11 @@ io Bringas, Inmaculada Ortiz, Mark A.               Wade, Adam Dowle, Domino A.
  []
 
 
+<<<<<<< HEAD
+Overfull \hbox (87.66087pt too wide) in paragraph at lines 412--412
+=======
 Overfull \hbox (87.66087pt too wide) in paragraph at lines 330--330
+>>>>>>> refs/remotes/origin/main
 []    \T1/pcr/m/n/9 title = {Environmental fluoxetine promotes skin cell prolif
 eration and wound healing},[] 
  []
@@ -908,10 +1058,19 @@ eration and wound healing},[]
 
 )
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
+<<<<<<< HEAD
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 432.
+
+
+[6])
+
+[7] (./RJwrapper.aux)
+=======
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 350.
 )
 
 [5] (./RJwrapper.aux)
+>>>>>>> refs/remotes/origin/main
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -919,6 +1078,18 @@ L3 programming layer <2025-01-18>
 Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: C1BC6C26081413AA8EC93848C6128C40;1321.
 Package rerunfilecheck Info: File `RJwrapper.brf' has not changed.
+<<<<<<< HEAD
+(rerunfilecheck)             Checksum: EEB5531104A20C9231C2EC72214BAE5F;326.
+ ) 
+Here is how much of TeX's memory you used:
+ 26914 strings out of 473197
+ 487792 string characters out of 5718604
+ 905802 words of memory out of 5000000
+ 49465 multiletter control sequences out of 15000+600000
+ 598709 words of font info for 222 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 117i,11n,121p,1006b,790s stack positions out of 10000i,1000n,20000p,200000b,200000s
+=======
 (rerunfilecheck)             Checksum: 50D67F57EF4455F608D581E875066CC5;326.
  ) 
 Here is how much of TeX's memory you used:
@@ -929,16 +1100,30 @@ Here is how much of TeX's memory you used:
  598176 words of font info for 244 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  117i,11n,121p,1006b,827s stack positions out of 10000i,1000n,20000p,200000b,200000s
+>>>>>>> refs/remotes/origin/main
 </usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fo
 nts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
 w/palatino/uplb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/u
 plr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+<<<<<<< HEAD
 Output written on RJwrapper.pdf (5 pages, 161483 bytes).
+=======
+<<<<<<< HEAD
+Output written on RJwrapper.pdf (7 pages, 1939134 bytes).
+PDF statistics:
+ 177 PDF objects out of 1000 (max. 8388607)
+ 132 compressed objects within 2 object streams
+ 26 named destinations out of 1000 (max. 500000)
+ 60565 words of extra memory for PDF output out of 61914 (max. 10000000)
+=======
+Output written on RJwrapper.pdf (5 pages, 161474 bytes).
+>>>>>>> 7f0f4ca96a976e8ed226ff32808fb2c8e0a8acf2
 PDF statistics:
  149 PDF objects out of 1000 (max. 8388607)
  120 compressed objects within 2 object streams
  21 named destinations out of 1000 (max. 500000)
  58447 words of extra memory for PDF output out of 61914 (max. 10000000)
+>>>>>>> refs/remotes/origin/main
 
