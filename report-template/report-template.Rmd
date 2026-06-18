@@ -60,8 +60,6 @@ Entrez gene IDs (ENTREZID) were used as the primary gene identifier for all enri
 
 # Results
 
-## DEGs
-
 No significant differentialy expressed genes where found using a p-adjusted value `padj < 0.05`. Thus, we proceed with p-values, although with the warning that we are not using p-adjusted values. Some significance can be seen in the following p-value distribution plots for both samples.
 
 \begin{figure}[H]
@@ -94,58 +92,55 @@ With a p-value cutoff of 0.05 we end up with a similar number of DEGs as the ori
   \label{figure:volcano_plots}
 \end{figure}
 
-## Enrichment Analysis
-
-### Go Terms
-
 Go enrichment analysis for the +6 hours group shows reduced metabolic functions in the cell as well as regulation of Wnt signaling, commonly implicated in regeneration, cancer and epithelial development. For the +36 hours group upregulated genes are related to cell signaling and membrane organization.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoBP_6h.png}
-    \caption{biological process, +6 hours sample group}
+    \includegraphics[width=1\linewidth]{images/Enrichment_GoBP_6h.png}
+    \caption{}
     \label{figure:enrichment_gobp_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoBP_36h.png}
-    \caption{biological process, +36 hours sample group}
+    \includegraphics[width=1\linewidth]{images/Enrichment_GoBP_36h.png}
+    \caption{}
     \label{figure:Enrichment_gobp_36h}
   \end{subfigure}
+  \caption{go terms biological process, (a) +6 hours sample group, (b) +36 hours sample group}
   \label{figure:enrichment_gobp_plots}
 \end{figure}
   
 \begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoCC_6h.png}
-    \caption{cellular component, +6 hours sample group}
+    \includegraphics[width=1\linewidth]{images/Enrichment_GoCC_6h.png}
+    \caption{}
     \label{figure:enrichment_gocc_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoCC_36h.png}
-    \caption{cellular component, +36 hours sample group}
+    \includegraphics[width=1\linewidth]{images/Enrichment_GoCC_36h.png}
+    \caption{}
     \label{figure:Enrichment_gocc_36h}
   \end{subfigure}
+  \caption{go terms cellular component, (a) +6 hours sample group, (b) +36 hours sample group}
   \label{figure:enrichment_gocc_plots}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoMF_6h.png}
-    \caption{molecular function, +6 hours sample group}
+    \includegraphics[width=1\linewidth]{images/Enrichment_GoMF_6h.png}
+    \caption{}
     \label{figure:enrichment_gomf_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
-    \includegraphics[width=0.9\linewidth]{images/Enrichment_GoMF_36h.png}
-    \caption{molecular function, +36 hours sample group}
+    \includegraphics[width=1\linewidth]{images/Enrichment_GoMF_36h.png}
+    \caption{}
     \label{figure:Enrichment_gomf_36h}
   \end{subfigure}
+  \caption{go terms molecular function, (a) +6 hours sample group, (b) +36 hours sample group}
   \label{figure:enrichment_gomf_plots}
 \end{figure}
-
-### Pathway Analysis
 
 Kegg and reactome analysis results suggest response to oxidative and chemical stress rather than disease-specific processes for the +6 hours group, typicaly a detoxification response. Whereas for the +36 hours group suggests regulation of cellular stress responses, proliferative signaling, metabolic adaptation, and inflammatory processes.
 
@@ -153,15 +148,15 @@ Kegg and reactome analysis results suggest response to oxidative and chemical st
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Kegg_6h.png}
-    \caption{kegg, +6 hours sample group}
+    \caption{}
     \label{figure:enrichment_kegg_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Kegg_36h.png}
-    \caption{kegg, +36 hours sample group}
+    \caption{}
     \label{figure:enrichment_kegg_36h}
   \end{subfigure}
-  
+  \caption{kegg enrichment, (a) +6 hours sample group, (b) +36 hours sample group}
   \label{figure:enrichment_kegg_plots}
 \end{figure}
 
@@ -169,15 +164,15 @@ Kegg and reactome analysis results suggest response to oxidative and chemical st
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Reactome_6h.png}
-    \caption{reactome, +6 hours sample group}
+    \caption{}
     \label{figure:enrichment_reactome_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Reactome_36h.png}
-    \caption{reactome, +36 hours sample group}
+    \caption{}
     \label{figure:enrichment_reactome_36h}
   \end{subfigure}
-  
+  \caption{reactome enrichment, (a) +6 hours sample group, (b) +36 hours sample group}
   \label{figure:enrichment_reactome_plots}
 \end{figure}
 
