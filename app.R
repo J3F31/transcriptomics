@@ -513,32 +513,32 @@ server <- function(input, output, session) {
   observe({
     input$selectOnt36
     switch(
-      input$selectOnt,
+      input$selectOnt36,
       "BP" = {
         go36 <- goBP36
-        output$Goenrich <- renderPlot({
-          PlotEnrichmentAnalysis(go36, input$PVE)
+        output$Goenrich36 <- renderPlot({
+          PlotEnrichmentAnalysis(go36, input$PVE36)
         })
-        output$tableEnrich <- renderDataTable({
-          datatable(FilterEnrich(go36, input$PVE))
+        output$tableEnrich36 <- renderDataTable({
+          datatable(FilterEnrich(go36, input$PVE36))
         })
       },
       "CC" = {
         go36 <- goCC36
-        output$Goenrich <- renderPlot({
-          PlotEnrichmentAnalysis(go36, input$PVE)
+        output$Goenrich36 <- renderPlot({
+          PlotEnrichmentAnalysis(go36, input$PVE36)
         })
-        output$tableEnrich <- renderDataTable({
-          datatable(FilterEnrich(go36, input$PVE))
+        output$tableEnrich36 <- renderDataTable({
+          datatable(FilterEnrich(go36, input$PVE36))
         }) 
       },
       "MF" = {
         go36 <- goMF36
-        output$Goenrich <- renderPlot({
-          PlotEnrichmentAnalysis(go36, input$PVE)
+        output$Goenrich36 <- renderPlot({
+          PlotEnrichmentAnalysis(go36, input$PVE36)
         })
-        output$tableEnrich <- renderDataTable({
-          datatable(FilterEnrich(go36, input$PVE))
+        output$tableEnrich36 <- renderDataTable({
+          datatable(FilterEnrich(go36, input$PVE36))
         }) 
       }
     )
