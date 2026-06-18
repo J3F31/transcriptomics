@@ -1,5 +1,5 @@
 ---
-title: Environmental fluoxetine promotes skin cell proliferation and wound healing.
+title: Environmental fluoxetine promotes skin cell proliferation and wound healing
 author:
   - name: Roa Hanoun
     affiliation: Hanze University of Applied Sciences
@@ -9,23 +9,21 @@ author:
     email:  rjm.hanoun@st.hanze.nl
   - name: Jero Eyras
     affiliation: Hanze University of Applied Sciences
-    address:
-    - line 1
-    - line 2
-    email:  author2@work
+    email: j.eyras.jimenez@st.hanze.nl
 abstract: >
     Pharmaceutical pollutants, including the antidepressant fluoxetine (FLX, commercial name: Prozac), are increasingly detected in aquatic environments, raising concerns about their effects on non-target organisms, including humans. The original study demonstrated that environmentally-relevant FLX concentrations promote wound closure in human skin biopsies and keratinocytes through enhanced cell proliferation and serotonin signalling, supported by transcriptomic, phosphoproteomic, and kinase profiling analyses. Building on these findings, the present study extends the transcriptomic analysis by examining gene expression in scratched HaCaT keratinocytes exposed to 540 ng/L FLX at two time points: 6 and 36 hours. Differentially expressed genes (DEGs) were identified at each time point and compared to unexposed control cells, with an intersection analysis performed between both conditions. We identified 147 DEGs at 6 hours and 250 DEGs at 36 hours, with upregulated genes associated with cell proliferation and cellular stress defence mechanisms. The difference in DEG numbers compared to the original study reflects sample quality filtering applied during data processing. These results provide a more detailed temporal resolution of FLX-induced transcriptomic changes and support the conclusion that environmental FLX exposure modulates gene expression in ways that may meaningfully impact skin wound healing.
     
 preamble: >
   \usepackage{subcaption}
+  \usepackage{float}
 output: rticles::rjournal_article
 ---
 
-## Introduction
+# Introduction
 
-Pharmaceutical pollution has become a growing environmental concern, particularly the presence of antidepressants in aquatic ecosystems. Fluoxetine (FLX), commercially known as Prozac, is one of the most widely prescribed selective serotonin reuptake inhibitors (SSRIs) and works by blocking the reabsorption of serotonin in the brain, thereby increasing serotonin availability and improving mood regulation. Due to incomplete metabolisation in the human body and inadequate removal by wastewater treatment plants, FLX is consistently detected in surface waters at concentrations ranging from nanograms to micrograms per litre \citet{R}(Metcalfe et al., 2010).
+Pharmaceutical pollution has become a growing environmental concern, particularly the presence of antidepressants in aquatic ecosystems. Fluoxetine (FLX), commercially known as Prozac, is one of the most widely prescribed selective serotonin reuptake inhibitors (SSRIs) and works by blocking the reabsorption of serotonin in the brain, thereby increasing serotonin availability and improving mood regulation. Due to incomplete metabolisation in the human body and inadequate removal by wastewater treatment plants, FLX is consistently detected in surface waters at concentrations ranging from nanograms to micrograms per liter.
 
-Serotonin is not only a neurotransmitter but also plays a well-established role in peripheral tissues, including the skin, where it is involved in regulating cell proliferation and wound healing. Wound healing is a complex and tightly coordinated biological process that proceeds through three overlapping phases: inflammation, proliferation, and tissue remodelling. During the proliferation phase, keratinocytes — the dominant cell type of the outermost skin layer (the epidermis) — migrate toward the wound edge and actively divide to restore the skin barrier. Any disruption or enhancement of this process can have significant clinical implications. Given that FLX modulates serotonin signalling, and serotonin itself plays a role in keratinocyte activity, it is biologically plausible that environmental FLX exposure could meaningfully influence skin repair mechanisms.
+Serotonin is not only a neurotransmitter but also plays a well-established role in peripheral tissues, including the skin, where it is involved in regulating cell proliferation and wound healing. Wound healing is a complex and tightly coordinated biological process that proceeds through three overlapping phases: inflammation, proliferation, and tissue remodeling. During the proliferation phase, keratinocytes — the dominant cell type of the outermost skin layer (the epidermis) — migrate toward the wound edge and actively divide to restore the skin barrier. Any disruption or enhancement of this process can have significant clinical implications. Given that FLX modulates serotonin signalling, and serotonin itself plays a role in keratinocyte activity, it is biologically plausible that environmental FLX exposure could meaningfully influence skin repair mechanisms.
 
 The original study by \citep{rodriguez:2024} was the first to investigate this link experimentally, using a multi-omics approach combining transcriptomics, phosphoproteomics, and kinase profiling. Their transcriptomic analysis identified 350 differentially expressed genes (DEGs) in FLX-exposed keratinocytes, with upregulated genes linked to cell proliferation and tissue morphogenesis, and downregulated genes associated with mitochondrial function and metabolism \citep{rodriguez:2024}. These findings provided a molecular basis for the observed enhancement in wound closure, but left room for deeper temporal investigation of how gene expression changes evolve over time during FLX exposure.
 
@@ -33,15 +31,15 @@ Transcriptomics is the large-scale study of all RNA molecules expressed in a cel
 
 The present study focuses exclusively on the transcriptomic component of the original research. We analysed gene expression in scratched HaCaT human keratinocytes exposed to 540 ng/L FLX at two time points: 6 and 36 hours, mirroring the time points used in the transcriptomic section of the original study \citep{rodriguez:2024}. The 6-hour time point captures the early transcriptional response to FLX exposure, reflecting immediate cellular adjustments, while the 36-hour time point represents a later stage where more sustained gene expression changes associated with active wound closure are expected. Our central research question is: does FLX exposure significantly alter gene expression in human keratinocytes in ways that support enhanced wound healing, and how does this response evolve between 6 and 36 hours of exposure? To address this, DEGs were identified at each time point and compared to unexposed control cells, followed by enrichment analysis to map these genes to relevant biological pathways. An intersection analysis was further performed to identify genes consistently differentially expressed across both time points. We also explored whether enrichment analysis could reveal additional gene functions and pathways beyond those reported in the original article \citep{rodriguez:2024}.
 
-## Materials and Methods
+# Materials and Methods
 
-### Cells and clinical samples
+## Cells and clinical samples
 
 HaCaT cells are immortalised human keratinocytes derived from normal adult human skin and were obtained from AddexBio. Due to their well-characterised behaviour and relevance to skin biology, HaCaT cells are widely established as a model system in dermatological research. Cells were maintained in 5% CO2 incubation chambers at 37 °C and subcultured every 3 days or upon reaching approximately 80% confluency.
 
 To investigate the transcriptomic effects of Fluoxetine (FLX) on wound healing, a scratch assay was performed on HaCaT cell monolayers. Following the scratch, cells were treated with FLX at a concentration of 540 ng/L. Conditions were defined as a combination of treatment (FLX vs. control) and time post-scratch (6 h and 36 h), resulting in a total of four samples across both conditions.
 
-### RNA sequancing 
+## RNA sequencing 
 
 HaCaT cells were scratched three times per well in 6-well plates, and total RNA was isolated at 6 h and 36 h post-scratch using the PureLink™ RNA Mini Kit (Thermo Fisher Scientific), following the manufacturer's instructions. Library preparation and RNA sequencing were carried out by Novogene Co. Ltd. (Cambridge, UK) using the Illumina NovaSeq 6000 platform. The sequencing output consisted of two files, one for each comparison (6 h and 36 h), each containing one FLX-exposed sample and one untreated control sample. Each file included gene annotation columns (gene name, gene ID, chromosome, start and end positions, strand, length, and biotype), raw read counts per sample, FPKM-normalised expression values, and statistical outputs including log2log_2
 log2. fold change, p-value, and adjusted p-value (padj). Raw read counts were used as input for all downstream differential expression analysis.
@@ -55,13 +53,13 @@ Most likely this will be the largest section in your report (depending on the nu
 
 Do not show any results in this section, for instance when stating that you filtered t-test p-values on a certain value, you do not list how many genes were left, that is for the next section.
 
-### Data Pre-processing
+## Data Pre-processing
 
 Prior to differential expression analysis, sample quality was assessed using multiple visualizations. Raw count data were normalized using Variance Stabilizing Transformation (VST) as implemented in `DESeq2`, and Poisson distance-based normalization was applied to measure dissimilarity between samples. Sample-to-sample distances were visualized using heatmaps and Multidimensional Scaling (MDS) plots, generated with `PoiClaClu`, `ggplot2` and `pheatmap` in R, alongside `DESeq2` built-in plotting functions. Additionally, bar plots and density plots were produced to inspect the distribution of counts across samples.
 
 Based on these quality control visualizations, three irregular samples were identified and removed from the analysis: `C36-R1` and `E36-R3` from the 36-hour dataset, and `C6-R4` from the 6-hour dataset. Sample removal was performed while ensuring that each experimental group retained a minimum of three biological replicates, in order to maintain statistical reliability in the downstream analysis.
 
-### Differential Expression & Enrichment Analysis
+## Differential Expression & Enrichment Analysis
 
 Differential gene expression analysis was performed separately for each time point (6 h and 36 h) using the DESeq2 R package. Genes were considered differentially expressed at an unadjusted p-value threshold of `p < 0.05`. It should be noted that unadjusted p-values were used in place of adjusted p-values (padj), as this approach yielded results most comparable to those reported in the original study.
 
@@ -73,198 +71,137 @@ Entrez gene IDs (ENTREZID) were used as the primary gene identifier for all enri
 
 - **Reactome pathway enrichment (enrichPathway)** was used to identify precise molecular reactions and sub-pathways driven by the DEGs.
 
-## Results
+# Results
 
-### Data Analysis
-
->plots
-
-After generating heatmaps and MDS plots, the most irregular samples identified are: C36-R1 and E36_R3 from the 36-hour dataset, and C6_R4 from the 6-hour dataset. These samples don't seem grouped and are quite far apart from the rest. This is the reason we chose to continue without those samples in the following DEGs section. From the 4 samples groups 3 have now only 3 replicates and the 4rth one remains with 4.
-
-### DEGs
+## DEGs
 
 No significant differentialy expressed genes where found using a p-adjusted value `padj < 0.05`. Thus, we proceed with p-values, although with the warning that we are not using p-adjusted values. Some significance can be seen in the following p-value distribution plots for both samples.
 
->pval plots
-
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Pval_6h.png}
-    \caption{A}
     \label{figure:pval_distribution_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Pval_36h.png}
-    \caption{B}
     \label{figure:pval_distribution_36h}
   \end{subfigure}
-  
+  \caption{P-value distribution for both sample groups. Namely, distribution shows enough values with significance to proceed with unadjusted p-values.}
   \label{figure:pval_plots}
 \end{figure}
 
 With a p-value cutoff of 0.05 we end up with a similar number of DEGs as the original article. Of course, due to the data cleaning we end up with a lower amount, while without cleaning it would result in the exact number. The following volcano plots showcase the resulting DEGs.
 
->volcano plots
-
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Volcano_6h.png}
-    \caption{A}
     \label{figure:volcano_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Volcano_36h.png}
-    \caption{B}
     \label{figure:volcano_36h}
   \end{subfigure}
-  
+  \caption{Volcano plots for both sample groups. A total of 147 DEGs at +6 hours, 86 upregulated and 61 downregulated, and 242 DEGs at +36 hours, 110 upregulated and 132 downregulated.}
   \label{figure:volcano_plots}
 \end{figure}
 
-### Enrichment analysis
+## Enrichment Analysis
 
->go plots
+### Go Terms
 
-\begin{figure}[!h]
+Go enrichment analysis for the +6 hours group shows reduced metabolic functions in the cell as well as regulation of Wnt signaling, commonly implicated in regeneration, cancer and epithelial development. For the +36 hours group upregulated genes are related to cell signaling and membrane organization.
+
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoBP_6h.png}
-    \caption{A}
+    \caption{biological process, +6 hours sample group}
     \label{figure:enrichment_gobp_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoBP_36h.png}
-    \caption{B}
+    \caption{biological process, +36 hours sample group}
     \label{figure:Enrichment_gobp_36h}
   \end{subfigure}
+  \label{figure:enrichment_gobp_plots}
+\end{figure}
   
+\begin{figure}[H]
+  \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoCC_6h.png}
-    \caption{A}
+    \caption{cellular component, +6 hours sample group}
     \label{figure:enrichment_gocc_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoCC_36h.png}
-    \caption{B}
+    \caption{cellular component, +36 hours sample group}
     \label{figure:Enrichment_gocc_36h}
   \end{subfigure}
-  
+  \label{figure:enrichment_gocc_plots}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoMF_6h.png}
-    \caption{A}
+    \caption{molecular function, +6 hours sample group}
     \label{figure:enrichment_gomf_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_GoMF_36h.png}
-    \caption{B}
+    \caption{molecular function, +36 hours sample group}
     \label{figure:Enrichment_gomf_36h}
   \end{subfigure}
-  
-  \label{figure:enrichment_go_plots}
+  \label{figure:enrichment_gomf_plots}
 \end{figure}
 
->kegg plots
+### Pathway Analysis
 
-\begin{figure}[!h]
+Kegg and reactome analysis results suggest response to oxidative and chemical stress rather than disease-specific processes for the +6 hours group, typicaly a detoxification response. Whereas for the +36 hours group suggests regulation of cellular stress responses, proliferative signaling, metabolic adaptation, and inflammatory processes.
+
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Kegg_6h.png}
-    \caption{A}
+    \caption{kegg, +6 hours sample group}
     \label{figure:enrichment_kegg_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Kegg_36h.png}
-    \caption{B}
+    \caption{kegg, +36 hours sample group}
     \label{figure:enrichment_kegg_36h}
   \end{subfigure}
   
   \label{figure:enrichment_kegg_plots}
 \end{figure}
 
->reactome plots
-
-\begin{figure}[!h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Reactome_6h.png}
-    \caption{A}
+    \caption{reactome, +6 hours sample group}
     \label{figure:enrichment_reactome_6h}
   \end{subfigure}%
   \begin{subfigure}{0.5\textwidth}
     \includegraphics[width=0.9\linewidth]{images/Enrichment_Reactome_36h.png}
-    \caption{B}
+    \caption{reactome, +36 hours sample group}
     \label{figure:enrichment_reactome_36h}
   \end{subfigure}
   
   \label{figure:enrichment_reactome_plots}
 \end{figure}
 
-### Pathview
+# Conclusion
 
+Given the results shown above cell signaling and proliferation seem to be the most notable upsides given the exposure to FLX. Notably, an initial exposure fires negative responses related to cell stress and detoxification processes in the cell. There are some week links to formation of illnesess, specially cancer since we are talking about skin cells. The most important aspect is that we cannot entirely ensure these effects given that the p adjusted values proved no significance, possibly related to sample noise. However, p values showed some interesting significance which could prompt further research into the topic.
 
-
-Here you will only focus on your own results, start at the beginning but only show the interesting results. This section works best if you alternate between text introducing some result, a figure or table showing the result, and a short text segment analyzing the presented result *and* introducing the next figure, etc.
-
-Although we have worked in `R` a lot, the results are almost never pieces of `R` code. If you have written your own algorithm or analysis method try to present it in a formula *followed* by the `R` implementation, otherwise this section should mainly contain figures and tables. 
-
-There are multiple methods of including a figure in this section. Figure \ref{figure:sample_heatmap} shows the \LaTeX method (see the source code) giving very fine control over size and placement of a figure. The size of a figure is determined by the width of the text column, Figure \ref{figure:sample_heatmap} is scaled as 85% of the text width. The [Wikibooks.org](https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions#Figures) website shows some examples for placement (for instance, what the `[htbp]` means), scaling and captions.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.85\textwidth]{images/pheatmap.png}
-  \caption{Heatmap showing sample distances and clustering.}
-  \label{figure:sample_heatmap}
-\end{figure}
-
-\newpage
-
-Alternatively the previously shown `R` method using the `PNG` library can be used which allows changing the *heigth* and *width* of an image but lacks the possibility of referencing the figure in the text, aligning the figure (the heatmap is centered), providing a figure caption and automatic numbering of figures. 
-
-```{r MDS-Figure, fig.width=5, echo=TRUE, eval=TRUE}
-library(png)
-library(grid)
-img <- readPNG("images/mds.png")
-grid.raster(img)
-```
-
-## Conclusion
-
-Limit to your *own* conclusions, based on what is shown in the **Results** section. Do not include any comparison to the original article as that is the content of the next section, the **Discussion**. Usually you refer back to all steps outlined in the results section since you included it there for a reason. 
-
-## Discussion
+# Discussion
 
 An important section in your report; here you can compare your findings with the findings presented in the original article. If you found exactly the same results - and that was your goal from the start - this will be a bit shorter section and you should focus on other parts of your research that hasn't been discussed or shown in the article, i.e. any findings from the exploratory data analysis or differences in DEGs using the manual- and library-method.
 
 Besides comparing the two 'experiments', this is also the place to discuss how reliable your results are. Did anything go wrong or did you get unexpected outcomes using some method and if so, what did you do to solve it or are there still open discussion points on this subject.
-
-## Notes on the `bibliography` section
-
-The last section in the report contains all the used references that are used throughout the text in a section called the `Bibliography`. In the text you can link to references using the \LaTeX commands (see the source of this file for instructions). These references must be present in a file named `RJreferences.bib` which is automatically generated once you click the `Knit` button for the first time in a folder with the same name as the current markdown file (`./report-template/RJreferences.bib` for this example file).
-
-This file containing the references can be edited in RStudio too, browse to the folder (after Knitting) and click on the `.bib` file to edit. If, for example, I want to add the article that is available for the experiment used in the week 4 - 7 assignment document, I would first lookup the paper in [PubMed](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3914337/) to get the details and add these details to the `.bib` file as follows:
-
-```
-@article{garcia,
-    author = {Duart-Garcia, Braunschweig},
-    title = {Functional expression study of igf2 antisense transcript in mouse},
-    journal = {International Journal of Genomics},
-    doi = {10.1155/2014/390296},
-    url = {http://dx.doi.org/10.1155/2014/390296},
-    year = 2014
-}
-
-@article{rodriguez,
-    author = {Quentin Rodriguez-Barucg, Angel A. Garcia, Belen Garcia-Merino, Tomilayo Akinmola, Temisanren Okotie-Eboh, Thomas Francis, Eugenio Bringas, Inmaculada Ortiz, Mark A.               Wade, Adam Dowle, Domino A. Joyce, Matthew J. Hardman, Holly N. Wilkinson, Pedro Beltran-Alvarez},
-    title = {Environmental fluoxetine promotes skin cell proliferation and wound healing},
-    journal = {Environmental Pollution},
-    doi = {10.1016/2024/124952},
-    url = {https://doi.org/10.1016/j.envpol.2024.124952},
-    year = 2024
-}
-```
-
-References added to this file do not automatically show up in your document, unless you actually refer to it. To add a reference, like so: \citep{garcia:2014}, you need to use the `\citep{}` or `\citer{}` \LaTeX command combined with the given ID which is `garcia` in our case.
 
 \bibliography{RJreferences}
